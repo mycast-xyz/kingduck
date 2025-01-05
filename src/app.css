@@ -1,3 +1,78 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+
+@layer components {
+	.component-width {
+		width: calc(100% - 5rem);
+	}
+	/* 호요버스 - 원신, 스타레일 색상 처리*/
+	.border-HY-Rating-5 {
+		border-color: #fcba49;
+		background-color: #fcba49;
+	}
+	.border-HY-Rating-4 {
+		border-color: #9f66c8;
+		background-color: #9f66c8;
+	}
+	/* 호요버스 - 원신, 스타레일 색상 처리*/
+	.text-HY-Rating-5 {
+		color: #fcba49;
+	}
+	.text-HY-Rating-4 {
+		color: #9f66c8;
+	}
+
+	.border-URA-Rating-SSR {
+		border-image: -moz-linear-gradient(
+			315deg,
+			rgba(220, 255, 91, 1) 0%,
+			rgba(86, 230, 252, 1) 50%,
+			rgba(252, 161, 232, 1) 100%
+		);
+		border-image: -webkit-linear-gradient(
+			315deg,
+			rgba(220, 255, 91, 1) 0%,
+			rgba(86, 230, 252, 1) 50%,
+			rgba(252, 161, 232, 1) 100%
+		);
+		border-image: linear-gradient(
+			315deg,
+			rgba(220, 255, 91, 1) 0%,
+			rgba(86, 230, 252, 1) 50%,
+			rgba(252, 161, 232, 1) 100%
+		);
+		border-image-slice: 1;
+		border-color: rgb(220, 255, 91);
+		background: rgb(220, 255, 91);
+		background: -moz-linear-gradient(
+			315deg,
+			rgba(220, 255, 91, 1) 0%,
+			rgba(86, 230, 252, 1) 50%,
+			rgba(252, 161, 232, 1) 100%
+		);
+		background: -webkit-linear-gradient(
+			315deg,
+			rgba(220, 255, 91, 1) 0%,
+			rgba(86, 230, 252, 1) 50%,
+			rgba(252, 161, 232, 1) 100%
+		);
+		background: linear-gradient(
+			315deg,
+			rgba(220, 255, 91, 1) 0%,
+			rgba(86, 230, 252, 1) 50%,
+			rgba(252, 161, 232, 1) 100%
+		);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#dcff5b",endColorstr="#fca1e8",GradientType=1);
+		mask:
+			linear-gradient(#000 0 0) content-box,
+			linear-gradient(#000 0 0);
+	}
+
+	.border-URA-Rating-SR {
+		border-color: #fcba49;
+		background-color: #fcba49;
+	}
+}
