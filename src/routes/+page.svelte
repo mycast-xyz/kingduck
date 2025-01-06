@@ -636,10 +636,84 @@
 						</div>
 					</div>
 					<!-- 기본 형태 -->
-					<div class="w-full border-t border-gray-200 p-3 pb-0">
+					<div class="w-full border-t border-gray-200 p-3">
 						<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 							추천 메인 속성
 						</h5>
+						<ul class="flex">
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+									<img class="h-full w-full" src="./assets/test/3/1.webp" />
+								</div>
+								<div class="pt-2">
+									<h5 class="text-xl font-semibold">HP</h5>
+									<span class="text-sm text-gray-500 dark:text-gray-400">50 ~ 60%</span>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+									<img class="h-full w-full" src="./assets/test/3/8.webp" />
+								</div>
+								<div class="pt-2">
+									<h5 class="text-xl font-semibold">효과 명중</h5>
+									<span class="text-sm text-gray-500 dark:text-gray-400">50 ~ 60%</span>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+									<img class="h-full w-full" src="./assets/test/3/2.webp" />
+								</div>
+								<div class="pt-2">
+									<h5 class="text-xl font-semibold">격파 특수효과</h5>
+									<span class="text-sm text-gray-500 dark:text-gray-400">50 ~ 60%</span>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+									<img class="h-full w-full" src="./assets/test/3/5.webp" />
+								</div>
+								<div class="pt-2">
+									<h5 class="text-xl font-semibold">속도</h5>
+									<span class="text-sm text-gray-500 dark:text-gray-400">50 ~ 60%</span>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+									<img class="h-full w-full" src="./assets/test/3/6.webp" />
+								</div>
+								<div class="pt-2">
+									<h5 class="text-xl font-semibold">방어력</h5>
+									<span class="text-sm text-gray-500 dark:text-gray-400">50 ~ 60%</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="w-full border-t border-gray-200 p-3">
+						<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
+							추천 보조 속성
+						</h5>
+						<ul class="flex">
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div>
+									<h5 class="text-xl font-semibold">HP</h5>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div>
+									<h5 class="text-xl font-semibold">속도</h5>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div>
+									<h5 class="text-xl font-semibold">격파 특수효과</h5>
+								</div>
+							</li>
+							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+								<div>
+									<h5 class="text-xl font-semibold">치명타 확률</h5>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
