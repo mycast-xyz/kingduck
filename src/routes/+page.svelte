@@ -1,7 +1,9 @@
-<div class="h-screen w-screen overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800">
+<div
+	class="h-screen w-screen min-w-[1700px] overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800"
+>
 	<!-- Left nav-->
 	<header
-		class="fixed inset-y-0 left-0 h-full w-20 items-center border-r border-r-gray-100 bg-white shadow-md dark:border-r-gray-800 dark:bg-gray-950"
+		class="fixed inset-y-0 left-0 z-50 h-full w-20 items-center border-r border-r-gray-100 bg-white shadow-md dark:border-r-gray-800 dark:bg-gray-950"
 	>
 		<!-- Logo area -->
 		<div id="logo" class="mb-3">
@@ -127,9 +129,9 @@
 		</div>
 
 		<!-- 스크롤 처리 -->
-		<div id="info-content" class="h-full w-fit overflow-y-auto">
+		<div id="info-content" class="h-full w-[inherit] overflow-y-auto">
 			<div class="w-full px-5 pt-5">
-				<!-- 서포트 카드 처리용 -->
+				<!-- 서포트 카드 처리용 / 기본 틀 -->
 				<div
 					class="mb-6 w-full rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800"
 				>
@@ -140,11 +142,15 @@
 							추천 광추
 						</h5>
 					</div>
-					<div class="grid grid-cols-6 gap-14 p-3 pb-0">
+					<div class="flex w-full justify-start p-3 pb-0">
 						<!-- 스타레일 / 원신 -->
-						<div class="card-info">
+						<div class="card-info mx-6 w-min first:ml-0">
 							<div class="rating-card border-HY-Rating-5 items-center rounded-xl border-8">
-								<img class="h-auto max-w-full rounded-xl" src="./assets/test/1/1.webp" alt="" />
+								<img
+									class="h-auto min-w-36 max-w-52 rounded-xl"
+									src="./assets/test/1/1.webp"
+									alt=""
+								/>
 								<div class="rating-info flex w-auto justify-center p-2 pb-0">
 									<div class="icon h-6 w-6">
 										<svg
@@ -258,13 +264,19 @@
 									</div>
 								</div>
 							</div>
-							<p class="text-HY-Rating-5 w-full break-keep px-4 pt-2 text-center text-lg font-bold">
+							<p
+								class="w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-600 dark:text-gray-200"
+							>
 								꿈은 어디로 돌아가야 하는가
 							</p>
 						</div>
-						<div class="card-info">
+						<div class="card-info mx-6 w-min">
 							<div class="rating-card border-HY-Rating-5 rounded-xl border-8">
-								<img class="h-auto max-w-full rounded-xl" src="./assets/test/1/2.webp" alt="" />
+								<img
+									class="h-auto min-w-36 max-w-52 rounded-xl"
+									src="./assets/test/1/2.webp"
+									alt=""
+								/>
 								<div class="rating-info flex justify-center p-2 pb-0">
 									<div class="icon h-6 w-6">
 										<svg
@@ -378,13 +390,19 @@
 									</div>
 								</div>
 							</div>
-							<p class="text-HY-Rating-5 w-full break-keep px-4 pt-2 text-center text-lg font-bold">
+							<p
+								class="w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-600 dark:text-gray-200"
+							>
 								꿈은 어디로 돌아가야 하는가
 							</p>
 						</div>
-						<div class="card-info">
+						<div class="card-info mx-6 w-min">
 							<div class="rating-card border-HY-Rating-4 rounded-xl border-8">
-								<img class="h-auto max-w-full rounded-xl" src="./assets/test/1/5.webp" alt="" />
+								<img
+									class="h-auto min-w-36 max-w-52 rounded-xl"
+									src="./assets/test/1/5.webp"
+									alt=""
+								/>
 								<div class="rating-info flex justify-center p-2 pb-0">
 									<div class="icon h-6 w-6">
 										<svg
@@ -476,20 +494,25 @@
 									</div>
 								</div>
 							</div>
-							<p class="text-HY-Rating-4 w-full break-keep px-4 pt-2 text-center text-lg font-bold">
+							<p
+								class="w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-600 dark:text-gray-200"
+							>
 								꿈은 어디로 돌아가야 하는가
 							</p>
 						</div>
 
 						<!-- 말딸용 -->
-
-						<div class="card-info">
+						<div class="card-info mx-6 w-min">
 							<div class="rating-card border-URA-Rating-SSR overflow-hidden rounded-xl border-8">
-								<img class="h-auto max-w-full rounded-xl" src="./assets/test/1/7.png" alt="" />
+								<img
+									class="h-auto min-w-36 max-w-52 rounded-xl"
+									src="./assets/test/1/7.png"
+									alt=""
+								/>
 								<h4 class=" text-center text-2xl font-bold tracking-tight text-white">SSR</h4>
 							</div>
 							<p
-								class=" w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-800 dark:text-gray-200"
+								class=" w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-600 dark:text-gray-200"
 							>
 								다가오는 열기에 떠밀려
 							</p>
@@ -507,19 +530,19 @@
 							추천 유물
 						</h5>
 					</div>
-					<!-- 좌우 구분 박스 처리가 필요한 경우 -->
+					<!-- 기본 형태 | 강조 박스형 -->
 					<div class="flex w-full p-3">
-						<div class="w-2/3 p-3 pt-0">
+						<div class="w-auto py-3 pt-0">
 							<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 								터널 유물
 							</h5>
-							<div class="grid grid-cols-6 gap-10">
+							<div class="flex">
 								<div
-									class="max-w-sm rounded-lg border border-gray-200 bg-amber-400 shadow dark:border-gray-700"
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
 								>
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
-											class=" m-auto w-36 items-center p-4"
+											class=" m-auto min-w-36 items-center p-4"
 											src="./assets/test/2/5.webp"
 											alt=""
 										/>
@@ -533,11 +556,11 @@
 									</div>
 								</div>
 								<div
-									class="max-w-sm rounded-lg border border-gray-200 bg-amber-400 shadow dark:border-gray-700"
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
 								>
 									<div class="relative h-auto w-full object-scale-down">
 										<img
-											class=" m-auto w-36 items-center p-4"
+											class=" m-auto max-w-36 items-center p-4"
 											src="./assets/test/2/3.webp"
 											alt=""
 										/>
@@ -551,11 +574,11 @@
 									</div>
 								</div>
 								<div
-									class="max-w-sm rounded-lg border border-gray-200 bg-amber-400 shadow dark:border-gray-700"
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
 								>
 									<div class="relative h-auto w-full object-scale-down">
 										<img
-											class=" m-auto w-36 items-center p-4"
+											class=" m-auto min-w-36 items-center p-4"
 											src="./assets/test/2/3.webp"
 											alt=""
 										/>
@@ -574,11 +597,11 @@
 									</div>
 								</div>
 								<div
-									class="max-w-sm rounded-lg border border-gray-200 bg-amber-400 shadow dark:border-gray-700"
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
 								>
 									<div class="h-auto w-full object-scale-down">
 										<img
-											class=" m-auto w-36 items-center p-4"
+											class=" m-auto w-36 min-w-36 items-center p-4"
 											src="./assets/test/2/1.webp"
 											alt=""
 										/>
@@ -591,17 +614,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="w-1/3 p-3 pt-0">
+						<div class="w-auto py-3 pt-0">
 							<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 								차원 유물
 							</h5>
-							<div class="grid grid-cols-3 gap-10">
+							<div class="flex">
 								<div
-									class="max-w-sm rounded-lg border border-gray-200 bg-amber-400 shadow dark:border-gray-700"
+									class="mx-4 basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
 								>
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
-											class=" m-auto w-36 items-center p-4"
+											class=" m-auto max-w-36 items-center p-4"
 											src="./assets/test/2/2.webp"
 											alt=""
 										/>
@@ -615,11 +638,11 @@
 									</div>
 								</div>
 								<div
-									class="max-w-sm rounded-lg border border-gray-200 bg-amber-400 shadow dark:border-gray-700"
+									class="mx-4 basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
 								>
 									<div class="relative h-auto w-full object-scale-down">
 										<img
-											class=" m-auto w-36 items-center p-4"
+											class=" m-auto max-w-36 items-center p-4"
 											src="./assets/test/2/4.webp"
 											alt=""
 										/>
@@ -635,7 +658,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- 기본 형태 -->
+					<!-- 기본 형태 | 이미지가 들어가는 경우 -->
 					<div class="w-full border-t border-gray-200 p-3">
 						<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 							추천 메인 속성
@@ -688,33 +711,341 @@
 							</li>
 						</ul>
 					</div>
+					<!-- 기본 형태 | 텍스트만 표기시 -->
 					<div class="w-full border-t border-gray-200 p-3">
 						<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 							추천 보조 속성
 						</h5>
-						<ul class="flex">
-							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-								<div>
-									<h5 class="text-xl font-semibold">HP</h5>
-								</div>
-							</li>
-							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-								<div>
-									<h5 class="text-xl font-semibold">속도</h5>
-								</div>
-							</li>
-							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-								<div>
-									<h5 class="text-xl font-semibold">격파 특수효과</h5>
-								</div>
-							</li>
-							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-								<div>
-									<h5 class="text-xl font-semibold">치명타 확률</h5>
-								</div>
-							</li>
-						</ul>
+						<div class="flex pb-3 pl-3">
+							<h5 class="text-lg">HP, 속도, 격파 특수효과, 치명타 확률</h5>
+						</div>
 					</div>
+				</div>
+				<!-- 행적 육성 - 기본형태와 동일 코드 -->
+				<div
+					class="mb-6 w-full rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800"
+				>
+					<div>
+						<h5
+							class="border-b border-gray-200 pb-3 pl-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+						>
+							행적 육성
+						</h5>
+					</div>
+					<!-- 기본 형태 | 강조 박스형 -->
+					<div class="flex w-full p-3">
+						<div class="w-auto py-3 pt-0">
+							<h5
+								class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white"
+							></h5>
+							<div class="flex">
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/4/3.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											1.전투스킬
+										</h5>
+									</div>
+								</div>
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/4/5.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											1.특성
+										</h5>
+									</div>
+								</div>
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/4/4.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											2.필살기
+										</h5>
+									</div>
+								</div>
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/4/5.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											3.일반공격
+										</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 기본 형태 | 이미지가 들어가는 경우 
+					<div class="w-full border-t border-gray-200 p-3">
+						<div class="block flex rounded-lg p-3 px-4">
+							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+								<img class="h-full w-full" src="./assets/test/4/3.webp" />
+							</div>
+							<div class="pt-2">
+								<h5 class="text-xl font-semibold">
+									현인의 길조, 천명의 부채 <small>[서포트]</small>
+								</h5>
+								<span class="text-sm text-gray-500 dark:text-gray-400"
+									>[여우의 기도]를 보유한 아군의 격파 특수효과가 n% 증가한다.<br />아군이 공격을
+									발동할 때마다 망귀인은 100%의 기본 확률로 피격된 적의 방어력을 n% 감소시킨다, 지속
+									시간: 2턴
+								</span>
+							</div>
+						</div>
+					</div>
+					-->
+				</div>
+				<!-- 성흔 돌파 - 기본형태와 동일 코드 -->
+				<div
+					class="mb-6 w-full rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800"
+				>
+					<div>
+						<h5
+							class="border-b border-gray-200 pb-3 pl-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+						>
+							성흔 돌파
+						</h5>
+					</div>
+					<!-- 기본 형태 | 강조 박스형 -->
+					<div class="flex w-full p-3">
+						<div class="w-auto py-3 pt-0">
+							<h5
+								class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white"
+							></h5>
+							<div class="flex">
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto max-w-36 items-center p-4"
+											src="./assets/test/5/1.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											1
+										</h5>
+									</div>
+								</div>
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/5/2.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											2
+										</h5>
+									</div>
+								</div>
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/5/3.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											3
+										</h5>
+									</div>
+								</div>
+
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/5/4.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											4
+										</h5>
+									</div>
+								</div>
+
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/5/5.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											5
+										</h5>
+									</div>
+								</div>
+
+								<div
+									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-[#d34e44] shadow dark:border-gray-700"
+								>
+									<div class=" relative h-auto w-full object-scale-down">
+										<img
+											class=" m-auto min-w-36 items-center p-4"
+											src="./assets/test/5/6.webp"
+											alt=""
+										/>
+									</div>
+									<div class="p-2">
+										<h5
+											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
+										>
+											6
+										</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 기본 형태 | 이미지가 들어가는 경우 
+					<div class="w-full border-t border-gray-200 p-3">
+						<div class="block flex rounded-lg p-3 px-4">
+							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+								<img class="h-full w-full" src="./assets/test/4/3.webp" />
+							</div>
+							<div class="pt-2">
+								<h5 class="text-xl font-semibold">
+									현인의 길조, 천명의 부채 <small>[서포트]</small>
+								</h5>
+								<span class="text-sm text-gray-500 dark:text-gray-400"
+									>[여우의 기도]를 보유한 아군의 격파 특수효과가 n% 증가한다.<br />아군이 공격을
+									발동할 때마다 망귀인은 100%의 기본 확률로 피격된 적의 방어력을 n% 감소시킨다, 지속
+									시간: 2턴
+								</span>
+							</div>
+						</div>
+					</div>
+					-->
+				</div>
+
+				<!-- 속성정보 - 기본틀 -->
+				<div
+					class="mb-6 w-full rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800"
+				>
+					<div>
+						<h5
+							class="border-b border-gray-200 pb-3 pl-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+						>
+							해외 속성 평균 통계
+						</h5>
+					</div>
+					<!-- 기본 형태 | 강조 박스형 -->
+					<div class="flex w-full p-0">
+						<div class="w-auto pt-0">
+							<h5
+								class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white"
+							></h5>
+							<div class="flex flex-wrap">
+								<div
+									class="max-w-42 mx-4 my-3 rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-[#d34e44] dark:border-gray-700"
+								>
+									<div class="h-auto w-36 object-scale-down p-2">
+										<img class="m-auto max-w-14 items-center" src="./assets/test/3/1.webp" alt="" />
+										<h5
+											class="break-keep border-b-2 border-white pb-3 text-center text-base tracking-tight text-white"
+										>
+											공격력
+										</h5>
+									</div>
+									<div class="p-2 pt-0">
+										<h5
+											class=" mb-2 break-keep text-center text-2xl font-black tracking-tight text-white"
+										>
+											1641.75
+										</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 기본 형태 | 이미지가 들어가는 경우 
+					<div class="w-full border-t border-gray-200 p-3">
+						<div class="block flex rounded-lg p-3 px-4">
+							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
+								<img class="h-full w-full" src="./assets/test/4/3.webp" />
+							</div>
+							<div class="pt-2">
+								<h5 class="text-xl font-semibold">
+									현인의 길조, 천명의 부채 <small>[서포트]</small>
+								</h5>
+								<span class="text-sm text-gray-500 dark:text-gray-400"
+									>[여우의 기도]를 보유한 아군의 격파 특수효과가 n% 증가한다.<br />아군이 공격을
+									발동할 때마다 망귀인은 100%의 기본 확률로 피격된 적의 방어력을 n% 감소시킨다, 지속
+									시간: 2턴
+								</span>
+							</div>
+						</div>
+					</div>
+					-->
 				</div>
 			</div>
 		</div>
