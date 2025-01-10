@@ -862,12 +862,12 @@
 						</ul>
 					</div>
 					<!-- 기본 형태 | 텍스트만 표기시 -->
-					<div class="w-full border-t border-gray-200 p-3">
+					<div class="w-full border-t border-gray-200 p-3 pb-0">
 						<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 							추천 보조 속성
 						</h5>
 						<div class="flex pb-3 pl-3">
-							<h5 class="text-lg">HP, 속도, 격파 특수효과, 치명타 확률</h5>
+							<h5 class="text-lg font-normal">HP, 속도, 격파 특수효과, 치명타 확률</h5>
 						</div>
 					</div>
 				</div>
