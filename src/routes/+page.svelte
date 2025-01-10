@@ -132,7 +132,7 @@
 			<!-- 캐릭터 이름 / 정보 표기 -->
 			<div id="info-image-card" class="absolute inset-x-0 bottom-0 h-80 w-full px-6 text-white">
 				<!-- 캐릭터 이름 표기 -->
-				<div id="info-title" class="w-full border-b pb-3 pt-20">
+				<div id="info-title" class="w-full border-b px-2 pb-3 pt-20">
 					<!-- 한글 표기 -->
 					<!--서브타이틀-->
 					<h5 class="break-keep pb-1 text-lg font-extrabold"></h5>
