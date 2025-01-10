@@ -4,6 +4,16 @@
 
 @import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
 
+@layer base {
+	html {
+		src: url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+		font-family: 'AppleSDGothicNeo', 'Noto Sans KR', sans-serif;
+		font-size: 16px;
+		font-weight: 700;
+		color: #1d1d1f;
+	}
+}
+
 @layer components {
 	.component-width {
 		width: calc(100% - 5rem);

@@ -1,3 +1,6 @@
+<script lang="ts">
+</script>
+
 <div
 	class="h-screen w-screen min-w-[1700px] overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800"
 >
@@ -48,6 +51,7 @@
 	</header>
 	<!-- Content -->
 	<article id="info-componet" class="component-width ml-20 flex h-full overflow-hidden">
+		<!-- 캐릭터 이미지 표기 처리 -->
 		<div id="info-image" class="relative h-screen w-1/3 max-w-2xl">
 			<!-- Image Slider - 개발 필요 -->
 			<div id="default-carousel" class="h-full w-full" data-carousel="slide">
@@ -125,7 +129,153 @@
 				</button>
 			</div>
 
-			<div id="info-image-card" class="absolute inset-x-0 bottom-0 h-64 w-full"></div>
+			<!-- 캐릭터 이름 / 정보 표기 -->
+			<div id="info-image-card" class="absolute inset-x-0 bottom-0 h-80 w-full px-6 text-white">
+				<!-- 캐릭터 이름 표기 -->
+				<div id="info-title" class="w-full border-b pb-3 pt-20">
+					<!-- 한글 표기 -->
+					<!--서브타이틀-->
+					<h5 class="break-keep pb-1 text-lg font-extrabold"></h5>
+					<!-- 메인타이틀-->
+					<h3 class="break-keep pb-1 text-4xl font-extrabold">망귀인</h3>
+					<!-- 외래어 표기 | 영어, 일본어, 중국어 간체 일부 가능 -->
+					<p class=" text-lg font-normal">Fugue, 忘归人, 帰忘の流離人</p>
+				</div>
+				<!-- 캐릭터 등급 표기 -->
+				<div class="rating-info flex border-b p-2">
+					<div class="flex w-1/2 justify-start">
+						<h3 class="break-keep pb-1 pr-3 pt-0.5 text-xl font-normal">등급</h3>
+						<!-- 레이팅 등급 아이콘 표기시 -->
+						<div class="rating-info-img flex w-auto justify-start">
+							<div class="icon h-8 w-6 py-1">
+								<svg
+									id="_레이어_1"
+									data-name="레이어_1"
+									xmlns="http://www.w3.org/2000/svg"
+									version="1.1"
+									viewBox="0 0 50 50"
+								>
+									<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
+									<defs>
+										<style>
+											.st0 {
+												fill: #fff;
+											}
+										</style>
+									</defs>
+									<path
+										class="st0"
+										d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+									/>
+								</svg>
+							</div>
+							<div class="icon h-8 w-6 py-1">
+								<svg
+									id="_레이어_1"
+									data-name="레이어_1"
+									xmlns="http://www.w3.org/2000/svg"
+									version="1.1"
+									viewBox="0 0 50 50"
+								>
+									<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
+									<defs>
+										<style>
+											.st0 {
+												fill: #fff;
+											}
+										</style>
+									</defs>
+									<path
+										class="st0"
+										d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+									/>
+								</svg>
+							</div>
+							<div class="icon h-8 w-6 py-1">
+								<svg
+									id="_레이어_1"
+									data-name="레이어_1"
+									xmlns="http://www.w3.org/2000/svg"
+									version="1.1"
+									viewBox="0 0 50 50"
+								>
+									<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
+									<defs>
+										<style>
+											.st0 {
+												fill: #fff;
+											}
+										</style>
+									</defs>
+									<path
+										class="st0"
+										d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+									/>
+								</svg>
+							</div>
+							<div class="icon h-8 w-6 py-1">
+								<svg
+									id="_레이어_1"
+									data-name="레이어_1"
+									xmlns="http://www.w3.org/2000/svg"
+									version="1.1"
+									viewBox="0 0 50 50"
+								>
+									<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
+									<defs>
+										<style>
+											.st0 {
+												fill: #fff;
+											}
+										</style>
+									</defs>
+									<path
+										class="st0"
+										d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+									/>
+								</svg>
+							</div>
+							<div class="icon h-8 w-6 py-1">
+								<svg
+									id="_레이어_1"
+									data-name="레이어_1"
+									xmlns="http://www.w3.org/2000/svg"
+									version="1.1"
+									viewBox="0 0 50 50"
+								>
+									<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
+									<defs>
+										<style>
+											.st0 {
+												fill: #fff;
+											}
+										</style>
+									</defs>
+									<path
+										class="st0"
+										d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+									/>
+								</svg>
+							</div>
+						</div>
+					</div>
+					<div class="flex w-1/2 justify-start">
+						<h3 class="break-keep pb-1 pr-3 pt-0.5 text-xl font-normal">출시일 :</h3>
+						<h3 class="break-keep pb-1 pr-3 pt-0.5 text-xl font-extrabold">2024-12-25</h3>
+					</div>
+				</div>
+				<!-- 캐릭터 등급 표기 -->
+				<div class="flex w-auto justify-start p-2 pt-3">
+					<div class=" mr-3 flex h-10">
+						<img src="./assets/test/0/1.webp" class=" mr-2 h-8" alt="" />
+						<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">공허</h3>
+					</div>
+					<div class=" mr-3 flex h-6">
+						<img src="./assets/test/0/2.webp" class=" mr-2 h-8" alt="" />
+						<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">화염</h3>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- 스크롤 처리 -->
