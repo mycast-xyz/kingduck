@@ -17,13 +17,3 @@
 	<MainMenu bind:MainMenuActive />
 	<!-- Content -->
 </div>
-
-<style>
-	#info-image-card {
-		background: rgb(0, 0, 0);
-		background: -moz-linear-gradient(0deg, rgba(0, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0) 100%);
-		background: -webkit-linear-gradient(0deg, rgba(0, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0) 100%);
-		background: linear-gradient(0deg, rgba(0, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0) 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
-	}
-</style>

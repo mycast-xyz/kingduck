@@ -27,6 +27,39 @@
 		border-color: #9f66c8;
 		background-color: #9f66c8;
 	}
+	.card-HY-Rating-5 {
+		background: #c9a36a;
+		background: linear-gradient(180deg, #885550, #c9a36a 53%);
+		border-bottom-color: #c9a36a;
+	}
+	.card-HY-Rating-5-bg {
+		background: rgb(201, 163, 106);
+		background: -moz-linear-gradient(0deg, rgba(201, 163, 106, 1) 50%, rgba(201, 163, 106, 0) 100%);
+		background: -webkit-linear-gradient(
+			0deg,
+			rgba(201, 163, 106, 1) 50%,
+			rgba(201, 163, 106, 0) 100%
+		);
+		background: linear-gradient(0deg, rgba(201, 163, 106, 1) 50%, rgba(201, 163, 106, 0) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#c9a36a",endColorstr="#c9a36a",GradientType=1);
+	}
+	.card-HY-Rating-4 {
+		background: #8a5fcc;
+		background: linear-gradient(180deg, #343659, #8a5fcc 53%);
+		border-bottom-color: #8a5fcc;
+	}
+	.card-HY-Rating-4-bg {
+		background: rgb(138, 95, 204);
+		background: -moz-linear-gradient(0deg, rgba(138, 95, 204, 1) 50%, rgba(138, 95, 204, 0) 100%);
+		background: -webkit-linear-gradient(
+			0deg,
+			rgba(138, 95, 204, 1) 50%,
+			rgba(138, 95, 204, 0) 100%
+		);
+		background: linear-gradient(0deg, rgba(138, 95, 204, 1) 50%, rgba(138, 95, 204, 0) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8a5fcc",endColorstr="#8a5fcc",GradientType=1);
+	}
+
 	/* 호요버스 - 원신, 스타레일 색상 처리*/
 	.text-HY-Rating-5 {
 		color: #fcba49;
