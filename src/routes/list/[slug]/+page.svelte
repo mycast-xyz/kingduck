@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { PageData } from '../$types';
-	import MainMenu from '../../app/view/menu/MainMenu.svelte';
+	import MainMenu from '../../../app/view/menu/MainMenu.svelte';
 
 	let { data }: { data: PageData } = $props();
 
 	// 메뉴 버튼 클릭시 처리 하는 용도
 	// 동적 적용이 안되서 아래와 같은 형태로 처리를 해줘야됨 ㅋㅋㅋ;;;
-	let MainMenuActive: any = 80;
+	let MainMenuActive: any = $state(80);
+
 	const MainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
@@ -22,7 +23,9 @@
 	<article
 		id="info-componet"
 		class="{MainViewActive[MainMenuActive]} my-0 mr-0 flex h-full overflow-hidden"
-	></article>
+	>
+		<a href="/content/HonkaiStarRail"><p>asdf</p></a>
+	</article>
 </div>
 
 <style>

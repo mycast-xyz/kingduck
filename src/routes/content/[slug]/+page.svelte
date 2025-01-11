@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { PageData } from '../$types';
-	import MainMenu from '../../app/view/menu/MainMenu.svelte';
+	import MainMenu from '../../../app/view/menu/MainMenu.svelte';
 
 	let { data }: { data: PageData } = $props();
 
 	// 메뉴 버튼 클릭시 처리 하는 용도
 	// 동적 적용이 안되서 아래와 같은 형태로 처리를 해줘야됨 ㅋㅋㅋ;;;
-	let MainMenuActive: any = 80;
+	let MainMenuActive: any = $state(80);
 	const MainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
@@ -32,7 +32,7 @@
 					<!-- Item 1 -->
 					<div class="duration-700 ease-in-out" data-carousel-item>
 						<img
-							src="./assets/test/1730203915.webp"
+							src="http://localhost:5173/assets/test/1730203915.webp"
 							class="absolute left-1/2 top-1/2 block h-full w-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
 							alt="..."
 						/>
@@ -40,7 +40,7 @@
 					<!-- Item 2 -->
 					<div class="hidden duration-700 ease-in-out" data-carousel-item>
 						<img
-							src="./assets/test/test.webp"
+							src="http://localhost:5173/assets/test/test.webp"
 							class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2"
 							alt="..."
 						/>
@@ -239,11 +239,11 @@
 				<!-- 캐릭터 등급 표기 -->
 				<div class="flex w-auto justify-start p-2 pt-3">
 					<div class=" mr-3 flex h-10">
-						<img src="./assets/test/0/1.webp" class=" mr-2 h-8" alt="" />
+						<img src="http://localhost:5173/assets/test/0/1.webp" class=" mr-2 h-8" alt="" />
 						<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">공허</h3>
 					</div>
 					<div class=" mr-3 flex h-6">
-						<img src="./assets/test/0/2.webp" class=" mr-2 h-8" alt="" />
+						<img src="http://localhost:5173/assets/test/0/2.webp" class=" mr-2 h-8" alt="" />
 						<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">화염</h3>
 					</div>
 				</div>
@@ -270,7 +270,7 @@
 							<div class="rating-card border-HY-Rating-5 items-center rounded-xl border-8">
 								<img
 									class="h-auto min-w-36 max-w-52 rounded-xl"
-									src="./assets/test/1/1.webp"
+									src="http://localhost:5173/assets/test/1/1.webp"
 									alt=""
 								/>
 								<div class="rating-info flex w-auto justify-center p-2 pb-0">
@@ -396,7 +396,7 @@
 							<div class="rating-card border-HY-Rating-5 rounded-xl border-8">
 								<img
 									class="h-auto min-w-36 max-w-52 rounded-xl"
-									src="./assets/test/1/2.webp"
+									src="http://localhost:5173/assets/test/1/2.webp"
 									alt=""
 								/>
 								<div class="rating-info flex justify-center p-2 pb-0">
@@ -522,7 +522,7 @@
 							<div class="rating-card border-HY-Rating-4 rounded-xl border-8">
 								<img
 									class="h-auto min-w-36 max-w-52 rounded-xl"
-									src="./assets/test/1/5.webp"
+									src="http://localhost:5173/assets/test/1/5.webp"
 									alt=""
 								/>
 								<div class="rating-info flex justify-center p-2 pb-0">
@@ -628,7 +628,7 @@
 							<div class="rating-card border-URA-Rating-SSR overflow-hidden rounded-xl border-8">
 								<img
 									class="h-auto min-w-36 max-w-52 rounded-xl"
-									src="./assets/test/1/7.png"
+									src="http://localhost:5173/assets/test/1/7.png"
 									alt=""
 								/>
 								<h4 class=" text-center text-2xl font-bold tracking-tight text-white">SSR</h4>
@@ -665,7 +665,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/2/5.webp"
+											src="http://localhost:5173/assets/test/2/5.webp"
 											alt=""
 										/>
 									</div>
@@ -683,7 +683,7 @@
 									<div class="relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto max-w-36 items-center p-4"
-											src="./assets/test/2/3.webp"
+											src="http://localhost:5173/assets/test/2/3.webp"
 											alt=""
 										/>
 									</div>
@@ -701,12 +701,12 @@
 									<div class="relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/2/3.webp"
+											src="http://localhost:5173/assets/test/2/3.webp"
 											alt=""
 										/>
 										<img
 											class=" absolute bottom-0 right-0 m-auto w-24 items-center p-2"
-											src="./assets/test/2/1.webp"
+											src="http://localhost:5173/assets/test/2/1.webp"
 											alt=""
 										/>
 									</div>
@@ -724,7 +724,7 @@
 									<div class="h-auto w-full object-scale-down">
 										<img
 											class=" m-auto w-36 min-w-36 items-center p-4"
-											src="./assets/test/2/1.webp"
+											src="http://localhost:5173/assets/test/2/1.webp"
 											alt=""
 										/>
 									</div>
@@ -747,7 +747,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto max-w-36 items-center p-4"
-											src="./assets/test/2/2.webp"
+											src="http://localhost:5173/assets/test/2/2.webp"
 											alt=""
 										/>
 									</div>
@@ -765,7 +765,7 @@
 									<div class="relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto max-w-36 items-center p-4"
-											src="./assets/test/2/4.webp"
+											src="http://localhost:5173/assets/test/2/4.webp"
 											alt=""
 										/>
 									</div>
@@ -788,7 +788,7 @@
 						<ul class="flex">
 							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
 								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-									<img class="h-full w-full" src="./assets/test/3/1.webp" />
+									<img class="h-full w-full" src="http://localhost:5173/assets/test/3/1.webp" />
 								</div>
 								<div class="pt-2">
 									<h5 class="text-xl font-semibold">HP</h5>
@@ -797,7 +797,7 @@
 							</li>
 							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
 								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-									<img class="h-full w-full" src="./assets/test/3/8.webp" />
+									<img class="h-full w-full" src="http://localhost:5173/assets/test/3/8.webp" />
 								</div>
 								<div class="pt-2">
 									<h5 class="text-xl font-semibold">효과 명중</h5>
@@ -806,7 +806,7 @@
 							</li>
 							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
 								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-									<img class="h-full w-full" src="./assets/test/3/2.webp" />
+									<img class="h-full w-full" src="http://localhost:5173/assets/test/3/2.webp" />
 								</div>
 								<div class="pt-2">
 									<h5 class="text-xl font-semibold">격파 특수효과</h5>
@@ -815,7 +815,7 @@
 							</li>
 							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
 								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-									<img class="h-full w-full" src="./assets/test/3/5.webp" />
+									<img class="h-full w-full" src="http://localhost:5173/assets/test/3/5.webp" />
 								</div>
 								<div class="pt-2">
 									<h5 class="text-xl font-semibold">속도</h5>
@@ -824,7 +824,7 @@
 							</li>
 							<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
 								<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-									<img class="h-full w-full" src="./assets/test/3/6.webp" />
+									<img class="h-full w-full" src="http://localhost:5173/assets/test/3/6.webp" />
 								</div>
 								<div class="pt-2">
 									<h5 class="text-xl font-semibold">방어력</h5>
@@ -867,7 +867,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/4/3.webp"
+											src="http://localhost:5173/assets/test/4/3.webp"
 											alt=""
 										/>
 									</div>
@@ -885,7 +885,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/4/5.webp"
+											src="http://localhost:5173/assets/test/4/5.webp"
 											alt=""
 										/>
 									</div>
@@ -903,7 +903,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/4/4.webp"
+											src="http://localhost:5173/assets/test/4/4.webp"
 											alt=""
 										/>
 									</div>
@@ -921,7 +921,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/4/5.webp"
+											src="http://localhost:5173/assets/test/4/5.webp"
 											alt=""
 										/>
 									</div>
@@ -940,7 +940,7 @@
 					<div class="w-full border-t border-gray-200 p-3">
 						<div class="block flex rounded-lg p-3 px-4">
 							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-								<img class="h-full w-full" src="./assets/test/4/3.webp" />
+								<img class="h-full w-full" src="http://localhost:5173/assets/test/4/3.webp" />
 							</div>
 							<div class="pt-2">
 								<h5 class="text-xl font-semibold">
@@ -980,7 +980,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto max-w-36 items-center p-4"
-											src="./assets/test/5/1.webp"
+											src="http://localhost:5173/assets/test/5/1.webp"
 											alt=""
 										/>
 									</div>
@@ -998,7 +998,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/5/2.webp"
+											src="http://localhost:5173/assets/test/5/2.webp"
 											alt=""
 										/>
 									</div>
@@ -1016,7 +1016,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/5/3.webp"
+											src="http://localhost:5173/assets/test/5/3.webp"
 											alt=""
 										/>
 									</div>
@@ -1035,7 +1035,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/5/4.webp"
+											src="http://localhost:5173/assets/test/5/4.webp"
 											alt=""
 										/>
 									</div>
@@ -1054,7 +1054,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/5/5.webp"
+											src="http://localhost:5173/assets/test/5/5.webp"
 											alt=""
 										/>
 									</div>
@@ -1073,7 +1073,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="./assets/test/5/6.webp"
+											src="http://localhost:5173/assets/test/5/6.webp"
 											alt=""
 										/>
 									</div>
@@ -1092,7 +1092,7 @@
 					<div class="w-full border-t border-gray-200 p-3">
 						<div class="block flex rounded-lg p-3 px-4">
 							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-								<img class="h-full w-full" src="./assets/test/4/3.webp" />
+								<img class="h-full w-full" src="http://localhost:5173/assets/test/4/3.webp" />
 							</div>
 							<div class="pt-2">
 								<h5 class="text-xl font-semibold">
@@ -1131,7 +1131,11 @@
 									class="max-w-42 mx-4 my-3 rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-[#d34e44] dark:border-gray-700"
 								>
 									<div class="h-auto w-36 object-scale-down p-2">
-										<img class="m-auto max-w-14 items-center" src="./assets/test/3/1.webp" alt="" />
+										<img
+											class="m-auto max-w-14 items-center"
+											src="http://localhost:5173/assets/test/3/1.webp"
+											alt=""
+										/>
 										<h5
 											class="break-keep border-b-2 border-white pb-3 text-center text-base tracking-tight text-white"
 										>

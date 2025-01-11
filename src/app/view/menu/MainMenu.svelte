@@ -6,42 +6,51 @@
 		navActive = !navActive;
 		if (navActive === false) {
 			MainMenuActive = 80;
+			console.log(MainMenuActive);
 		} else {
 			MainMenuActive = 240;
+			console.log(MainMenuActive);
 		}
 	};
 
 	const tmp_FavoritesMenuSet: any = [
 		{
 			title: '붕괴 스타레일',
-			image: './assets/game/HonkaiStarRail.webp'
+			href: '/list/HonkaiStarRail',
+			image: 'http://localhost:5173/assets/game/HonkaiStarRail.webp'
 		},
 		{
 			title: '우마무스메',
-			image: './assets/game/Umamusume.webp'
+			href: '/list/Umamusume',
+			image: 'http://localhost:5173/assets/game/Umamusume.webp'
 		},
 		{
 			title: '승리의 여신 니케',
-			image: './assets/game/NIKKE.webp'
+			href: '/list/NIKKE',
+			image: 'http://localhost:5173/assets/game/NIKKE.webp'
 		}
 	];
 
 	const tmp_MenuSet: any = [
 		{
 			title: '블루아카이브',
-			image: './assets/game/BlueArchive.webp'
+			href: '/list/BlueArchive',
+			image: 'http://localhost:5173/assets/game/BlueArchive.webp'
 		},
 		{
 			title: '원신',
-			image: './assets/game/GenshinImpact.webp'
+			href: '/list/GenshinImpact',
+			image: 'http://localhost:5173/assets/game/GenshinImpact.webp'
 		},
 		{
 			title: '명조',
-			image: './assets/game/WutheringWaves.webp'
+			href: '/list/WutheringWaves',
+			image: 'http://localhost:5173/assets/game/WutheringWaves.webp'
 		},
 		{
 			title: '젠존스제로',
-			image: './assets/game/zzz.webp'
+			href: '/list/zzz',
+			image: 'http://localhost:5173/assets/game/zzz.webp'
 		}
 	];
 </script>
@@ -59,7 +68,7 @@
 	>
 		<img
 			class="h-10 w-10 rounded-full fill-current"
-			src="./assets/logo/500.png"
+			src="http://localhost:5173/assets/logo/500.png"
 			alt="Your Company"
 		/>
 		<span
@@ -77,7 +86,7 @@
 				<a
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
-					href="#"
+					href={favoritesItem.href}
 				>
 					<img
 						class="h-10 w-10 rounded-full fill-current"
@@ -98,7 +107,7 @@
 				<a
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
-					href="#"
+					href={item.href}
 				>
 					<img class="h-10 w-10 rounded-full fill-current" src={item.image} alt="HonkaiStarRail" />
 					<span
