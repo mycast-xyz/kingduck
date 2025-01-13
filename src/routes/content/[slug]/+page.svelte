@@ -1,14 +1,46 @@
 <script lang="ts">
 	import { mainMenuActive } from '$lib/stores/mainMenuStore';
+	import { derived, writable } from 'svelte/store';
 	import type { PageData } from '../$types';
 
 	let { data }: { data: PageData } = $props();
 
-	
 	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
 	};
+
+	let slideIndex = writable(0);
+	let slideData = writable([
+		{
+			id: 'image1',
+			type: 'video',
+			src: 'http://localhost:5173/assets/test/videoplayback2.webm',
+			show: false
+		},
+		{
+			id: 'image2',
+			type: 'image',
+			src: 'http://localhost:5173/assets/test/1730203915.webp',
+			show: false
+		}
+	]);
+
+	const currentSlide = derived([slideIndex, slideData], ([$slideIndex, $slideData]) => {
+		return $slideData.map((slide, index) => ({
+			...slide,
+			show: index === $slideIndex
+		}));
+	});
+
+	function plusSlides(value: number) {
+		slideIndex.update((n) => {
+			let num = n + value;
+			if (num >= $slideData.length) return 0;
+			if (num < 0) return $slideData.length - 1;
+			return num;
+		});
+	}
 </script>
 
 <div
@@ -24,76 +56,53 @@
 		<!-- 캐릭터 이미지 표기 처리 -->
 		<div id="info-image" class="relative h-screen w-1/3 max-w-2xl">
 			<!-- Image Slider - 개발 필요 -->
-			<div id="default-carousel" class="h-full w-full" data-carousel="slide">
+			<div id="default-carousel" class="h-full w-full">
 				<!-- Carousel wrapper -->
 				<div class="h-full overflow-hidden">
-					<!-- Item 1 -->
-					<div class="duration-700 ease-in-out" data-carousel-item>
-						<img
-							src="http://localhost:5173/assets/test/1730203915.webp"
-							class="absolute left-1/2 top-1/2 block h-full w-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
-							alt="..."
-						/>
-					</div>
-					<!-- Item 2 -->
-					<div class="hidden duration-700 ease-in-out" data-carousel-item>
-						<img
-							src="http://localhost:5173/assets/test/test.webp"
-							class="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2"
-							alt="..."
-						/>
-					</div>
+					{#each $currentSlide as slide (slide.id)}
+						<div id="info-image-view" class="duration-700 ease-in-out" class:show={slide.show}>
+							{#if slide.type == 'video'}
+								<video
+									class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
+									src={slide.src}
+									autoplay
+									loop
+									muted
+									playsinline
+								></video>
+							{:else if slide.type == 'image'}
+								<img
+									src={slide.src}
+									class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
+									alt="..."
+								/>
+							{/if}
+						</div>
+					{/each}
 				</div>
 				<!-- Slider controls -->
+				<!-- svelte-ignore event_directive_deprecated -->
 				<button
 					type="button"
+					onclick={() => plusSlides(-1)}
 					class="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-					data-carousel-prev
 				>
 					<span
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
-					>
-						<svg
-							class="h-4 w-4 text-white dark:text-gray-800 rtl:rotate-180"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 6 10"
-						>
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M5 1 1 5l4 4"
-							/>
-						</svg>
+						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-0 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+						><i class="ri-arrow-left-s-line"></i>
 						<span class="sr-only">Previous</span>
 					</span>
 				</button>
+				<!-- svelte-ignore event_directive_deprecated -->
 				<button
 					type="button"
+					onclick={() => plusSlides(+1)}
 					class="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-					data-carousel-next
 				>
 					<span
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-0 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
 					>
-						<svg
-							class="h-4 w-4 text-white dark:text-gray-800 rtl:rotate-180"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 6 10"
-						>
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="m1 9 4-4-4-4"
-							/>
-						</svg>
+						<i class="ri-arrow-right-s-line"></i>
 						<span class="sr-only">Next</span>
 					</span>
 				</button>
@@ -1177,6 +1186,13 @@
 </div>
 
 <style>
+	#info-image-view {
+		display: none;
+	}
+
+	#info-image-view.show {
+		display: block;
+	}
 	#info-image-card {
 		background: rgb(0, 0, 0);
 		background: -moz-linear-gradient(0deg, rgba(0, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0) 100%);
