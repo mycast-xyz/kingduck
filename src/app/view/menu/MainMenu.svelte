@@ -1,15 +1,14 @@
 <script lang="ts">
-	export let MainMenuActive: Number;
+	import { mainMenuActive, navActive } from "$lib/stores/mainMenuStore";
 
-	let navActive = false;
 	const toggleNav = () => {
-		navActive = !navActive;
-		if (navActive === false) {
-			MainMenuActive = 80;
-			console.log(MainMenuActive);
+		navActive.update(navActive => !navActive);
+		if ($navActive === false) {
+			mainMenuActive.set(80);
+			console.log($mainMenuActive);
 		} else {
-			MainMenuActive = 240;
-			console.log(MainMenuActive);
+			mainMenuActive.set(240);
+			console.log($mainMenuActive);
 		}
 	};
 
@@ -56,8 +55,8 @@
 </script>
 
 <header
-	class:active={navActive}
-	class=" fixed inset-y-0 left-0 z-50 flex h-full w-[{MainMenuActive}px] flex-col items-center overflow-hidden rounded border-r border-r-gray-100 bg-white text-gray-700 shadow-md transition-all duration-75 ease-in-out dark:border-r-gray-800 dark:bg-gray-950"
+	class:active={$navActive}
+	class=" fixed inset-y-0 left-0 z-50 flex h-full w-[{$mainMenuActive}px] flex-col items-center overflow-hidden rounded border-r border-r-gray-100 bg-white text-gray-700 shadow-md transition-all duration-75 ease-in-out dark:border-r-gray-800 dark:bg-gray-950"
 >
 	<!-- Logo area -->
 	<a
@@ -72,7 +71,7 @@
 			alt="Your Company"
 		/>
 		<span
-			class:active={navActive}
+			class:active={$navActive}
 			class="ml-2 text-sm font-bold transition-all delay-300 duration-200 ease-in-out"
 			>King Duck</span
 		>
