@@ -1,13 +1,11 @@
 <script lang="ts">
+	import { mainMenuActive } from '$lib/stores/mainMenuStore';
 	import type { PageData } from '../$types';
-	import MainMenu from '../../../app/view/menu/MainMenu.svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	// 메뉴 버튼 클릭시 처리 하는 용도
-	// 동적 적용이 안되서 아래와 같은 형태로 처리를 해줘야됨 ㅋㅋㅋ;;;
-	let MainMenuActive: any = $state(80);
-	const MainViewActive: any = {
+	
+	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
 	};
@@ -17,11 +15,11 @@
 	class="h-screen w-screen min-w-[1700px] overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800"
 >
 	<!-- Left nav-->
-	<MainMenu bind:MainMenuActive />
+	<!-- <MainMenu bind:MainMenuActive /> -->
 	<!-- Content -->
 	<article
 		id="info-componet"
-		class="{MainViewActive[MainMenuActive]} my-0 mr-0 flex h-full overflow-hidden"
+		class="{mainViewActive[$mainMenuActive]} my-0 mr-0 flex h-full overflow-hidden"
 	>
 		<!-- 캐릭터 이미지 표기 처리 -->
 		<div id="info-image" class="relative h-screen w-1/3 max-w-2xl">
