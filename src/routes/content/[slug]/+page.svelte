@@ -1,16 +1,8 @@
 <script lang="ts">
 	import { mainMenuActive } from '$lib/stores/mainMenuStore';
-	import { derived, writable } from 'svelte/store';
-	import type { PageData } from '../$types';
 
-	// 테스트용
-	// db 처리시 해당 방식와 유사할것으로 판단됨
-	import theherta from './theherta.json';
-	//import fugue from './theherta.json';
-
-	let { data }: { data: PageData } = $props();
-
-	let infoData = theherta;
+	const {data} = $props();
+	const infoData = data.infoData;
 
 	let infoContentColor = infoData.element.color;
 
@@ -19,22 +11,28 @@
 		240: 'w-[calc(100%-240px)] ml-[240px]'
 	};
 
+	//비디오 재생 토글
+	let paused = $state(false);
+
 	// 이미지 슬라이더 구현
-	let slideIndex = writable(0);
-	let slideData = writable(infoData.image);
-	const currentSlide = derived([slideIndex, slideData], ([$slideIndex, $slideData]) => {
-		return $slideData.map((slide, index) => ({
-			...slide,
-			show: index === $slideIndex
-		}));
-	});
-	function plusSlides(value: number) {
-		slideIndex.update((n) => {
-			let num = n + value;
-			if (num >= $slideData.length) return 0;
-			if (num < 0) return $slideData.length - 1;
-			return num;
-		});
+	let slideIndex = $state(0);
+	let slideData = $state(infoData.image);
+	let currentSlide = $derived.by(()=> {
+		return slideData[slideIndex];
+	})
+	
+	const togglePause = () => {
+		paused = !paused;
+	}
+	const controlSlide = (type = '') => {
+		let nextIndex;
+		if (type = 'NEXT') {
+			nextIndex = (slideIndex + 1) % slideData.length;
+		} else if (type = 'PREV') {
+			nextIndex = (slideIndex - 1) % slideData.length;
+		}
+
+		slideIndex = nextIndex || 0;
 	}
 </script>
 
@@ -52,32 +50,31 @@
 			<div id="default-carousel" class="h-full w-full">
 				<!-- Carousel wrapper -->
 				<div class="h-full overflow-hidden bg-gray-200">
-					{#each $currentSlide as slide (slide.id)}
-						<div id="info-image-view" class="duration-700 ease-in-out" class:show={slide.show}>
-							{#if slide.type == 'video'}
+						<div id="info-image-view" class="duration-700 ease-in-out">
+							{#if currentSlide.type == 'video'}
 								<video
 									class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
-									src={slide.src}
-									autoplay
+									src={currentSlide.src}
+									bind:paused
+									onclick={()=> togglePause()}
 									loop
 									muted
 									playsinline
 								></video>
-							{:else if slide.type == 'image'}
+							{:else if currentSlide.type == 'image'}
 								<img
-									src={slide.src}
+									src={currentSlide.src}
 									class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
 									alt="..."
 								/>
 							{/if}
 						</div>
-					{/each}
 				</div>
 				<!-- Slider controls -->
 				<!-- svelte-ignore event_directive_deprecated -->
 				<button
 					type="button"
-					onclick={() => plusSlides(-1)}
+					onclick={() => controlSlide('PREV')}
 					class="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 				>
 					<span
@@ -89,7 +86,7 @@
 				<!-- svelte-ignore event_directive_deprecated -->
 				<button
 					type="button"
-					onclick={() => plusSlides(+1)}
+					onclick={() => controlSlide('NEXT')}
 					class="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 				>
 					<span
@@ -119,7 +116,7 @@
 						<h3 class="break-keep pb-1 pr-3 pt-0.5 text-xl font-normal">등급</h3>
 						<!-- 레이팅 등급 아이콘 표기시 -->
 						<div class="rating-info-img flex w-auto justify-start">
-							{#each { length: infoData.rarity } as i}
+							{#each infoData.rarity as i}
 								<div class="icon h-8 w-5 py-1">
 									<svg
 										id="_레이어_1"
@@ -190,7 +187,7 @@
 							추천 광추
 						</h5>
 					</div>
-					<div class="flex w-full justify-start p-3 pb-0">
+					<div class="flex w-full justify-start p-3 pb-0 overflow-x-auto">
 						<!-- 스타레일 / 원신 -->
 						{#each infoData.cardItem as card}
 							<div class="card-info mx-6 w-min first:ml-0">
@@ -706,13 +703,13 @@
 </div>
 
 <style>
-	#info-image-view {
+	/* #info-image-view {
 		display: none;
 	}
 
 	#info-image-view.show {
 		display: block;
-	}
+	} */
 	#info-image-card {
 		background: rgb(0, 0, 0);
 		background: -moz-linear-gradient(0deg, rgba(0, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0) 100%);
