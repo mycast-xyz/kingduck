@@ -30,7 +30,7 @@
 				<div class="gmae-title my-2 h-auto w-full">
 					<div class="gmae-logo-img">
 						<img
-							src="http://localhost:5173/assets/game/{data.params}.webp"
+							src="/assets/game/{data.params}.webp"
 							class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
 							alt={data.params}
 						/>
@@ -84,7 +84,7 @@
 						href="/content/{item.pageId}"
 					>
 						<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
-							<img src="http://localhost:5173/assets/test/list/{item.iconPath}.webp" />
+							<img src="/assets/test/list/{item.iconPath}.webp" />
 						</div>
 						<div
 							class="image-info card-HY-Rating-{item.rarity}-bg absolute inset-x-0 bottom-0 px-4 py-2"
@@ -126,14 +126,14 @@
 								<div class="ml-auto flex w-auto justify-start">
 									<div class=" ml-1 flex h-6">
 										<img
-											src="http://localhost:5173/assets/test/list/{item.baseType.iconPath}.webp"
+											src="/assets/test/list/{item.baseType.iconPath}.webp"
 											class=" h-6"
 											alt=""
 										/>
 									</div>
 									<div class=" ml-1 flex h-6">
 										<img
-											src="http://localhost:5173/assets/test/list/{item.damageType.iconPath}.webp"
+											src="/assets/test/list/{item.damageType.iconPath}.webp"
 											class=" h-6"
 											alt=""
 										/>

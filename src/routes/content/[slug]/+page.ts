@@ -12,5 +12,3 @@ export const load = async () => {
 
     return {infoData};
 };
-
-export const csr = false;
