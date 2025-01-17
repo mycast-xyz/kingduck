@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { mainMenuActive } from '$lib/stores/mainMenuStore';
 
-	const {data} = $props();
-	const infoData = data.infoData;
+	const { data } = $props();
 
-	let infoContentColor = infoData.element.color;
+	let infoData = data.info;
+
+	console.log(infoData);
+
+	let infoContentColor = infoData.element.image.backgroundColor;
+	let rarity = Number(infoData.rarity);
+	let rarityArray = Array.from({ length: rarity }, (_, i) => i);
 
 	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
@@ -16,24 +21,26 @@
 
 	// 이미지 슬라이더 구현
 	let slideIndex = $state(0);
-	let slideData = $state(infoData.image);
-	let currentSlide = $derived.by(()=> {
+	let slideData = $state(infoData.images);
+	let currentSlide = $derived.by(() => {
 		return slideData[slideIndex];
-	})
-	
+	});
+
+	console.log(infoData.info.itemData.accessories[0].itemReferences.image.src);
+
 	const togglePause = () => {
 		paused = !paused;
-	}
+	};
 	const controlSlide = (type = '') => {
 		let nextIndex;
-		if (type = 'NEXT') {
+		if ((type = 'NEXT')) {
 			nextIndex = (slideIndex + 1) % slideData.length;
-		} else if (type = 'PREV') {
+		} else if ((type = 'PREV')) {
 			nextIndex = (slideIndex - 1) % slideData.length;
 		}
 
 		slideIndex = nextIndex || 0;
-	}
+	};
 </script>
 
 <div
@@ -50,25 +57,25 @@
 			<div id="default-carousel" class="h-full w-full">
 				<!-- Carousel wrapper -->
 				<div class="h-full overflow-hidden bg-gray-200">
-						<div id="info-image-view" class="duration-700 ease-in-out">
-							{#if currentSlide.type == 'video'}
-								<video
-									class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
-									src={currentSlide.src}
-									bind:paused
-									onclick={()=> togglePause()}
-									loop
-									muted
-									playsinline
-								></video>
-							{:else if currentSlide.type == 'image'}
-								<img
-									src={currentSlide.src}
-									class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
-									alt="..."
-								/>
-							{/if}
-						</div>
+					<div id="info-image-view" class="duration-700 ease-in-out">
+						{#if currentSlide?.layout == 'video'}
+							<video
+								class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
+								src={currentSlide.url}
+								bind:paused
+								onclick={() => togglePause()}
+								loop
+								muted
+								playsinline
+							></video>
+						{:else}
+							<img
+								src="http://localhost:3000/{currentSlide.url}.webp"
+								class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
+								alt="..."
+							/>
+						{/if}
+					</div>
 				</div>
 				<!-- Slider controls -->
 				<!-- svelte-ignore event_directive_deprecated -->
@@ -106,9 +113,9 @@
 					<!--서브타이틀-->
 					<h5 class="break-keep pb-1 text-lg font-extrabold"></h5>
 					<!-- 메인타이틀-->
-					<h3 class="break-keep pb-1 text-4xl font-extrabold">{infoData.ko_name}</h3>
+					<h3 class="break-keep pb-1 text-4xl font-extrabold">{infoData.name.kr}</h3>
 					<!-- 외래어 표기 | 영어, 일본어, 중국어 간체 일부 가능 -->
-					<p class=" text-lg font-normal">{infoData.en_name}</p>
+					<p class=" text-lg font-normal">{infoData.name.en}</p>
 				</div>
 				<!-- 캐릭터 등급 표기 -->
 				<div class="rating-info flex border-b p-2">
@@ -116,7 +123,7 @@
 						<h3 class="break-keep pb-1 pr-3 pt-0.5 text-xl font-normal">등급</h3>
 						<!-- 레이팅 등급 아이콘 표기시 -->
 						<div class="rating-info-img flex w-auto justify-start">
-							{#each infoData.rarity as i}
+							{#each rarityArray as i}
 								<div class="icon h-8 w-5 py-1">
 									<svg
 										id="_레이어_1"
@@ -151,24 +158,30 @@
 				</div>
 				<!-- 캐릭터 등급 표기 -->
 				<div class="flex w-auto justify-start p-2 pt-3">
-					<div class=" mr-3 flex h-10">
-						<img
-							src="http://localhost:5173/assets/test/content/{infoData.slug}/{infoData.path
-								.iconPath}.webp"
-							class=" mr-2 h-8"
-							alt=""
-						/>
-						<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">{infoData.path.name}</h3>
-					</div>
-					<div class=" mr-3 flex h-6">
-						<img
-							src="http://localhost:5173/assets/test/content/{infoData.slug}/{infoData.element
-								.iconPath}.webp"
-							class=" mr-2 h-8"
-							alt=""
-						/>
-						<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">{infoData.element.name}</h3>
-					</div>
+					{#if infoData.path}
+						<div class=" mr-3 flex h-10">
+							<img
+								src="http://localhost:3000/{infoData.path.image.url}.webp"
+								class=" mr-2 h-8"
+								alt={infoData.path.name.ko}
+							/>
+							<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">
+								{infoData.path.name.ko}
+							</h3>
+						</div>
+					{/if}
+					{#if infoData.element}
+						<div class=" mr-3 flex h-6">
+							<img
+								src="http://localhost:3000/{infoData.element.image.url}.webp"
+								class=" mr-2 h-8"
+								alt={infoData.element.ko}
+							/>
+							<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">
+								{infoData.element.name.ko}
+							</h3>
+						</div>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -187,9 +200,9 @@
 							추천 광추
 						</h5>
 					</div>
-					<div class="flex w-full justify-start p-3 pb-0 overflow-x-auto">
+					<div class="flex w-full justify-start overflow-x-auto p-3 pb-0">
 						<!-- 스타레일 / 원신 -->
-						{#each infoData.cardItem as card}
+						{#each infoData.info.itemData.card as card}
 							<div class="card-info mx-6 w-min first:ml-0">
 								<div
 									class="rating-card border-HY-Rating-{card.rarity} items-center rounded-xl border-8"
@@ -265,7 +278,7 @@
 					</div>
 					<!-- 기본 형태 | 강조 박스형 -->
 					<div class="flex w-full p-3">
-						{#if infoData.mainItem.SpriteOutput}
+						{#if infoData.info.itemData.relics}
 							<div class="w-auto py-3 pt-0">
 								<h5
 									class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white"
@@ -273,7 +286,7 @@
 									터널 유물
 								</h5>
 								<div class="flex">
-									{#each infoData.mainItem.SpriteOutput as SpriteItem}
+									{#each infoData.info.itemData.relics as SpriteItem}
 										<div
 											style:background={infoContentColor}
 											class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 shadow dark:border-gray-700"
@@ -281,15 +294,18 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:5173/assets/test/content/{infoData.slug}/{SpriteItem.icon}.webp"
-													alt=""
+													src="http://localhost:3000/assets/{SpriteItem.itemReferences.image.src.replace(
+														/\.png$/,
+														''
+													)}.webp"
+													alt={SpriteItem.name.kr}
 												/>
 											</div>
 											<div class="p-2">
 												<h5
 													class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
 												>
-													{SpriteItem.kr}
+													{SpriteItem.name.kr}
 												</h5>
 											</div>
 										</div>
@@ -298,7 +314,7 @@
 							</div>
 						{/if}
 
-						{#if infoData.mainItem.AccessoriesOutput}
+						{#if infoData.info.itemData.accessories}
 							<div class="w-auto py-3 pt-0">
 								<h5
 									class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white"
@@ -306,7 +322,7 @@
 									차원 유물
 								</h5>
 								<div class="flex">
-									{#each infoData.mainItem.AccessoriesOutput as AccessoriesItem}
+									{#each infoData.info.itemData.accessories as AccessoriesItem}
 										<div
 											style:background={infoContentColor}
 											class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 shadow dark:border-gray-700"
@@ -314,15 +330,18 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:5173/assets/test/content/{infoData.slug}/{AccessoriesItem.icon}.webp"
-													alt=""
+													src="http://localhost:3000/assets/{AccessoriesItem.itemReferences.image.src.replace(
+														/\.png$/,
+														''
+													)}.webp"
+													alt={AccessoriesItem.name.kr}
 												/>
 											</div>
 											<div class="p-2">
 												<h5
 													class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
 												>
-													{AccessoriesItem.kr}
+													{AccessoriesItem.name.kr}
 												</h5>
 											</div>
 										</div>
@@ -375,7 +394,7 @@
 						<h5
 							class="border-b border-gray-200 pb-3 pl-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
 						>
-							행적 육성
+							스킬
 						</h5>
 					</div>
 					<!-- 기본 형태 | 강조 박스형 -->
@@ -400,60 +419,6 @@
 											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
 										>
 											1.전투스킬
-										</h5>
-									</div>
-								</div>
-								<div
-									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
-								>
-									<div class=" relative h-auto w-full object-scale-down">
-										<img
-											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/4/5.webp"
-											alt=""
-										/>
-									</div>
-									<div class="p-2">
-										<h5
-											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
-										>
-											1.특성
-										</h5>
-									</div>
-								</div>
-								<div
-									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
-								>
-									<div class=" relative h-auto w-full object-scale-down">
-										<img
-											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/4/4.webp"
-											alt=""
-										/>
-									</div>
-									<div class="p-2">
-										<h5
-											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
-										>
-											2.필살기
-										</h5>
-									</div>
-								</div>
-								<div
-									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
-								>
-									<div class=" relative h-auto w-full object-scale-down">
-										<img
-											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/4/5.webp"
-											alt=""
-										/>
-									</div>
-									<div class="p-2">
-										<h5
-											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
-										>
-											3.일반공격
 										</h5>
 									</div>
 								</div>
