@@ -16,17 +16,17 @@
 		{
 			title: '붕괴 스타레일',
 			href: '/list/HonkaiStarRail',
-			image: 'http://localhost:5173/assets/game/HonkaiStarRail.webp'
+			image: '/assets/game/HonkaiStarRail.webp'
 		},
 		{
 			title: '우마무스메',
 			href: '/list/Umamusume',
-			image: 'http://localhost:5173/assets/game/Umamusume.webp'
+			image: '/assets/game/Umamusume.webp'
 		},
 		{
 			title: '승리의 여신 니케',
 			href: '/list/NIKKE',
-			image: 'http://localhost:5173/assets/game/NIKKE.webp'
+			image: '/assets/game/NIKKE.webp'
 		}
 	];
 
@@ -34,22 +34,22 @@
 		{
 			title: '블루아카이브',
 			href: '/list/BlueArchive',
-			image: 'http://localhost:5173/assets/game/BlueArchive.webp'
+			image: '/assets/game/BlueArchive.webp'
 		},
 		{
 			title: '원신',
 			href: '/list/GenshinImpact',
-			image: 'http://localhost:5173/assets/game/GenshinImpact.webp'
+			image: '/assets/game/GenshinImpact.webp'
 		},
 		{
 			title: '명조',
 			href: '/list/WutheringWaves',
-			image: 'http://localhost:5173/assets/game/WutheringWaves.webp'
+			image: '/assets/game/WutheringWaves.webp'
 		},
 		{
 			title: '젠존스제로',
 			href: '/list/zzz',
-			image: 'http://localhost:5173/assets/game/zzz.webp'
+			image: '/assets/game/zzz.webp'
 		}
 	];
 </script>
@@ -67,7 +67,7 @@
 	>
 		<img
 			class="h-10 w-10 rounded-full fill-current"
-			src="http://localhost:5173/assets/logo/500.png"
+			src="/assets/logo/500.png"
 			alt="Your Company"
 		/>
 		<span
