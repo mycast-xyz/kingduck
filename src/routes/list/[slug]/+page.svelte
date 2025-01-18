@@ -6,10 +6,6 @@
 
 	console.log(data);
 
-	// 테스트용
-	// db 처리시 해당 방식와 유사할것으로 판단됨
-	import test from './testList.json';
-
 	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
@@ -87,7 +83,7 @@
 						href="/content/{item.id}"
 					>
 						<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
-							<img src="/{item.images.url}.webp" />
+							<img src="http://localhost:3000/{item.images.url}.webp" />
 						</div>
 						<div
 							class="image-info card-HY-Rating-{item.rarity}-bg absolute inset-x-0 bottom-0 px-4 py-2"
@@ -129,14 +125,14 @@
 								<div class="ml-auto flex w-auto justify-start">
 									<div class=" ml-1 flex h-6">
 										<img
-											src="/{item.element.image.url}.webp"
+											src="http://localhost:3000/{item.element.image.url}.webp"
 											class=" h-6"
 											alt=""
 										/>
 									</div>
 									<div class=" ml-1 flex h-6">
 										<img
-											src="/{item.path.image.url}.webp"
+											src="http://localhost:3000/{item.path.image.url}.webp"
 											class=" h-6"
 											alt=""
 										/>

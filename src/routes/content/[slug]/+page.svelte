@@ -295,10 +295,8 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:3000/assets/{SpriteItem.itemReferences.image.src.replace(
-														/\.png$/,
-														''
-													)}.webp"
+													src="http://localhost:3000/assets/image/item/{SpriteItem.itemReferences
+														.image.src}.webp"
 													alt={SpriteItem.name.kr}
 												/>
 											</div>
@@ -331,10 +329,8 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:3000/assets/{AccessoriesItem.itemReferences.image.src.replace(
-														/\.png$/,
-														''
-													)}.webp"
+													src="http://localhost:3000/assets/image/item/{AccessoriesItem
+														.itemReferences.image.src}.webp"
 													alt={AccessoriesItem.name.kr}
 												/>
 											</div>
