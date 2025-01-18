@@ -161,7 +161,7 @@
 					{#if infoData.path}
 						<div class=" mr-3 flex h-10">
 							<img
-								src="http://localhost:3000/{infoData.path.image.url}.webp"
+								src="/{infoData.path.image.url}.webp"
 								class=" mr-2 h-8"
 								alt={infoData.path.name.ko}
 							/>
@@ -253,7 +253,7 @@
 							<div class="rating-card border-URA-Rating-SSR overflow-hidden rounded-xl border-8">
 								<img
 									class="h-auto min-w-36 max-w-52 rounded-xl"
-									src="http://localhost:5173/assets/test/1/7.png"
+									src="/assets/test/1/7.png"
 									alt=""
 								/>
 								<h4 class=" text-center text-2xl font-bold tracking-tight text-white">SSR</h4>
@@ -295,7 +295,7 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:3000/assets/image/item/{SpriteItem.itemReferences.image.src.replace(
+													src="http://localhost:3000/assets/{SpriteItem.itemReferences.image.src.replace(
 														/\.png$/,
 														''
 													)}.webp"
@@ -331,7 +331,7 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:3000/assets/image/item/{AccessoriesItem.itemReferences.image.src.replace(
+													src="http://localhost:3000/assets/{AccessoriesItem.itemReferences.image.src.replace(
 														/\.png$/,
 														''
 													)}.webp"
@@ -364,7 +364,7 @@
 									>
 										<img
 											class="h-full w-full"
-											src="http://localhost:5173/assets/test/content/{infoData.slug}/{Optitem.iconPath}.webp"
+											src="/assets/test/content/{infoData.slug}/{Optitem.iconPath}.webp"
 										/>
 									</div>
 									<div class="pt-2">
@@ -411,7 +411,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/4/3.webp"
+											src="/assets/test/4/3.webp"
 											alt=""
 										/>
 									</div>
@@ -430,7 +430,7 @@
 					<div class="w-full border-t border-gray-200 p-3">
 						<div class="block flex rounded-lg p-3 px-4">
 							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-								<img class="h-full w-full" src="http://localhost:5173/assets/test/4/3.webp" />
+								<img class="h-full w-full" src="/assets/test/4/3.webp" />
 							</div>
 							<div class="pt-2">
 								<h5 class="text-xl font-semibold">
@@ -470,7 +470,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto max-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/5/1.webp"
+											src="/assets/test/5/1.webp"
 											alt=""
 										/>
 									</div>
@@ -488,7 +488,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/5/2.webp"
+											src="/assets/test/5/2.webp"
 											alt=""
 										/>
 									</div>
@@ -506,7 +506,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/5/3.webp"
+											src="/assets/test/5/3.webp"
 											alt=""
 										/>
 									</div>
@@ -525,7 +525,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/5/4.webp"
+											src="/assets/test/5/4.webp"
 											alt=""
 										/>
 									</div>
@@ -544,7 +544,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/5/5.webp"
+											src="/assets/test/5/5.webp"
 											alt=""
 										/>
 									</div>
@@ -563,7 +563,7 @@
 									<div class=" relative h-auto w-full object-scale-down">
 										<img
 											class=" m-auto min-w-36 items-center p-4"
-											src="http://localhost:5173/assets/test/5/6.webp"
+											src="/assets/test/5/6.webp"
 											alt=""
 										/>
 									</div>
@@ -582,7 +582,7 @@
 					<div class="w-full border-t border-gray-200 p-3">
 						<div class="block flex rounded-lg p-3 px-4">
 							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-								<img class="h-full w-full" src="http://localhost:5173/assets/test/4/3.webp" />
+								<img class="h-full w-full" src="/assets/test/4/3.webp" />
 							</div>
 							<div class="pt-2">
 								<h5 class="text-xl font-semibold">
@@ -621,11 +621,7 @@
 									class="max-w-42 mx-4 my-3 rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-[#d34e44] dark:border-gray-700"
 								>
 									<div class="h-auto w-36 object-scale-down p-2">
-										<img
-											class="m-auto max-w-14 items-center"
-											src="http://localhost:5173/assets/test/3/1.webp"
-											alt=""
-										/>
+										<img class="m-auto max-w-14 items-center" src="/assets/test/3/1.webp" alt="" />
 										<h5
 											class="break-keep border-b-2 border-white pb-3 text-center text-base tracking-tight text-white"
 										>

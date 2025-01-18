@@ -23,12 +23,12 @@
 		{
 			"id": "image1",
 			"type": "video",
-			"src": "http://localhost:5173/assets/test/videoplayback.webm"
+			"src": "/assets/test/videoplayback.webm"
 		},
 		{
 			"id": "image2",
 			"type": "image",
-			"src": "http://localhost:5173/assets/test/content/the-herta/d924db37f724bc88e8a532c8aef4a82c80348681233b2c5ebae4105188aa8d61.webp"
+			"src": "/assets/test/content/the-herta/d924db37f724bc88e8a532c8aef4a82c80348681233b2c5ebae4105188aa8d61.webp"
 		}
 	],
 	"statsComments": null,
