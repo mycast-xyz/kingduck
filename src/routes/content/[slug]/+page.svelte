@@ -61,7 +61,7 @@
 						{#if currentSlide?.layout == 'video'}
 							<video
 								class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
-								src={currentSlide.url}
+								src="http://localhost:3000/{currentSlide.url}.webm"
 								bind:paused
 								onclick={() => togglePause()}
 								loop
@@ -209,7 +209,8 @@
 								>
 									<img
 										class="h-auto min-w-36 max-w-52 rounded-xl"
-										src="http://localhost:5173/assets/test/content/{infoData.slug}/{card.artPath}.webp"
+										src="http://localhost:3000/assets/image/item/{card.itemReferences.image.art
+											.src}.webp"
 										alt=""
 									/>
 									<div class="rating-info flex w-auto justify-center p-2 pb-0">
@@ -242,7 +243,7 @@
 								<p
 									class="w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-600 dark:text-gray-200"
 								>
-									{card.name}
+									{card.name.kr}
 								</p>
 							</div>
 						{/each}
@@ -294,7 +295,7 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:3000/assets/{SpriteItem.itemReferences.image.src.replace(
+													src="http://localhost:3000/assets/image/item/{SpriteItem.itemReferences.image.src.replace(
 														/\.png$/,
 														''
 													)}.webp"
@@ -330,7 +331,7 @@
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
 													class=" m-auto min-w-36 max-w-40 items-center p-4"
-													src="http://localhost:3000/assets/{AccessoriesItem.itemReferences.image.src.replace(
+													src="http://localhost:3000/assets/image/item/{AccessoriesItem.itemReferences.image.src.replace(
 														/\.png$/,
 														''
 													)}.webp"
