@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { mainMenuActive } from '$lib/stores/mainMenuStore.js';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	console.log(data);
 
 	// 테스트용
 	// db 처리시 해당 방식와 유사할것으로 판단됨
 	import test from './testList.json';
-
-	let { data } = $props();
 
 	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
@@ -78,13 +81,13 @@
 		</div>
 		<div class="list h-full w-[calc(100%-320px)] w-[inherit] overflow-y-auto px-2 pt-12">
 			<div class="con flex h-auto w-full flex-wrap content-start items-stretch justify-start">
-				{#each test as item}
+				{#each data.list as item}
 					<a
 						class="shadow-m card-HY-Rating-{item.rarity} relative m-2 block w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
-						href="/content/{item.pageId}"
+						href="/content/{item.id}"
 					>
 						<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
-							<img src="/assets/test/list/{item.iconPath}.webp" />
+							<img src="/{item.images.url}.webp" />
 						</div>
 						<div
 							class="image-info card-HY-Rating-{item.rarity}-bg absolute inset-x-0 bottom-0 px-4 py-2"
@@ -92,7 +95,7 @@
 							<!--서브타이틀-->
 							<h5 class="break-keep pb-1 text-base font-extrabold"></h5>
 							<!-- 메인타이틀-->
-							<h3 class="break-keep pb-1 text-xl font-extrabold drop-shadow-md">{item.name}</h3>
+							<h3 class="break-keep pb-1 text-xl font-extrabold drop-shadow-md">{item.name.kr}</h3>
 
 							<div class="flex w-full justify-start">
 								<!-- 레이팅 등급 아이콘 표기시 -->
@@ -126,14 +129,14 @@
 								<div class="ml-auto flex w-auto justify-start">
 									<div class=" ml-1 flex h-6">
 										<img
-											src="/assets/test/list/{item.baseType.iconPath}.webp"
+											src="/{item.element.image.url}.webp"
 											class=" h-6"
 											alt=""
 										/>
 									</div>
 									<div class=" ml-1 flex h-6">
 										<img
-											src="/assets/test/list/{item.damageType.iconPath}.webp"
+											src="/{item.path.image.url}.webp"
 											class=" h-6"
 											alt=""
 										/>
