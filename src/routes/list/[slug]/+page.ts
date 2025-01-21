@@ -10,7 +10,7 @@ export const load = async ({ params }) => {
 			//"x-access-token": userToken,
 		},
 		params: {
-			en: params.slug
+			//en: params.slug
 		}
 	};
 
@@ -44,7 +44,7 @@ export const load = async ({ params }) => {
 	let data: any = {};
 
 	await axios
-		.get('http://localhost:3000/api/v0/character/list/', characterListConfig)
+		.get('http://localhost:3000/api/v0/character/' + params.slug, characterListConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);

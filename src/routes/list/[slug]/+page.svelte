@@ -80,7 +80,7 @@
 				{#each data.list as item}
 					<a
 						class="shadow-m card-HY-Rating-{item.rarity} relative m-2 block w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
-						href="/content/{item.id}"
+						href="/content/{data.params}/{item.id}"
 					>
 						<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
 							<img src="http://localhost:3000/{item.images.url}.webp" />
