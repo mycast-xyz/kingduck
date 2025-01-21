@@ -17,7 +17,7 @@ export const load = async ({ params }) => {
 	let gameId;
 
 	await axios
-		.get('http://localhost:3000/api/v0/game/item/', gameInfoConfig)
+		.get('http://localhost:3000/api/v0/game/' + params.slug, gameInfoConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);

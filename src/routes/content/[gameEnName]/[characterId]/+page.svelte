@@ -4,8 +4,9 @@
 	const { data } = $props();
 
 	let infoData = data.info;
+	let cardData = infoData.info.itemData.card;
 
-	console.log(infoData);
+	console.log(infoData.info.itemData.card);
 
 	let infoContentColor = infoData.element.image.backgroundColor;
 	let rarity = Number(infoData.rarity);
@@ -25,8 +26,6 @@
 	let currentSlide = $derived.by(() => {
 		return slideData[slideIndex];
 	});
-
-	console.log(infoData.info.itemData.accessories[0].itemReferences.image.src);
 
 	const togglePause = () => {
 		paused = !paused;
@@ -202,15 +201,15 @@
 					</div>
 					<div class="flex w-full justify-start overflow-x-auto p-3 pb-0">
 						<!-- 스타레일 / 원신 -->
-						{#each infoData.info.itemData.card as card}
+						{#each cardData as card}
 							<div class="card-info mx-6 w-min first:ml-0">
 								<div
 									class="rating-card border-HY-Rating-{card.rarity} items-center rounded-xl border-8"
 								>
 									<img
 										class="h-auto min-w-36 max-w-52 rounded-xl"
-										src="http://localhost:3000/assets/image/item/{card.itemReferences.image.art
-											.src}.webp"
+										src="http://localhost:3000/assets/image/item/{card.itemReferences?.image?.art
+											?.src}.webp"
 										alt=""
 									/>
 									<div class="rating-info flex w-auto justify-center p-2 pb-0">
@@ -243,7 +242,7 @@
 								<p
 									class="w-full break-keep px-4 pt-2 text-center text-lg font-bold text-gray-600 dark:text-gray-200"
 								>
-									{card.name.kr}
+									{card.name?.kr}
 								</p>
 							</div>
 						{/each}

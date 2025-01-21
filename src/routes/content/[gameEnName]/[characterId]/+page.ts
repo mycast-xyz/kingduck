@@ -8,20 +8,21 @@ export const load = async ({ params }) => {
 			//"x-access-token": userToken,
 		},
 		params: {
-			id: params.slug
+			id: params.characterId
 		}
 	};
 
 	let data: any = {};
 	await axios
 		.get(
-			'http://localhost:3000/api/v0/character/' + params.slug + '/' + params.slug2,
+			'http://localhost:3000/api/v0/character/' + params.gameEnName + '/' + params.characterId,
 			characterListConfig
 		)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);
 				data = res.data.items;
+				console.log(data.info.itemData.card);
 			} else {
 				console.log('err: 서버 코드 에러');
 			}
