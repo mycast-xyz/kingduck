@@ -11,9 +11,13 @@ export const load = async ({ params }) => {
 			id: params.slug
 		}
 	};
+
 	let data: any = {};
 	await axios
-		.get('http://localhost:3000/api/v0/character/', characterListConfig)
+		.get(
+			'http://localhost:3000/api/v0/character/' + params.slug + '/' + params.slug2,
+			characterListConfig
+		)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);
