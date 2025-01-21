@@ -22,7 +22,7 @@ export const load = async ({ params }) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);
 				data = res.data.items;
-				console.log(data.info.itemData.card);
+				console.log(data);
 			} else {
 				console.log('err: 서버 코드 에러');
 			}

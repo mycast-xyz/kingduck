@@ -40,6 +40,10 @@
 
 		slideIndex = nextIndex || 0;
 	};
+
+	// 선택된 스킬과 레벨 상태 추가
+	let selectedSkill = $state(null);
+	let selectedLevel = $state(1);
 </script>
 
 <div
@@ -395,51 +399,76 @@
 					</div>
 					<!-- 기본 형태 | 강조 박스형 -->
 					<div class="flex w-full p-3">
-						<div class="w-auto py-3 pt-0">
-							<h5
-								class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white"
-							></h5>
-							<div class="flex">
+						{#each infoData.skill as skill}
+							<button
+								type="button"
+								class="mx-4 max-w-36 basis-1/6 cursor-pointer rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-gray-600 dark:border-gray-700"
+								onclick={() => (selectedSkill = skill)}
+								onkeydown={(e) => e.key === 'Enter' && (selectedSkill = skill)}
+							>
+								<div class="relative h-auto w-full object-scale-down">
+									<img
+										class="m-auto max-w-36 items-center p-4"
+										src="http://localhost:3000/{skill.image.url}.webp"
+										alt=""
+									/>
+								</div>
+								<div class="w-full p-2">
+									<h5
+										class="mb-2 w-full break-keep text-center text-xl font-bold tracking-tight text-white"
+									>
+										{skill.name.kr}
+									</h5>
+								</div>
+							</button>
+						{/each}
+					</div>
+
+					<!-- 스킬 상세 정보 -->
+					{#if selectedSkill}
+						<div class="w-full border-t border-gray-200 p-3">
+							<div class="block flex rounded-lg p-3 px-4">
 								<div
-									class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+									class="image-box mr-3 h-16 w-16 flex-none rounded-full bg-gray-400 p-2 dark:bg-gray-800"
 								>
-									<div class=" relative h-auto w-full object-scale-down">
-										<img
-											class=" m-auto min-w-36 items-center p-4"
-											src="/assets/test/4/3.webp"
-											alt=""
-										/>
-									</div>
-									<div class="p-2">
-										<h5
-											class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
-										>
-											1.전투스킬
+									<img
+										class="h-full w-full"
+										src="http://localhost:3000/{selectedSkill.image.url}.webp"
+										alt={selectedSkill.name.kr}
+									/>
+								</div>
+								<div class="flex-1 pt-2">
+									<div class="flex items-center justify-between">
+										<h5 class="text-xl font-semibold">
+											{selectedSkill.name.kr}
+											{#if selectedSkill.type}
+												<small>[{selectedSkill.type}]</small>
+											{/if}
 										</h5>
+										<div class="flex items-center">
+											<span class="mr-2 text-lg">LEVEL</span>
+											<span class="mr-4 text-xl">{selectedLevel}</span>
+											<input
+												class="w-48 accent-indigo-600"
+												type="range"
+												name="skillRange"
+												bind:value={selectedLevel}
+												min="1"
+												max={selectedSkill.levelData.length}
+											/>
+										</div>
 									</div>
+									<span class=" text-lg font-normal text-gray-500 dark:text-gray-400">
+										{@html selectedSkill.info?.replace(/#(\d)\[(i|f\d)]/g, (match, num, type) => {
+											const index = parseInt(num) - 1;
+											const value = selectedSkill.levelData[selectedLevel - 1]?.params[index] || 0;
+											return (value * 100).toFixed(1);
+										}) || '설명이 없습니다.'}
+									</span>
 								</div>
 							</div>
 						</div>
-					</div>
-					<!-- 기본 형태 | 이미지가 들어가는 경우 
-					<div class="w-full border-t border-gray-200 p-3">
-						<div class="block flex rounded-lg p-3 px-4">
-							<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
-								<img class="h-full w-full" src="/assets/test/4/3.webp" />
-							</div>
-							<div class="pt-2">
-								<h5 class="text-xl font-semibold">
-									현인의 길조, 천명의 부채 <small>[서포트]</small>
-								</h5>
-								<span class="text-sm text-gray-500 dark:text-gray-400"
-									>[여우의 기도]를 보유한 아군의 격파 특수효과가 n% 증가한다.<br />아군이 공격을
-									발동할 때마다 망귀인은 100%의 기본 확률로 피격된 적의 방어력을 n% 감소시킨다, 지속
-									시간: 2턴
-								</span>
-							</div>
-						</div>
-					</div>
-					-->
+					{/if}
 				</div>
 				<!-- 성흔 돌파 - 기본형태와 동일 코드 -->
 				<div
