@@ -1,35 +1,62 @@
 <script lang="ts">
+	// 메인 메뉴 활성화 상태를 관리하는 스토어 임포트
 	import { mainMenuActive } from '$lib/stores/mainMenuStore';
 
+	// 페이지 데이터 가져오기
 	const { data } = $props();
 
+	// 캐릭터 정보 데이터 초기화
 	let infoData = data.info;
 	let cardData = infoData.info.itemData.card;
 
 	console.log(infoData.info.itemData.card);
 
-	let infoContentColor = infoData.element.image.backgroundColor;
+	// 캐릭터 정보 배경색 계산 함수
+	let infoContentColor = (() => {
+		const bgColor = infoData.element.image.backgroundColor.toLowerCase();
+		// 흰색인 경우 회색으로 변경
+		if (bgColor === '#ffffff') return '#6b7280';
+
+		// 형광색 판단 및 조정
+		const rgb = bgColor.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+		if (rgb) {
+			const [r, g, b] = rgb.slice(1).map((x) => parseInt(x, 16));
+			// RGB 값이 너무 높은 경우(형광색) 채도를 낮춤
+			if (r > 200 || g > 200 || b > 200) {
+				const darkenFactor = 0.8; // 30% 어둡게
+				return `rgb(${Math.floor(r * darkenFactor)}, ${Math.floor(g * darkenFactor)}, ${Math.floor(b * darkenFactor)})`;
+			}
+		}
+
+		return bgColor;
+	})();
+
+	// 캐릭터 레어도 관련 변수
 	let rarity = Number(infoData.rarity);
 	let rarityArray = Array.from({ length: rarity }, (_, i) => i);
 
+	// 메인 뷰 활성화 상태에 따른 스타일 매핑
 	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
 	};
 
-	//비디오 재생 토글
+	// 비디오 재생 상태 관리
 	let paused = $state(false);
 
-	// 이미지 슬라이더 구현
+	// 이미지 슬라이더 관련 상태 관리
 	let slideIndex = $state(0);
 	let slideData = $state(infoData.images);
 	let currentSlide = $derived.by(() => {
 		return slideData[slideIndex];
 	});
 
+	// 비디오 재생/일시정지 토글 함수
 	const togglePause = () => {
 		paused = !paused;
 	};
+
+	// 슬라이드 제어 함수
 	const controlSlide = (type = '') => {
 		let nextIndex;
 		if ((type = 'NEXT')) {
@@ -41,7 +68,7 @@
 		slideIndex = nextIndex || 0;
 	};
 
-	// 선택된 스킬과 레벨 상태 추가
+	// 스킬 관련 상태 관리
 	let selectedSkill = $state(null);
 	let selectedLevel = $state(1);
 </script>
@@ -164,7 +191,7 @@
 					{#if infoData.path}
 						<div class=" mr-3 flex h-10">
 							<img
-								src="/{infoData.path.image.url}.webp"
+								src="http://localhost:3000/{infoData.path.image.url}.webp"
 								class=" mr-2 h-8"
 								alt={infoData.path.name.ko}
 							/>
@@ -293,7 +320,7 @@
 									{#each infoData.info.itemData.relics as SpriteItem}
 										<div
 											style:background={infoContentColor}
-											class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 shadow dark:border-gray-700"
+											class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
 										>
 											<div class=" relative h-auto w-full object-scale-down">
 												<img
@@ -459,11 +486,16 @@
 										</div>
 									</div>
 									<span class=" text-lg font-normal text-gray-500 dark:text-gray-400">
-										{@html selectedSkill.info?.replace(/#(\d)\[(i|f\d)]/g, (match, num, type) => {
-											const index = parseInt(num) - 1;
-											const value = selectedSkill.levelData[selectedLevel - 1]?.params[index] || 0;
-											return (value * 100).toFixed(1);
-										}) || '설명이 없습니다.'}
+										{@html selectedSkill.info?.replace(
+											/(#(\d)\[(i|f\d)]|color:#FFFFFF)/g,
+											(match, full, num, type) => {
+												if (match === 'color:#FFFFFF') return '';
+												const index = parseInt(num) - 1;
+												const value =
+													selectedSkill.levelData[selectedLevel - 1]?.params[index] || 0;
+												return (value * 100).toFixed(1);
+											}
+										) || '설명이 없습니다.'}
 									</span>
 								</div>
 							</div>
