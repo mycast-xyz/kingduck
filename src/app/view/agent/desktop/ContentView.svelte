@@ -1,6 +1,7 @@
 <script lang="ts">
 	// 메인 메뉴 활성화 상태를 관리하는 스토어 임포트
 	import { mainMenuActive } from '$lib/stores/mainMenuStore';
+	import { ContentBackgroundSet } from '../../../service/ContentBackgroundSet';
 
 	// 페이지 데이터 가져오기
 	const { data } = $props<{ data: PageData }>();
@@ -12,24 +13,9 @@
 	let cardData = infoData.info.itemData.card;
 
 	// 캐릭터 정보 배경색 계산 함수
-	let infoContentColor = (() => {
-		const bgColor = infoData.element.image.backgroundColor.toLowerCase();
-		// 흰색인 경우 회색으로 변경
-		if (bgColor === '#ffffff') return '#6b7280';
-
-		// 형광색 판단 및 조정
-		const rgb = bgColor.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
-		if (rgb) {
-			const [r, g, b] = rgb.slice(1).map((x) => parseInt(x, 16));
-			// RGB 값이 너무 높은 경우(형광색) 채도를 낮춤
-			if (r > 200 || g > 200 || b > 200) {
-				const darkenFactor = 0.8; // 30% 어둡게
-				return `rgb(${Math.floor(r * darkenFactor)}, ${Math.floor(g * darkenFactor)}, ${Math.floor(b * darkenFactor)})`;
-			}
-		}
-
-		return bgColor;
-	})();
+	let infoContentColor = ContentBackgroundSet.calculateInfoContentColor(
+		infoData.element.image.backgroundColor
+	);
 
 	// 캐릭터 레어도 관련 변수
 	let rarity = Number(infoData.rarity);
