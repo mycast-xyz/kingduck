@@ -1,9 +1,17 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import axios from 'axios';
+import { browser } from '$app/environment';
+import { MobileUtils } from '../../../utils/mobile/MobileUtils';
 
-export const load = async ({ params }) => {
-	console.log(params.slug);
+export const load: PageLoad = async ({ params, url }) => {
+	let isMobile = false;
+
+	if (browser) {
+		isMobile = MobileUtils.isMobile();
+	}
+
+	const currentUrl = 'http://' + url.hostname + ':3000';
 
 	const gameInfoConfig = {
 		headers: {
@@ -17,7 +25,7 @@ export const load = async ({ params }) => {
 	let gameId;
 
 	await axios
-		.get('http://localhost:3000/api/v0/game/' + params.slug, gameInfoConfig)
+		.get(currentUrl + '/api/v0/game/' + params.slug, gameInfoConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);
@@ -39,12 +47,10 @@ export const load = async ({ params }) => {
 		}
 	};
 
-	console.log(characterListConfig);
-
 	let data: any = {};
 
 	await axios
-		.get('http://localhost:3000/api/v0/character/' + params.slug, characterListConfig)
+		.get(currentUrl + '/api/v0/character/' + params.slug, characterListConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);
@@ -57,10 +63,10 @@ export const load = async ({ params }) => {
 			console.log(err);
 		});
 
-	console.log(data);
-
 	return {
 		params: params.slug,
+		url: currentUrl,
+		isMobile: !!isMobile,
 		list: data
 	};
 };

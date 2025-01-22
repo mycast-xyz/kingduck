@@ -1,8 +1,17 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import axios from 'axios';
+import { browser } from '$app/environment';
+import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
 
-export const load = async ({ params }) => {
+export const load: PageLoad = async ({ params, url }) => {
+	let isMobile = false;
+
+	if (browser) {
+		isMobile = MobileUtils.isMobile();
+	}
+
+	const currentUrl = 'http://' + url.hostname + ':3000';
 	const characterListConfig = {
 		headers: {
 			//"x-access-token": userToken,
@@ -15,14 +24,12 @@ export const load = async ({ params }) => {
 	let data: any = {};
 	await axios
 		.get(
-			'http://localhost:3000/api/v0/character/' + params.gameEnName + '/' + params.characterId,
+			currentUrl + '/api/v0/character/' + params.gameEnName + '/' + params.characterId,
 			characterListConfig
 		)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
-				//console.log(res.data.items);
 				data = res.data.items;
-				console.log(data);
 			} else {
 				console.log('err: 서버 코드 에러');
 			}
@@ -32,6 +39,8 @@ export const load = async ({ params }) => {
 		});
 
 	return {
+		isMobile: isMobile,
+		url: currentUrl,
 		info: data
 	};
 };
