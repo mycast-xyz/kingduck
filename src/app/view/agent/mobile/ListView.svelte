@@ -17,20 +17,20 @@
 		<div class="list h-full w-full overflow-y-auto px-2 pt-12">
 			<div class="con flex h-auto w-full flex-wrap content-start items-stretch justify-start">
 				{#each data.list as item}
-					<a class="flex-box basis-1/2" href="/content/{data.params}/{item.id}">
+					<a class="flex-box basis-1/3" href="/content/{data.params}/{item.id}">
 						<div
-							class="shadow-m card-HY-Rating-{item.rarity} relative m-2 block overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
+							class="shadow-m card-HY-Rating-{item.rarity} relative m-2 block overflow-hidden rounded-lg border border-gray-100 pb-6 text-white"
 						>
 							<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
 								<img src="{currentUrl}/{item.images.url}.webp" />
 							</div>
 							<div
-								class="image-info card-HY-Rating-{item.rarity}-bg absolute inset-x-0 bottom-0 px-4 py-2"
+								class="image-info card-HY-Rating-{item.rarity}-bg absolute inset-x-0 bottom-0 px-2 py-2"
 							>
 								<!--서브타이틀-->
 								<h5 class="break-keep pb-1 text-base font-extrabold"></h5>
 								<!-- 메인타이틀-->
-								<h3 class="break-keep pb-1 text-xl font-extrabold drop-shadow-md">
+								<h3 class="break-keep pb-1 text-base font-extrabold drop-shadow-md">
 									{item.name.kr}
 								</h3>
 
@@ -38,7 +38,7 @@
 									<!-- 레이팅 등급 아이콘 표기시 -->
 									<div class="rating-info-img flex w-auto justify-start">
 										{#each { length: item.rarity } as i}
-											<div class="icon h-8 w-5 py-1">
+											<div class="icon h-5 w-3 py-1">
 												<svg
 													id="_레이어_1"
 													data-name="레이어_1"
@@ -64,11 +64,15 @@
 									</div>
 									<!-- 캐릭터 등급 표기 -->
 									<div class="ml-auto flex w-auto justify-start">
-										<div class=" ml-1 flex h-6">
-											<img src="{currentUrl}/{item.element.image.url}.webp" class=" h-6" alt="" />
+										<div class="ml-1 flex h-5 w-5">
+											<img
+												src="{currentUrl}/{item.element.image.url}.webp"
+												class="h-5 w-5"
+												alt=""
+											/>
 										</div>
-										<div class=" ml-1 flex h-6">
-											<img src="{currentUrl}/{item.path.image.url}.webp" class=" h-6" alt="" />
+										<div class="ml-1 flex h-5 w-5">
+											<img src="{currentUrl}/{item.path.image.url}.webp" class="h-5 w-5" alt="" />
 										</div>
 									</div>
 								</div>
