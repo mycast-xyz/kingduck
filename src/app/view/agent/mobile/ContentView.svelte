@@ -96,23 +96,50 @@
 
 <div class="h-screen w-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
 	<!-- Content -->
-	<article id="info-componet" class=" my-0 mr-0 flex h-full overflow-hidden">
-		<!-- 탭 버튼 
-		<div
-			class="fixed bottom-0 left-0 right-0 z-50 flex w-screen justify-center space-x-2 border-t bg-white dark:bg-gray-800"
-		>
-			{#each tabs as tab}
-				<button
-					class="px-4 py-3 focus:outline-none {activeTab === tab.id
-						? 'border-t-2 border-blue-600 text-blue-600'
-						: 'text-gray-500 hover:text-gray-700'}"
-					onclick={() => handleTabClick(tab.id)}
+	<article id="info-componet" class="my-0 mr-0 flex h-full overflow-hidden">
+		<!-- 모달 팝업 -->
+		<div class="fixed inset-0 z-50 flex items-center justify-center">
+			<div class="absolute inset-0 bg-black opacity-50"></div>
+			<div class="relative z-10 w-11/12 max-w-lg rounded-lg bg-white p-6 dark:bg-gray-800">
+				<div class="mb-4 flex items-center justify-between">
+					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">화면 조작 방법</h3>
+					<button
+						type="button"
+						class="ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+						onclick={(e) => e.target.closest('.fixed').remove()}
+					>
+						<i class="ri-close-line text-2xl"></i>
+						<span class="sr-only">Close modal</span>
+					</button>
+				</div>
+				<div class="space-y-4">
+					<div class="flex items-center">
+						<i class="ri-arrow-left-right-line mr-3 text-2xl"></i>
+						<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+							좌우로 스와이프하여 캐릭터 정보와 상세 정보를 확인할 수 있습니다.
+						</p>
+					</div>
+					<div class="flex items-center">
+						<i class="ri-drag-move-line mr-3 text-2xl"></i>
+						<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+							상하로 스크롤하여 전체 내용을 확인할 수 있습니다.
+						</p>
+					</div>
+				</div>
+				<div
+					class="mt-6 flex items-center space-x-2 border-t border-gray-200 pt-6 dark:border-gray-600"
 				>
-					{tab.title}
-				</button>
-			{/each}
+					<input
+						id="dont-show-again"
+						type="checkbox"
+						class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+					/>
+					<label for="dont-show-again" class="text-sm font-medium text-gray-900 dark:text-gray-300">
+						다시 보지 않기
+					</label>
+				</div>
+			</div>
 		</div>
-    -->
 
 		<!-- 스와이퍼 컨텐츠 -->
 		<swiper-container
