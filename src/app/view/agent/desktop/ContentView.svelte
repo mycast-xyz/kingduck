@@ -1,7 +1,7 @@
 <script lang="ts">
 	// 메인 메뉴 활성화 상태를 관리하는 스토어 임포트
 	import { mainMenuActive } from '$lib/stores/mainMenuStore';
-	import { ContentBackgroundSet } from '../../../service/ContentBackgroundSet';
+	import { ContentBackgroundSet } from '../../../service/ContentBackgroundService';
 
 	// 페이지 데이터 가져오기
 	const { data } = $props<{ data: PageData }>();

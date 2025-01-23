@@ -4,8 +4,8 @@
 	import { register } from 'swiper/element/bundle';
 
 	// 커스텀 서비스 임포트
-	import { ContentManualModal } from '../../../service/ContentManualModal';
-	import { ContentBackgroundSet } from '../../../service/ContentBackgroundSet';
+	import { ContentManualModal } from '../../../service/ContentManualModalService';
+	import { ContentBackgroundSet } from '../../../service/ContentBackgroundService';
 
 	// 페이지 데이터 및 모달 초기화
 	const { data } = $props<{ data: PageData }>();

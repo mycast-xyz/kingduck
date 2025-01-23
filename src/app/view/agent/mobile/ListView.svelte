@@ -5,11 +5,6 @@
 	export let data: PageData;
 
 	const currentUrl = data.url;
-
-	const mainViewActive: any = {
-		80: 'w-[calc(100%-80px)] ml-[80px]',
-		240: 'w-[calc(100%-240px)] ml-[240px]'
-	};
 </script>
 
 <div class=" mt-7 w-screen overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800">
@@ -64,15 +59,19 @@
 									</div>
 									<!-- 캐릭터 등급 표기 -->
 									<div class="ml-auto flex w-auto justify-start">
-										<div class="ml-1 flex h-5 w-5">
+										<div class=" ml-1 flex h-5 w-5">
 											<img
 												src="{currentUrl}/{item.element.image.url}.webp"
-												class="h-5 w-5"
+												class="mt-0.5 h-4 w-4"
 												alt=""
 											/>
 										</div>
-										<div class="ml-1 flex h-5 w-5">
-											<img src="{currentUrl}/{item.path.image.url}.webp" class="h-5 w-5" alt="" />
+										<div class="ml-0.5 flex h-5 w-5">
+											<img
+												src="{currentUrl}/{item.path.image.url}.webp"
+												class="mt-0.5 h-4 w-4"
+												alt=""
+											/>
 										</div>
 									</div>
 								</div>
