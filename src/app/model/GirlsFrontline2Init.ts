@@ -23,7 +23,7 @@ const GirlsFrontline2Init = {
 				attribute: {
 					element: true, // 위상 속성
 					path: true, // 무기 속성
-					corp: true // 소속 정보
+					corp: true // 직업 정보
 				}
 			}
 		},

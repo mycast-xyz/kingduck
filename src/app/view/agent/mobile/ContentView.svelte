@@ -103,7 +103,7 @@
 						<div class="flex items-center">
 							<i class="ri-drag-move-line mr-3 text-2xl"></i>
 							<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-								상하로 스크롤하여 전체 내용을 확인할 수 있습니다.
+								상하로 스크롤하여 상세 정보 내용을 확인할 수 있습니다.
 							</p>
 						</div>
 					</div>
