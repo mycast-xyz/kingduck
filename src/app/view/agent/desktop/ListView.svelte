@@ -28,13 +28,13 @@
 				<div class="gmae-title my-2 h-auto w-full">
 					<div class="gmae-logo-img">
 						<img
-							src="/assets/game/{data.params}.webp"
+							src={data.url + '/' + data.info.images[0].url}
 							class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
 							alt={data.params}
 						/>
 					</div>
 					<h3 class="pb-3 pt-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
-						붕괴 스타레일
+						{data.info.title.kr}
 					</h3>
 				</div>
 				<div class="my-4 mt-3 flex w-full flex-col items-center border-t border-gray-300">

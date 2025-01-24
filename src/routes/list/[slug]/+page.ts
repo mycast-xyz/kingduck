@@ -22,14 +22,14 @@ export const load: PageLoad = async ({ params, url }) => {
 		}
 	};
 
-	let gameId;
+	let gameInfo;
 
 	await axios
 		.get(currentUrl + '/api/v0/game/' + params.slug, gameInfoConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
 				//console.log(res.data.items);
-				gameId = res.data.items.id;
+				gameInfo = res.data.items;
 			} else {
 				console.log('err: 서버 코드 에러');
 			}
@@ -43,7 +43,7 @@ export const load: PageLoad = async ({ params, url }) => {
 			//"x-access-token": userToken,
 		},
 		params: {
-			gameId: gameId
+			gameId: gameInfo.id
 		}
 	};
 
@@ -67,6 +67,7 @@ export const load: PageLoad = async ({ params, url }) => {
 		params: params.slug,
 		url: currentUrl,
 		isMobile: !!isMobile,
+		info: gameInfo,
 		list: data
 	};
 };

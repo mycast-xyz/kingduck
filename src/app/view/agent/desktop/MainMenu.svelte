@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { mainMenuActive, navActive } from '$lib/stores/mainMenuStore';
 
+	const { data } = $props<{ data: PageData }>();
+
+	console.log(data);
+
 	const toggleNav = () => {
 		navActive.update((navActive) => !navActive);
 		if ($navActive === false) {
@@ -12,6 +16,7 @@
 		}
 	};
 
+	/*
 	const tmp_FavoritesMenuSet: any = [
 		{
 			title: '붕괴 스타레일',
@@ -52,6 +57,7 @@
 			image: '/assets/game/zzz.webp'
 		}
 	];
+	*/
 </script>
 
 <header
@@ -81,26 +87,26 @@
 	<div class="w-full px-2">
 		<!-- 반복 area -->
 		<div class="mt-3 flex w-full flex-col items-center border-t border-gray-300">
-			{#each tmp_FavoritesMenuSet as favoritesItem}
+			{#each data.info as gameItem}
 				<a
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
-					href={favoritesItem.href}
+					href="/list/{gameItem.title.slug}"
 				>
 					<img
 						class="h-10 w-10 rounded-full fill-current"
-						src={favoritesItem.image}
+						src={data.url + '/' + gameItem.images[0].url}
 						alt="HonkaiStarRail"
 					/>
 					<span
 						class:active={navActive}
 						class="ml-2 text-sm font-medium transition-all delay-300 duration-200 ease-in-out"
-						>{favoritesItem.title}</span
+						>{gameItem.title.kr}</span
 					>
 				</a>
 			{/each}
 		</div>
-		<!-- 반복 area -->
+		<!-- 반복 area 
 		<div class="mt-2 flex w-full flex-col items-center border-t border-gray-300">
 			{#each tmp_MenuSet as item}
 				<a
@@ -116,7 +122,7 @@
 					>
 				</a>
 			{/each}
-		</div>
+		</div>-->
 	</div>
 	<!--
 	<a

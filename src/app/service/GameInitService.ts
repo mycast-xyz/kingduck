@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export class GameInitModal {
+export class GameListService {
 	private _defaultGameInit = writable({});
 
 	get showInit() {
