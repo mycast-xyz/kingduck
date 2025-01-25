@@ -9,6 +9,48 @@
 		80: 'w-[calc(100%-80px)] ml-[80px]',
 		240: 'w-[calc(100%-240px)] ml-[240px]'
 	};
+
+	function rarityType(item: any) {
+		let rarity = {
+			data: 0,
+			type: ''
+		};
+		switch (data.params) {
+			case 'HonkaiStarRail':
+				rarity.data = item;
+				rarity.type = 'number';
+				break;
+			case 'GirlsFrontline2Exilium':
+				rarity.type = 'string';
+				switch (item) {
+					case '정예':
+						rarity.data = 5;
+						break;
+					case '표준':
+						rarity.data = 4;
+						break;
+					default:
+						rarity.data = 3;
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+		return rarity;
+	}
+	function typeList(item: any) {
+		let type = {
+			data: '',
+			type: ''
+		};
+		switch (data.params) {
+			case 'HonkaiStarRail':
+				type.data = item;
+				type.type = 'number';
+				break;
+		}
+	}
 </script>
 
 <div
@@ -78,7 +120,8 @@
 			<div class="con flex h-auto w-full flex-wrap content-start items-stretch justify-start">
 				{#each data.list as item}
 					<a
-						class="shadow-m card-HY-Rating-{item.rarity} relative m-2 block w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
+						class="shadow-m card-HY-Rating-{rarityType(item.rarity)
+							.data} relative m-2 block w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
 						href="/content/{data.params}/{item.id}"
 					>
 						<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
@@ -95,43 +138,67 @@
 							<div class="flex w-full justify-start">
 								<!-- 레이팅 등급 아이콘 표기시 -->
 								<div class="rating-info-img flex w-auto justify-start">
-									{#each { length: item.rarity } as i}
-										<div class="icon h-8 w-5 py-1">
-											<svg
-												id="_레이어_1"
-												data-name="레이어_1"
-												xmlns="http://www.w3.org/2000/svg"
-												version="1.1"
-												viewBox="0 0 50 50"
-											>
-												<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
-												<defs>
-													<style>
-														.st0 {
-															fill: #fff;
-														}
-													</style>
-												</defs>
-												<path
-													class="st0"
-													d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
-												/>
-											</svg>
-										</div>
-									{/each}
+									{#if rarityType(item.rarity).type === 'number'}
+										{#each { length: item.rarity } as i}
+											<div class="icon h-8 w-5 py-1">
+												<svg
+													id="_레이어_1"
+													data-name="레이어_1"
+													xmlns="http://www.w3.org/2000/svg"
+													version="1.1"
+													viewBox="0 0 50 50"
+												>
+													<!-- Generator: Adobe Illustrator 29.2.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 108)  -->
+													<defs>
+														<style>
+															.st0 {
+																fill: #fff;
+															}
+														</style>
+													</defs>
+													<path
+														class="st0"
+														d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+													/>
+												</svg>
+											</div>
+										{/each}
+									{:else}
+										<h5 class="break-keep pb-1 text-base font-extrabold drop-shadow-md">
+											{item.rarity}
+										</h5>
+									{/if}
 								</div>
 								<!-- 캐릭터 등급 표기 -->
 								<div class="ml-auto flex w-auto justify-start">
-									<div class=" ml-1 flex h-6">
-										<img
-											src="{currentUrl}/{item.type.element.image.url}.webp"
-											class=" h-6"
-											alt=""
-										/>
-									</div>
-									<div class=" ml-1 flex h-6">
-										<img src="{currentUrl}/{item.type.path.image.url}.webp" class=" h-6" alt="" />
-									</div>
+									{#if item.type.corp}
+										<div class=" ml-1 flex h-6">
+											<img src="{currentUrl}/{item.type.corp.image.url}.webp" class=" h-6" alt="" />
+										</div>
+									{/if}
+									{#if item.type.weapon}
+										<div class=" ml-1 flex h-6">
+											<img
+												src="{currentUrl}/{item.type.weapon.image.url}.webp"
+												class=" h-6"
+												alt=""
+											/>
+										</div>
+									{/if}
+									{#if item.type.element}
+										<div class=" ml-1 flex h-6">
+											<img
+												src="{currentUrl}/{item.type.element.image.url}.webp"
+												class=" h-6"
+												alt=""
+											/>
+										</div>
+									{/if}
+									{#if item.type.path}
+										<div class=" ml-1 flex h-6">
+											<img src="{currentUrl}/{item.type.path.image.url}.webp" class=" h-6" alt="" />
+										</div>
+									{/if}
 								</div>
 							</div>
 						</div>
