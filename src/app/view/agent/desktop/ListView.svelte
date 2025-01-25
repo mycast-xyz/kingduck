@@ -82,7 +82,7 @@
 						href="/content/{data.params}/{item.id}"
 					>
 						<div class="card-HY-Rating-{item.rarity} rounded-t-lg">
-							<img src="{currentUrl}/{item.images.url}.webp" />
+							<img src="{currentUrl}/{item.images.url}.webp" alt={item.name.kr} />
 						</div>
 						<div
 							class="image-info card-HY-Rating-{item.rarity}-bg absolute inset-x-0 bottom-0 px-4 py-2"
@@ -123,10 +123,14 @@
 								<!-- 캐릭터 등급 표기 -->
 								<div class="ml-auto flex w-auto justify-start">
 									<div class=" ml-1 flex h-6">
-										<img src="{currentUrl}/{item.element.image.url}.webp" class=" h-6" alt="" />
+										<img
+											src="{currentUrl}/{item.type.element.image.url}.webp"
+											class=" h-6"
+											alt=""
+										/>
 									</div>
 									<div class=" ml-1 flex h-6">
-										<img src="{currentUrl}/{item.path.image.url}.webp" class=" h-6" alt="" />
+										<img src="{currentUrl}/{item.type.path.image.url}.webp" class=" h-6" alt="" />
 									</div>
 								</div>
 							</div>

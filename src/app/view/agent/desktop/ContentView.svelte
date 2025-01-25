@@ -14,7 +14,7 @@
 
 	// 캐릭터 정보 배경색 계산 함수
 	let infoContentColor = ContentBackgroundSet.calculateInfoContentColor(
-		infoData.element.image.backgroundColor
+		infoData.type.element.image.backgroundColor
 	);
 
 	// 캐릭터 레어도 관련 변수
@@ -174,27 +174,27 @@
 				</div>
 				<!-- 캐릭터 등급 표기 -->
 				<div class="flex w-auto justify-start p-2 pt-3">
-					{#if infoData.path}
+					{#if infoData.type.path}
 						<div class=" mr-3 flex h-10">
 							<img
-								src="{currentUrl}/{infoData.path.image.url}.webp"
+								src="{currentUrl}/{infoData.type.path.image.url}.webp"
 								class=" mr-2 h-8"
-								alt={infoData.path.name.ko}
+								alt={infoData.type.path.name.ko}
 							/>
 							<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">
-								{infoData.path.name.ko}
+								{infoData.type.path.name.ko}
 							</h3>
 						</div>
 					{/if}
-					{#if infoData.element}
+					{#if infoData.type.element}
 						<div class=" mr-3 flex h-6">
 							<img
-								src="{currentUrl}/{infoData.element.image.url}.webp"
+								src="{currentUrl}/{infoData.type.element.image.url}.webp"
 								class=" mr-2 h-8"
-								alt={infoData.element.ko}
+								alt={infoData.type.element.name.ko}
 							/>
 							<h3 class="reak-keep pb-1 pr-3 pt-0.5 text-xl font-medium">
-								{infoData.element.name.ko}
+								{infoData.type.element.name.ko}
 							</h3>
 						</div>
 					{/if}

@@ -61,14 +61,14 @@
 									<div class="ml-auto flex w-auto justify-start">
 										<div class=" ml-1 flex h-5 w-5">
 											<img
-												src="{currentUrl}/{item.element.image.url}.webp"
+												src="{currentUrl}/{item.type.element.image.url}.webp"
 												class="mt-0.5 h-4 w-4"
 												alt=""
 											/>
 										</div>
 										<div class="ml-0.5 flex h-5 w-5">
 											<img
-												src="{currentUrl}/{item.path.image.url}.webp"
+												src="{currentUrl}/{item.type.path.image.url}.webp"
 												class="mt-0.5 h-4 w-4"
 												alt=""
 											/>
