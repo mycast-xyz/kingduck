@@ -15,49 +15,6 @@
 			console.log($mainMenuActive);
 		}
 	};
-
-	/*
-	const tmp_FavoritesMenuSet: any = [
-		{
-			title: '붕괴 스타레일',
-			href: '/list/HonkaiStarRail',
-			image: '/assets/game/HonkaiStarRail.webp'
-		},
-		{
-			title: '우마무스메',
-			href: '/list/Umamusume',
-			image: '/assets/game/Umamusume.webp'
-		},
-		{
-			title: '승리의 여신 니케',
-			href: '/list/NIKKE',
-			image: '/assets/game/NIKKE.webp'
-		}
-	];
-
-	const tmp_MenuSet: any = [
-		{
-			title: '블루아카이브',
-			href: '/list/BlueArchive',
-			image: '/assets/game/BlueArchive.webp'
-		},
-		{
-			title: '원신',
-			href: '/list/GenshinImpact',
-			image: '/assets/game/GenshinImpact.webp'
-		},
-		{
-			title: '명조',
-			href: '/list/WutheringWaves',
-			image: '/assets/game/WutheringWaves.webp'
-		},
-		{
-			title: '젠존스제로',
-			href: '/list/zzz',
-			image: '/assets/game/zzz.webp'
-		}
-	];
-	*/
 </script>
 
 <header
@@ -89,6 +46,7 @@
 		<div class="mt-3 flex w-full flex-col items-center border-t border-gray-300">
 			{#each data.info as gameItem}
 				<a
+					data-sveltekit-preload-data="false"
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
 					href="/list/{gameItem.title.slug}"

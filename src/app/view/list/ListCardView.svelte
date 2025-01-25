@@ -1,47 +1,20 @@
 <script lang="ts">
 	import { GameSettingInitService } from '../../service/GameSettingService';
+	import { CharacterRarityService } from '../../service/CharacterRarityService';
 
-	export let data: PageData;
+	const { data } = $props<{ data: any }>();
 
 	const currentUrl = data.url;
 
 	let gameInit: any;
+	let rarityService: CharacterRarityService;
+
 	GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
+		if (gameInit) {
+			rarityService = new CharacterRarityService(gameInit);
+		}
 	});
-
-	function raritySetting(item: any, setting: any) {
-		let rarity = {
-			data: 0,
-			type: ''
-		};
-
-		if (!setting) {
-			return rarity;
-		}
-
-		if (setting.default) {
-			rarity.data = item;
-			rarity.type = setting.type;
-		} else {
-			rarity.type = setting.type;
-			const rarityList = setting.list;
-			for (const [key, value] of Object.entries(rarityList)) {
-				if (value === item) {
-					rarity.data = parseInt(key);
-					break;
-				}
-			}
-		}
-		return rarity;
-	}
-	function rarityData(item: any) {
-		return raritySetting(item, gameInit.rarity).data;
-	}
-
-	function rarityType(item: any) {
-		return raritySetting(item, gameInit.rarity).type;
-	}
 </script>
 
 <div class="con flex h-auto w-full flex-wrap content-start items-stretch justify-start">
@@ -49,15 +22,15 @@
 		{#if data.isMobile}
 			<a class="flex-box basis-1/3" href="/content/{data.params}/{item.id}">
 				<div
-					class="shadow-m card-Rating-{rarityData(
+					class="shadow-m card-Rating-{rarityService.rarityData(
 						item.rarity
 					)} relative m-2 block overflow-hidden rounded-lg border border-gray-100 pb-6 text-white"
 				>
-					<div class="card-Rating-{rarityData(item.rarity)} rounded-t-lg">
+					<div class="card-Rating-{rarityService.rarityData(item.rarity)} rounded-t-lg">
 						<img src="{currentUrl}/{item.images.url}.webp" alt={item.name.kr} />
 					</div>
 					<div
-						class="image-info card-HY-Rating-{rarityData(
+						class="image-info card-HY-Rating-{rarityService.rarityData(
 							item.rarity
 						)}-bg absolute inset-x-0 bottom-0 px-2 py-2"
 					>
@@ -67,7 +40,7 @@
 						</h3>
 						<div class="flex w-full justify-start">
 							<div class="rating-info-img flex w-auto justify-start">
-								{#if rarityType(item.rarity) === 'number'}
+								{#if rarityService.rarityType(item.rarity) === 'number'}
 									{#each { length: item.rarity } as i}
 										<div class="icon h-5 w-3 py-1">
 											<svg
@@ -112,16 +85,16 @@
 			</a>
 		{:else}
 			<a
-				class="shadow-m card-Rating-{rarityData(
+				class="shadow-m card-Rating-{rarityService.rarityData(
 					item.rarity
 				)} relative m-2 block w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
 				href="/content/{data.params}/{item.id}"
 			>
-				<div class="card-Rating-{rarityData(item.rarity)} rounded-t-lg">
+				<div class="card-Rating-{rarityService.rarityData(item.rarity)} rounded-t-lg">
 					<img src="{currentUrl}/{item.images.url}.webp" alt={item.name.kr} />
 				</div>
 				<div
-					class="image-info card-HY-Rating-{rarityData(
+					class="image-info card-HY-Rating-{rarityService.rarityData(
 						item.rarity
 					)}-bg absolute inset-x-0 bottom-0 px-4 py-2"
 				>
@@ -130,7 +103,7 @@
 
 					<div class="flex w-full justify-start">
 						<div class="rating-info-img flex w-auto justify-start">
-							{#if rarityType(item.rarity) === 'number'}
+							{#if rarityService.rarityType(item.rarity) === 'number'}
 								{#each { length: item.rarity } as i}
 									<div class="icon h-8 w-5 py-1">
 										<svg

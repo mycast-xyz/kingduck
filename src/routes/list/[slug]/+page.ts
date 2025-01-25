@@ -55,11 +55,9 @@ export const load: PageLoad = async ({ params, url }) => {
 	switch (params.slug) {
 		case 'HonkaiStarRail':
 			GameSettingInitService.updateGameInit(new HonkaiStarRailInit().setInit());
-			setInit = HonkaiStarRailInit;
 			break;
 		case 'GirlsFrontline2Exilium':
 			GameSettingInitService.updateGameInit(new GirlsFrontline2Init().setInit());
-			setInit = GirlsFrontline2Init;
 			break;
 		default:
 			break;

@@ -2,7 +2,7 @@
 	import { mainMenuActive } from '$lib/stores/mainMenuStore.js';
 	import ListCardView from '../../list/ListCardView.svelte';
 
-	export let data: PageData;
+	const { data } = $props<{}>();
 
 	const mainViewActive: any = {
 		80: 'w-[calc(100%-80px)] ml-[80px]',
@@ -13,9 +13,6 @@
 <div
 	class="h-screen w-screen min-w-[1700px] overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800"
 >
-	<!-- Left nav-->
-	<!-- <MainMenu bind:MainMenuActive /> -->
-	<!-- Content -->
 	<article
 		id="list-componet"
 		class="{mainViewActive[$mainMenuActive]} my-0 mr-0 flex h-full overflow-hidden"

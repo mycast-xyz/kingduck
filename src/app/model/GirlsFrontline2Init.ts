@@ -88,19 +88,24 @@ export class GirlsFrontline2Init {
 						main: {
 							name: '스킬',
 							option: true,
-							view: true
-						},
-						sub: {
-							name: '뉴럴 헬릭스',
-							option: true,
-							view: true
+							view: true,
+							color: '#373f46',
+							level: false
 						}
+					},
+					helix: {
+						name: '뉴럴 헬릭스',
+						option: true,
+						view: true,
+						level: false
 					},
 					// 돌파 정보
 					gacha: {
 						name: '마인드보강',
 						option: true,
-						view: true
+						view: true,
+						level: false,
+						color: '#373f46'
 					}
 				}
 			}

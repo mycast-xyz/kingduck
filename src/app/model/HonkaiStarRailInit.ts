@@ -1,6 +1,7 @@
 export class HonkaiStarRailInit {
 	init() {
 		return {
+			gameId: 'HonkaiStarRail',
 			// 등급 정보
 			rarity: {
 				// 기본은 1~5 단위로 숫자로 매길것
@@ -88,21 +89,18 @@ export class HonkaiStarRailInit {
 					// 스킬 정보
 					skill: {
 						main: {
-							name: '스킬',
+							name: '캐릭터 스킬',
 							option: true,
-							view: true
-						},
-						sub: {
-							name: '',
-							option: false,
-							view: false
+							view: true,
+							level: true
 						}
 					},
 					// 돌파 정보
 					gacha: {
 						name: '성흔 돌파',
 						option: true,
-						view: true
+						view: true,
+						level: false
 					}
 				}
 			}
