@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export class GameListService {
+export class GameInitService {
 	private _defaultGameInit = writable({});
 
 	get showInit() {
@@ -16,3 +16,5 @@ export class GameListService {
 		this._defaultGameInit.set(this._defaultGameInit);
 	}
 }
+
+export const GameListInitService = new GameInitService();

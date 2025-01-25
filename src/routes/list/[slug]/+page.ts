@@ -3,6 +3,9 @@ import type { PageLoad } from './$types';
 import axios from 'axios';
 import { browser } from '$app/environment';
 import { MobileUtils } from '../../../utils/mobile/MobileUtils';
+import { GameSettingInitService } from '../../../app/service/GameSettingService';
+import { HonkaiStarRailInit } from '../../../app/model/HonkaiStarRailInit';
+import { GirlsFrontline2Init } from '../../../app/model/GirlsFrontline2Init';
 
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
@@ -46,6 +49,21 @@ export const load: PageLoad = async ({ params, url }) => {
 			gameId: gameInfo.id
 		}
 	};
+
+	// 추후에 init를 들고 오면 처리 구현이 틀려짐
+	let setInit;
+	switch (params.slug) {
+		case 'HonkaiStarRail':
+			GameSettingInitService.updateGameInit(new HonkaiStarRailInit().setInit());
+			setInit = HonkaiStarRailInit;
+			break;
+		case 'GirlsFrontline2Exilium':
+			GameSettingInitService.updateGameInit(new GirlsFrontline2Init().setInit());
+			setInit = GirlsFrontline2Init;
+			break;
+		default:
+			break;
+	}
 
 	let data: any = {};
 
