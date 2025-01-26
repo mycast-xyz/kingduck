@@ -6,8 +6,9 @@
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 
-	const { itemData, currentUrl, isMobile, contentColor } = $props<{
+	const { itemData, propertyBase, currentUrl, isMobile, contentColor } = $props<{
 		itemData: any;
+		propertyBase: any;
 		currentUrl: string;
 		isMobile: boolean;
 		contentColor: string;
@@ -22,6 +23,67 @@
 			rarityService = new CharacterRarityService(gameInit);
 		}
 	});
+
+	// 장비 착용 부분에 대한 안내 표시
+	const getFormattedType = (relicType: any, gameId: string) => {
+		let type = '';
+		if (gameId == 'HonkaiStarRail') {
+			switch (relicType) {
+				case 'BODY':
+					type = '몸';
+					break;
+				case 'FOOT':
+					type = '신발';
+					break;
+				case 'NECK':
+					type = '연결 매듭';
+					break;
+				case 'OBJECT':
+					type = '차원 구체';
+					break;
+				default:
+					type = 'ERROR1';
+					break;
+			}
+		} else {
+			type = 'ERROR2';
+		}
+		return type;
+	};
+
+	// 장비 착용 부분에 대한 안내 표시
+	const getFormattedProperty = (property: any, gameId: string) => {
+		let result = '';
+		if (gameId == 'HonkaiStarRail') {
+			const setProperty = {
+				HealRatioBase: '치유량 보너스',
+				PhysicalAddedRatio: '물리 속성 피해 증가',
+				FireAddedRatio: '화염 속성 피해 증가',
+				IceAddedRatio: '얼음 속성 피해 증가',
+				ThunderAddedRatio: '번개 속성 피해 증가',
+				WindAddedRatio: '바람 속성 피해 증가',
+				QuantumAddedRatio: '양자 속성 피해 증가',
+				ImaginaryAddedRatio: '허수 속성 피해 증가',
+				CriticalChanceBase: '치명타 확률',
+				CriticalDamageBase: '치명타 피해',
+				SPRatioBase: '에너지 회복효율',
+				StatusProbabilityBase: '효과 명중',
+				StatusResistanceBase: '효과 저항',
+				HPDelta: 'HP',
+				HPAddedRatio: 'HP%',
+				AttackDelta: '공격력',
+				AttackAddedRatio: '공격력%',
+				DefenceDelta: '방어력',
+				DefenceAddedRatio: '방어력%',
+				BreakDamageAddedRatioBase: '격파 특수효과',
+				SpeedDelta: '속도'
+			};
+			result = setProperty[property] || 'ERROR1';
+		} else {
+			result = 'ERROR2';
+		}
+		return result;
+	};
 </script>
 
 <Layer title="추천 {gameInit?.content?.info?.item?.name || '아이템'}">
@@ -46,8 +108,7 @@
 										<div class="relative h-auto w-full object-scale-down">
 											<img
 												class="m-auto min-w-36 max-w-40 items-center p-4"
-												src="{currentUrl}/assets/image/item/{item?.itemReferences?.image?.src ??
-													''}.webp"
+												src="{currentUrl}/{item?.itemReferences?.image?.src ?? ''}.webp"
 												alt={item?.name?.kr ?? ''}
 											/>
 										</div>
@@ -67,8 +128,7 @@
 										<div class=" relative h-auto w-full object-scale-down">
 											<img
 												class="m-auto min-w-24 max-w-24 items-center p-4"
-												src="{currentUrl}/assets/image/item/{item?.itemReferences?.image?.src ??
-													''}.webp"
+												src="{currentUrl}/{item?.itemReferences?.image?.src ?? ''}.webp"
 												alt={item?.name?.kr ?? ''}
 											/>
 										</div>
@@ -89,23 +149,27 @@
 		{/if}
 	</div>
 	<!-- 기본 형태 | 이미지가 들어가는 경우 -->
-	{#if gameInit?.content?.info?.item?.option.main && itemData.ItemOpt}
+	{#if gameInit?.content?.info?.item?.option.main && propertyBase.main}
 		<div class="w-full border-t border-gray-200 p-3">
 			<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 				추천 메인 속성
 			</h5>
 			<ul class="flex">
-				{#each itemData.ItemOpt as Optitem}
+				{#each propertyBase.main as Optitem}
 					<li class="block flex rounded-lg p-3 px-4 hover:bg-gray-50 dark:hover:bg-gray-700">
 						<div class="image-box mr-3 h-16 w-16 rounded-full bg-gray-400 p-2 dark:bg-gray-800">
 							<img
 								class="h-full w-full"
-								src="{currentUrl}/assets/test/content/{Optitem.iconPath}.webp"
+								src="{currentUrl}/assets/image/{gameInit.gameId}/icon/IconRelic{Optitem.relicType}.webp"
 							/>
 						</div>
 						<div class="pt-2">
-							<h5 class="text-xl font-semibold">{Optitem.optName}</h5>
-							<span class="font-base text-sm text-gray-500 dark:text-gray-400">{Optitem.name}</span>
+							<h5 class="text-xl font-semibold">
+								{getFormattedProperty(Optitem.property, gameInit.gameId)}
+							</h5>
+							<span class="font-base text-sm text-gray-500 dark:text-gray-400"
+								>{getFormattedType(Optitem.relicType, gameInit.gameId)}</span
+							>
 						</div>
 					</li>
 				{/each}
@@ -113,13 +177,17 @@
 		</div>
 	{/if}
 	<!-- 기본 형태 | 텍스트만 표기시 -->
-	{#if gameInit?.content?.info?.item?.option.sub && itemData.ItemOpt}
+	{#if gameInit?.content?.info?.item?.option.sub && propertyBase.sub}
 		<div class="w-full border-t border-gray-200 p-3 pb-0">
 			<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 				추천 보조 속성
 			</h5>
 			<div class="flex pb-3 pl-3">
-				<h5 class="text-lg font-normal">치명타 확률, 치명타 피해, 공력력%</h5>
+				<h5 class="text-lg font-normal">
+					{#each propertyBase.sub as Optitem}
+						{getFormattedProperty(Optitem, gameInit.gameId) + ', '}
+					{/each}
+				</h5>
 			</div>
 		</div>
 	{/if}

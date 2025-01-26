@@ -30,6 +30,7 @@
 	// 캐릭터 정보 데이터 초기화
 	let infoData = data.info;
 	let itemData = infoData.info.itemData;
+	let propertyBase = infoData.info.propertyBase;
 	let gachaData = Object.values(infoData.info.ranks);
 
 	// 캐릭터 정보 배경색 계산 함수
@@ -132,7 +133,7 @@
 							<!-- 메인 아이템 - MainItemView -->
 							<MainItemView itemData={infoData.info.itemData.card} {currentUrl} {isMobile} />
 							<!-- 장착용 아이템 - EquipmentItemView -->
-							<EquipmentItemView {itemData} {currentUrl} {isMobile} {contentColor} />
+							<EquipmentItemView {itemData} {propertyBase} {currentUrl} {isMobile} {contentColor} />
 							<!-- 스킬 처리 -CarouselListView -->
 							<CarouselListView
 								listData={infoData.skill}

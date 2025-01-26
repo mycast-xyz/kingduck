@@ -2,6 +2,13 @@ export class HonkaiStarRailInit {
 	init() {
 		return {
 			gameId: 'HonkaiStarRail',
+			copyright: {
+				title: 'KingDuck는 붕괴: 스타레일 플레이어를 위한 비공식 정보 웹사이트 입니다.',
+				description: '해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 HoYoverse에 있습니다.',
+				author: 'KingDuck',
+				authorEmail: '@gmail.com',
+				authorName: 'KingDuck'
+			},
 			// 등급 정보
 			rarity: {
 				// 기본은 1~5 단위로 숫자로 매길것
@@ -100,6 +107,7 @@ export class HonkaiStarRailInit {
 						name: '성흔 돌파',
 						option: true,
 						view: true,
+						color: '#242a4d',
 						level: false
 					}
 				}

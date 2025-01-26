@@ -102,6 +102,18 @@
 				});
 			}
 			return description || '설명이 없습니다.';
+		} else if (item.params) {
+			let description = item.description;
+			if (item.params) {
+				description = description.replace(/#(\d)\[(i|f\d)]/g, (match: string) => {
+					const num = match.match(/\d/)?.[0];
+					if (!num) return match;
+					const index = parseInt(num) - 1;
+					const value = item.params[index] ?? 0;
+					return (value * 100).toFixed(1);
+				});
+			}
+			return description || '설명이 없습니다.';
 		} else if (item?.description) {
 			return item?.description?.replace(/#(\d)\[(i|f\d)]/g) || '설명이 없습니다.';
 		} else {
@@ -263,7 +275,7 @@
 								</h5>
 							</div>
 						</div>
-						{#if selectedList?.levelData && initData?.levle}
+						{#if selectedList?.levelData}
 							<div class="flex items-center">
 								<span class="mr-2 text-sm">LEVEL</span>
 								<span class="mr-4 text-sm">{selectedLevel}</span>

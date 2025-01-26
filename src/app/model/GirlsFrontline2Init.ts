@@ -2,6 +2,14 @@ export class GirlsFrontline2Init {
 	init() {
 		return {
 			gameId: 'GirlsFrontline2Exilium',
+			copyright: {
+				title: 'KingDuck는 소녀전선2: 망명 플레이어를 위한 비공식 정보 웹사이트 입니다.',
+				description:
+					'해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 Sunborn(上海散爆网络科技有限公司)에 있습니다.',
+				author: 'KingDuck',
+				authorEmail: '@gmail.com',
+				authorName: 'KingDuck'
+			},
 			// 등급 정보
 			rarity: {
 				// 기본은 1~5 단위로 숫자로 매길것
@@ -97,6 +105,7 @@ export class GirlsFrontline2Init {
 						name: '뉴럴 헬릭스',
 						option: true,
 						view: true,
+						color: '#3c747a',
 						level: false
 					},
 					// 돌파 정보
