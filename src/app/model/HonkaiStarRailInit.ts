@@ -9,6 +9,19 @@ export class HonkaiStarRailInit {
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'
 			},
+			// 속성 정보
+			type: {
+				damageType: {
+					name: '속성',
+					isWhite: false,
+					isTwoRow: false
+				}, // 위상 속성
+				baseTypeChar: {
+					name: '운명의 길',
+					isWhite: true,
+					isTwoRow: false
+				} // 위상 속성 // 무기 속성
+			},
 			// 등급 정보
 			rarity: {
 				// 기본은 1~5 단위로 숫자로 매길것

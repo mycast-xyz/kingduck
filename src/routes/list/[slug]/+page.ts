@@ -50,6 +50,31 @@ export const load: PageLoad = async ({ params, url }) => {
 		}
 	};
 
+	const gameTypeConfig = {
+		headers: {
+			//"x-access-token": userToken,
+		},
+		params: {
+			gameId: gameInfo.id
+		}
+	};
+
+	let gameType;
+
+	await axios
+		.get(currentUrl + '/api/v0/type/get/' + params.slug, gameInfoConfig)
+		.then((res) => {
+			if (res.data.resultCode === 200) {
+				//console.log(res.data.items);
+				gameType = res.data.items;
+			} else {
+				console.log('err: 서버 코드 에러');
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
 	// 추후에 init를 들고 오면 처리 구현이 틀려짐
 	let setInit;
 	switch (params.slug) {
@@ -84,6 +109,7 @@ export const load: PageLoad = async ({ params, url }) => {
 		url: currentUrl,
 		isMobile: !!isMobile,
 		info: gameInfo,
-		list: data
+		list: data,
+		type: gameType
 	};
 };

@@ -10,6 +10,27 @@ export class GirlsFrontline2Init {
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'
 			},
+			// 속성 정보
+			type: {
+				corpType: {
+					// 소속 속성
+					name: '소속',
+					isWhite: false,
+					isTwoRow: true
+				},
+				weaponType: {
+					// 무기 속성
+					name: '무기',
+					isWhite: true,
+					isTwoRow: true
+				},
+				elementType: {
+					// 속성 타입
+					name: '속성',
+					isWhite: true,
+					isTwoRow: false
+				}
+			},
 			// 등급 정보
 			rarity: {
 				// 기본은 1~5 단위로 숫자로 매길것
@@ -18,9 +39,7 @@ export class GirlsFrontline2Init {
 				list: {
 					'5': '정예',
 					'4': '표준',
-					'3': '구형',
-					'2': '초기',
-					'1': '초기'
+					'3': '구형'
 				},
 				attribute: {
 					element: true, // 위상 속성
