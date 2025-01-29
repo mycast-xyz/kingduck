@@ -16,19 +16,22 @@ export class GirlsFrontline2Init {
 					// 소속 속성
 					name: '소속',
 					isWhite: false,
-					isTwoRow: true
+					isTwoRow: true,
+					isMenuOpen: false
 				},
 				weaponType: {
 					// 무기 속성
 					name: '무기',
 					isWhite: true,
-					isTwoRow: true
+					isTwoRow: true,
+					isMenuOpen: false
 				},
 				elementType: {
 					// 속성 타입
 					name: '속성',
-					isWhite: true,
-					isTwoRow: false
+					isWhite: false,
+					isTwoRow: false,
+					isMenuOpen: false
 				}
 			},
 			// 등급 정보
@@ -45,26 +48,16 @@ export class GirlsFrontline2Init {
 					element: true, // 위상 속성
 					path: true, // 무기 속성
 					corp: true // 직업 정보
-				}
+				},
+				isMenuOpen: false
 			},
 			// 목록 표시 설정
 			list: {
 				// 캐릭터 목록 설정
 				character: {
 					view: true,
-					type: {
-						element: true, // 위상 속성
-						path: true, // 무기 속성
-						corp: true // 직업 정보
-					},
 					search: {
-						text: true,
-						attribute: {
-							element: true, // 위상 속성
-							path: true, // 무기 속성
-							corp: true, // 직업 정보
-							rarity: true // 등급 정보
-						}
+						text: true
 					}
 				},
 				// 아이템 목록 설정

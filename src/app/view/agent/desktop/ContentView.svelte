@@ -11,6 +11,7 @@
 	import MainItemView from '../../info/MainItemView.svelte';
 	import EquipmentItemView from '../../info/EquipmentItemView.svelte';
 	import CarouselListView from '../../info/CarouselListView.svelte';
+	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 가져오기
 	const { data } = $props<{ data: any }>();
@@ -160,6 +161,8 @@
 					</div>
 					-->
 				</div>
+
+				<FooterView />
 			</div>
 		</div>
 	</article>

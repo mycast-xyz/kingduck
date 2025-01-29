@@ -14,12 +14,14 @@ export class HonkaiStarRailInit {
 				damageType: {
 					name: '속성',
 					isWhite: false,
-					isTwoRow: false
+					isTwoRow: false,
+					isMenuOpen: false
 				}, // 위상 속성
 				baseTypeChar: {
 					name: '운명의 길',
 					isWhite: true,
-					isTwoRow: false
+					isTwoRow: false,
+					isMenuOpen: false
 				} // 위상 속성 // 무기 속성
 			},
 			// 등급 정보
@@ -28,29 +30,19 @@ export class HonkaiStarRailInit {
 				default: true,
 				type: 'number',
 				list: {
-					'5': '정예',
-					'4': '표준',
-					'3': '구형',
-					'2': '초기',
-					'1': '초기'
-				}
+					'5': '5성',
+					'4': '4성',
+					'3': '3성'
+				},
+				isMenuOpen: false
 			},
 			// 목록 표시 설정
 			list: {
 				// 캐릭터 목록 설정
 				character: {
 					view: true,
-					type: {
-						element: true, // 위상 속성
-						path: true // 무기 속성
-					},
 					search: {
-						text: true,
-						attribute: {
-							element: true, // 위상 속성
-							path: true, // 무기 속성
-							rarity: true // 등급 정보
-						}
+						text: true
 					}
 				},
 				// 아이템 목록 설정
