@@ -54,8 +54,6 @@ export const load: PageLoad = async ({ params, url }) => {
 			console.log(err);
 		});
 
-	console.log(data);
-
 	return {
 		isMobile: isMobile,
 		url: currentUrl,
