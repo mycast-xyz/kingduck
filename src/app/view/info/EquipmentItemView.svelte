@@ -51,6 +51,9 @@
 		return type;
 	};
 
+	// 스킬 관련 상태 관리
+	let selectedList = $state(null);
+
 	// 장비 착용 부분에 대한 안내 표시
 	const getFormattedProperty = (property: any, gameId: string) => {
 		let result = '';
@@ -84,6 +87,108 @@
 		}
 		return result;
 	};
+
+	console.log(itemData);
+
+	// 이미지 변수 처리를 위한 구문
+	const getFormattedImage = (item: any) => {
+		return item.image.src ? item.image.src : item.image;
+	};
+
+	// 이름 변수 처리를 위한 구문
+	const getFormattedName = (item: any) => {
+		// 한국어 이름이 있는 경우
+		if (item.name?.kr) {
+			return item.name.kr.replace(/<[^>]*>/g, '');
+		}
+
+		// Name 속성이 있는 경우
+		if (item.name?.Name) {
+			return item.name.Name;
+		}
+
+		// title 속성이 있는 경우
+		if (item.title) {
+			return item.title;
+		}
+
+		// name이 문자열인 경우
+		if (typeof item.name === 'string') {
+			return item.name;
+		}
+
+		// 기본값
+		return '';
+	};
+
+	const getFormattedDescription = (item: any, selectedLevel: number) => {
+		if (item?.info) {
+			let description = item.info;
+			if (item.levelData && item.levelData[selectedLevel - 1]?.params) {
+				const params = item.levelData[selectedLevel - 1].params;
+				description = description
+					.replace(/#(\d+)\[(i|f\d)]/g, (match: string) => {
+						const num = match.match(/\d+/)?.[0];
+						if (!num) return match;
+						const index = parseInt(num) - 1;
+						const value = params[index] ?? 0;
+						return value.toFixed(1);
+					})
+					.replace(/color:#FFFFFF/g, '');
+			}
+			return description || '설명이 없습니다.';
+		} else if (item?.Desc) {
+			let description = item.Desc;
+			if (item.ParamList) {
+				description = description.replace(/#(\d)\[(i|f\d)]/g, (match: string) => {
+					const num = match.match(/\d/)?.[0];
+					if (!num) return match;
+					const index = parseInt(num) - 1;
+					const value = item.ParamList[index] ?? 0;
+					return (value * 100).toFixed(1);
+				});
+			}
+			return description || '설명이 없습니다.';
+		} else if (item.params) {
+			let description = item.description;
+			if (item.params) {
+				description = description.replace(/#(\d)\[(i|f\d)]/g, (match: string) => {
+					const num = match.match(/\d/)?.[0];
+					if (!num) return match;
+					const index = parseInt(num) - 1;
+					const value = item.params[index] ?? 0;
+					return (value * 100).toFixed(1);
+				});
+			}
+			return description || '설명이 없습니다.';
+		} else if (item.ParamList) {
+			// 스타레일 유물 처리 구문
+			let description = item.kr;
+			console.log(item);
+
+			if (item.ParamList) {
+				const params = item.ParamList;
+				description = description
+					.replace(/#(\d+)\[(i|f\d)]/g, (match: string) => {
+						const num = match.match(/\d+/)?.[0];
+						if (!num) return match;
+						const index = parseInt(num) - 1;
+						const value = params[index] ?? 0;
+						return value.toFixed(1);
+					})
+					.replace(/color:#FFFFFF/g, '');
+			}
+			return description || '설명이 없습니다.';
+		} else if (item?.description) {
+			return item?.description?.replace(/#(\d)\[(i|f\d)]/g) || '설명이 없습니다.';
+		} else {
+			return '설명이 없습니다.';
+		}
+	};
+
+	$effect(() => {
+		console.log(selectedList?.itemReferences?.set);
+	});
 </script>
 
 <Layer title="추천 {gameInit?.content?.info?.item?.name || '아이템'}">
@@ -101,7 +206,9 @@
 						<div class="flex w-full justify-start overflow-x-auto py-3 pb-0">
 							{#each itemData[key] as item}
 								{#if !isMobile}
-									<div
+									<button
+										type="button"
+										onclick={() => (selectedList = item)}
 										style:background={contentColor}
 										class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
 									>
@@ -119,9 +226,11 @@
 												{item?.name?.kr ?? ''}
 											</h5>
 										</div>
-									</div>
+									</button>
 								{:else}
-									<div
+									<button
+										type="button"
+										onclick={() => (selectedList = item)}
 										style:background={contentColor}
 										class="mx-2 min-w-24 max-w-24 rounded-lg border border-gray-200 bg-gray-500 shadow first:ml-0 dark:border-gray-700"
 									>
@@ -139,7 +248,7 @@
 												{item?.name?.kr ?? ''}
 											</h5>
 										</div>
-									</div>
+									</button>
 								{/if}
 							{/each}
 						</div>
@@ -148,6 +257,41 @@
 			{/each}
 		{/if}
 	</div>
+	{#if selectedList}
+		<div class="w-full border-t border-gray-200 p-3">
+			<div class="block flex rounded-lg p-3 px-4">
+				<div
+					style:background={contentColor}
+					class="image-box mr-3 h-16 w-16 flex-none overflow-auto rounded-full bg-gray-400 p-2 dark:bg-gray-800"
+				>
+					{#if selectedList?.itemReferences?.image}
+						<img
+							class="h-full w-full"
+							src="{currentUrl}/{getFormattedImage(selectedList.itemReferences).replace(
+								/\.webp$/,
+								''
+							)}.webp"
+							alt={getFormattedName(selectedList)}
+						/>
+					{/if}
+				</div>
+				<div class="flex-1 pt-2">
+					<div class="flex items-center justify-between">
+						<h5 class="text-xl font-semibold">
+							{getFormattedName(selectedList)}
+						</h5>
+					</div>
+					<span class=" text-lg font-normal text-gray-500 dark:text-gray-400">
+						{#if selectedList?.itemReferences?.set}
+							{#each Object.entries(selectedList?.itemReferences?.set ?? {}) as [key, value]}
+								<p>{key}세트 : {@html getFormattedDescription(value)}</p>
+							{/each}
+						{/if}
+					</span>
+				</div>
+			</div>
+		</div>
+	{/if}
 	<!-- 기본 형태 | 이미지가 들어가는 경우 -->
 	{#if gameInit?.content?.info?.item?.option.main && propertyBase.main}
 		<div class="w-full border-t border-gray-200 p-3">
