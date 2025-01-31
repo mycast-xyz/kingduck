@@ -84,7 +84,10 @@
 						const num = match.match(/\d+/)?.[0];
 						if (!num) return match;
 						const index = parseInt(num) - 1;
-						const value = params[index] ?? 0;
+						let value = params[index] ?? 0;
+						if (params[index] < 10) {
+							value = params[index] * 100 ?? 0;
+						}
 						return value.toFixed(1);
 					})
 					.replace(/color:#FFFFFF/g, '');
