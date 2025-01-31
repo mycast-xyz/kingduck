@@ -39,6 +39,14 @@
 			console.log('토큰 정보:', userInfo);
 		}
 	}
+
+	// 로그아웃 함수
+	const logout = () => {
+		authTokenService.clearTokens(); // 토큰 제거
+		isTokenValid = false; // 토큰 유효성 상태 업데이트
+		userInfo.set({}); // 유저 정보 초기화
+		window.location.href = '/'; // 홈페이지로 리다이렉트
+	};
 </script>
 
 <header
@@ -148,7 +156,10 @@
 								<i class="ri-instance-line mr-3"></i>
 								<span>어드민 페이지 이동</span>
 							</a>
-							<button class="flex w-full items-center px-4 py-2 text-left hover:bg-gray-100">
+							<button
+								onclick={logout}
+								class="flex w-full items-center px-4 py-2 text-left hover:bg-gray-100"
+							>
 								<i class="ri-logout-box-line mr-3"></i>
 								<span>로그아웃</span>
 							</button>
