@@ -6,6 +6,7 @@ import { MobileUtils } from '../../../utils/mobile/MobileUtils';
 import { GameSettingInitService } from '../../../app/service/GameSettingService';
 import { HonkaiStarRailInit } from '../../../app/model/HonkaiStarRailInit';
 import { GirlsFrontline2Init } from '../../../app/model/GirlsFrontline2Init';
+import { nikkeInit } from '../../../app/model/nikkeInit';
 
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
@@ -83,6 +84,9 @@ export const load: PageLoad = async ({ params, url }) => {
 			break;
 		case 'GirlsFrontline2Exilium':
 			GameSettingInitService.updateGameInit(new GirlsFrontline2Init().setInit());
+			break;
+		case 'nikke':
+			GameSettingInitService.updateGameInit(new nikkeInit().setInit());
 			break;
 		default:
 			break;

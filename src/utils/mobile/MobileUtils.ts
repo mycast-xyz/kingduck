@@ -1,7 +1,6 @@
 export class MobileUtils {
 	static isMobile(): boolean {
 		const userAgent = navigator.userAgent;
-		console.log(userAgent);
 
 		const isMobile =
 			userAgent.match(

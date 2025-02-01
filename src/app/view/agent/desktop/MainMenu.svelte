@@ -5,8 +5,6 @@
 
 	const { data } = $props<{ data: PageData }>();
 
-	console.log(data);
-
 	const toggleNav = () => {
 		navActive.update((navActive) => !navActive);
 		if ($navActive === false) {
@@ -24,8 +22,6 @@
 		const token = authTokenService.getToken();
 		return authTokenService.isTokenValid(token || '');
 	};
-
-	console.log(checkToken());
 
 	let isTokenValid = checkToken();
 

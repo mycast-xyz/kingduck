@@ -47,12 +47,15 @@ export const load: PageLoad = async ({ params, url }) => {
 			if (res.data.resultCode === 200) {
 				data = res.data.items;
 			} else {
-				console.log('err: 서버 코드 에러');
+				error(500, { message: '서버 코드 에러' });
 			}
 		})
 		.catch((err) => {
+			error(500, { message: '서버 코드 에러' });
 			console.log(err);
 		});
+
+	console.log(data);
 
 	return {
 		isMobile: isMobile,

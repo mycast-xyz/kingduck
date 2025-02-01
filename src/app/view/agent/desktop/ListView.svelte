@@ -224,7 +224,7 @@
 												class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100"
 											>
 												<img
-													class="mr-1 h-6 w-6"
+													class="mr-1 h-6 w-6 object-contain"
 													style={gameInit?.type[key].isWhite
 														? 'filter: brightness(0) invert(0.75);'
 														: ''}

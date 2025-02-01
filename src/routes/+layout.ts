@@ -3,6 +3,7 @@ import { browser } from '$app/environment';
 import { page } from '$app/stores';
 import axios from 'axios';
 import { MobileUtils } from '../utils/mobile/MobileUtils';
+import { error } from '@sveltejs/kit';
 
 export const load: LayoutLoad = async ({ url }) => {
 	let isMobile = false;
@@ -30,8 +31,6 @@ export const load: LayoutLoad = async ({ url }) => {
 		.catch((err) => {
 			console.log(err);
 		});
-
-	console.log(isAuthPage);
 
 	return {
 		isAuthPage: isAuthPage,
