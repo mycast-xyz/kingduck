@@ -4,14 +4,7 @@
 	const { data } = $props<{ data: PageData }>();
 
 	const toggleNav = () => {
-		console.log('toggleNav');
-
 		navActive.update((navActive) => !navActive);
-		if ($navActive === false) {
-			console.log($mainMenuActive);
-		} else {
-			console.log($mainMenuActive);
-		}
 	};
 </script>
 

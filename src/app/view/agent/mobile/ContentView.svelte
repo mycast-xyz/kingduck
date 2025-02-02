@@ -167,6 +167,14 @@
 								{isMobile}
 								initData={gameInit?.content?.info?.gacha}
 							/>
+						{:else if gameInit.gameId === 'nikke'}
+							<!-- 스킬 처리 -CarouselListView -->
+							<CarouselListView
+								listData={infoData.skill}
+								{currentUrl}
+								{isMobile}
+								initData={skillInit}
+							/>
 						{/if}
 					</div>
 				</div>

@@ -7,6 +7,13 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+		interface Locals {
+			colorTheme: import('$lib/types').ColorTheme;
+		}
+		// interface Platform {}
+		interface Session {
+			colorTheme: import('$lib/types').ColorTheme;
+		}
 	}
 }
 

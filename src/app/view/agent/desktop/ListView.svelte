@@ -35,8 +35,6 @@
 		selectedTypeOption.set(Object.fromEntries(Object.keys(value.type).map((key) => [key, ''])));
 	});
 
-	console.log($selectedTypeOption);
-
 	// 메뉴 드롭다운 상태 관리
 	// 메뉴 등급 토글 함수
 	const toggleMenuRarity = () => {

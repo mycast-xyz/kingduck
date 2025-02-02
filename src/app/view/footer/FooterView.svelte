@@ -8,7 +8,7 @@
 	});
 </script>
 
-<footer class="h-10 w-full bg-gray-100">
+<footer class="mt-auto w-full bg-gray-100">
 	<hr class="mb-2 mt-4 border-gray-200 dark:border-gray-700" />
 	<div class="flex justify-center px-6 pb-6">
 		<span class="text-sm font-light text-gray-500">

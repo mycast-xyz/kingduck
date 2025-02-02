@@ -91,7 +91,7 @@ export class nikkeInit {
 			content: {
 				// 이미지/영상 표시 설정
 				image: {
-					video: false,
+					video: true,
 					image: true
 				},
 				name: true,
@@ -125,21 +125,6 @@ export class nikkeInit {
 							color: '#373f46',
 							level: false
 						}
-					},
-					helix: {
-						name: '뉴럴 헬릭스',
-						option: true,
-						view: true,
-						color: '#3c747a',
-						level: false
-					},
-					// 돌파 정보
-					gacha: {
-						name: '마인드보강',
-						option: true,
-						view: true,
-						level: false,
-						color: '#373f46'
 					}
 				}
 			}

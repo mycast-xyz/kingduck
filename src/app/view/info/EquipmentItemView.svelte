@@ -88,8 +88,6 @@
 		return result;
 	};
 
-	console.log(itemData);
-
 	// 이미지 변수 처리를 위한 구문
 	const getFormattedImage = (item: any) => {
 		return item.image.src ? item.image.src : item.image;
@@ -167,7 +165,6 @@
 		} else if (item.ParamList) {
 			// 스타레일 유물 처리 구문
 			let description = item.kr;
-			console.log(item);
 
 			if (item.ParamList) {
 				const params = item.ParamList;
@@ -191,10 +188,6 @@
 			return '설명이 없습니다.';
 		}
 	};
-
-	$effect(() => {
-		console.log(selectedList?.itemReferences?.set);
-	});
 </script>
 
 <Layer title="추천 {gameInit?.content?.info?.item?.name || '아이템'}">

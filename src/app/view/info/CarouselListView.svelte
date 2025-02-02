@@ -92,6 +92,12 @@
 					})
 					.replace(/color:#FFFFFF/g, '');
 			}
+			if (description.includes('&2&')) {
+				description = description.replace(/&2&/g, '<br/>');
+				if (description.includes('&10&')) {
+					description = description.replace(/&10&/g, '<hr style="margin: 10px 0" />');
+				}
+			}
 			return description || '설명이 없습니다.';
 		} else if (item?.Desc) {
 			let description = item.Desc;
@@ -148,7 +154,7 @@
 						onkeydown={(e) => e.key === 'Enter' && (selectedList = item)}
 					>
 						<div class="relative h-auto w-full object-scale-down">
-							{#if item.image}
+							{#if item?.image?.url}
 								<img
 									class="m-auto max-w-36 items-center p-4"
 									src="{currentUrl}/{getFormattedImage(item).replace(/\.webp$/, '')}.webp"
@@ -175,7 +181,7 @@
 						style:background-color={initData?.color}
 						class="image-box mr-3 h-16 w-16 flex-none overflow-auto rounded-full bg-gray-400 p-2 dark:bg-gray-800"
 					>
-						{#if selectedList.image}
+						{#if selectedList?.image?.url}
 							<img
 								class="h-full w-full"
 								src="{currentUrl}/{getFormattedImage(selectedList).replace(/\.webp$/, '')}.webp"
@@ -230,7 +236,7 @@
 					onkeydown={(e) => e.key === 'Enter' && (selectedList = item)}
 				>
 					<div class="relative h-auto w-full object-scale-down">
-						{#if item.image}
+						{#if item?.image?.url}
 							<img
 								class="m-auto min-w-24 max-w-24 items-center p-4"
 								src="{currentUrl}/{getFormattedImage(item).replace(/\.webp$/, '')}.webp"
@@ -264,7 +270,7 @@
 								style:background-color={initData?.color}
 								class="image-box mr-3 h-10 w-10 flex-none rounded-full bg-gray-400 p-2 dark:bg-gray-800"
 							>
-								{#if selectedList.image}
+								{#if selectedList?.image?.url}
 									<img
 										class="h-full w-full"
 										src="{currentUrl}/{getFormattedImage(selectedList).replace(/\.webp$/, '')}.webp"

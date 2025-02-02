@@ -32,7 +32,6 @@
 		const token = authTokenService.getToken();
 		if (token) {
 			userInfo.set(JSON.parse(atob(token.split('.')[1])));
-			console.log('토큰 정보:', userInfo);
 		}
 	}
 

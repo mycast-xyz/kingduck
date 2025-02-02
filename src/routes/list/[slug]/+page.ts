@@ -32,7 +32,6 @@ export const load: PageLoad = async ({ params, url }) => {
 		.get(currentUrl + '/api/v0/game/' + params.slug, gameInfoConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
-				//console.log(res.data.items);
 				gameInfo = res.data.items;
 			} else {
 				console.log('err: 서버 코드 에러');
@@ -66,7 +65,6 @@ export const load: PageLoad = async ({ params, url }) => {
 		.get(currentUrl + '/api/v0/type/get/' + params.slug, gameInfoConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
-				//console.log(res.data.items);
 				gameType = res.data.items;
 			} else {
 				console.log('err: 서버 코드 에러');
@@ -98,7 +96,6 @@ export const load: PageLoad = async ({ params, url }) => {
 		.get(currentUrl + '/api/v0/character/' + params.slug, characterListConfig)
 		.then((res) => {
 			if (res.data.resultCode === 200) {
-				//console.log(res.data.items);
 				data = res.data.items;
 			} else {
 				console.log('err: 서버 코드 에러');

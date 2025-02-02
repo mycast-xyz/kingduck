@@ -9,8 +9,6 @@ export class CharacterRarityService {
 	}
 
 	public static getInstance(gameInit?: any): CharacterRarityService {
-		console.log(gameInit);
-
 		if (!CharacterRarityService.instance) {
 			if (!gameInit) {
 				throw new Error('gameInit is required for first initialization');

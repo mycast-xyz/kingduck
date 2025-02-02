@@ -6,7 +6,7 @@ import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
 import { GirlsFrontline2Init } from '../../../../app/model/GirlsFrontline2Init';
 import { HonkaiStarRailInit } from '../../../../app/model/HonkaiStarRailInit';
 import { GameSettingInitService } from '../../../../app/service/GameSettingService';
-
+import { nikkeInit } from '../../../../app/model/nikkeInit';
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
 
@@ -33,6 +33,8 @@ export const load: PageLoad = async ({ params, url }) => {
 		case 'GirlsFrontline2Exilium':
 			GameSettingInitService.updateGameInit(new GirlsFrontline2Init().setInit());
 			break;
+		case 'nikke':
+			GameSettingInitService.updateGameInit(new nikkeInit().setInit());
 		default:
 			break;
 	}
@@ -52,10 +54,7 @@ export const load: PageLoad = async ({ params, url }) => {
 		})
 		.catch((err) => {
 			error(500, { message: '서버 코드 에러' });
-			console.log(err);
 		});
-
-	console.log(data);
 
 	return {
 		isMobile: isMobile,

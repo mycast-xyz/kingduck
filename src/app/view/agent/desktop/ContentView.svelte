@@ -60,7 +60,7 @@
 		<!-- 캐릭터 이미지 - InfoMainImageView -->
 		<InfoMainImageView {data} />
 		<!-- 스크롤 처리 -->
-		<div id="info-content" class="h-full w-[inherit] overflow-y-auto">
+		<div id="info-content" class="flex h-full w-[inherit] flex-col overflow-y-auto">
 			<div class="w-full px-5 pt-5">
 				{#if gameInit.gameId === 'HonkaiStarRail'}
 					<!-- 메인 아이템 - MainItemView -->
@@ -99,6 +99,14 @@
 						{currentUrl}
 						{isMobile}
 						initData={gameInit?.content?.info?.gacha}
+					/>
+				{:else if gameInit.gameId === 'nikke'}
+					<!-- 스킬 처리 -CarouselListView -->
+					<CarouselListView
+						listData={infoData.skill}
+						{currentUrl}
+						{isMobile}
+						initData={skillInit}
 					/>
 				{/if}
 				<!-- 속성정보 - 기본틀 -->
@@ -161,9 +169,8 @@
 					</div>
 					-->
 				</div>
-
-				<FooterView />
 			</div>
+			<FooterView />
 		</div>
 	</article>
 </div>

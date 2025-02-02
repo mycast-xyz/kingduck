@@ -99,7 +99,7 @@
 		class="absolute inset-x-0 -bottom-4 h-72 w-full px-2 text-white md:bottom-0 md:h-80 md:px-6"
 	>
 		<!-- 캐릭터 이름 표기 -->
-		<div id="info-title" class="w-full border-b px-2 pb-3 pt-20">
+		<div id="info-title" class="w-full border-b px-2 pb-3 pt-12">
 			<!--서브타이틀-->
 			<h5 class="break-keep pb-1 text-lg font-extrabold"></h5>
 			<!-- 메인타이틀-->
@@ -152,7 +152,7 @@
 			</div>
 		</div>
 		<!-- 캐릭터 타입 표기 -->
-		<div class="flex w-auto justify-start p-2 pt-3">
+		<div class="flex w-auto flex-wrap justify-start gap-3 p-2 pt-3">
 			{#each Object.entries(infoData.type) as [key, value]}
 				{#if value?.image?.url}
 					<div class="mr-4 flex h-6">
