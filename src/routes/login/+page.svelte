@@ -3,7 +3,7 @@
 
 	import { goto } from '$app/navigation';
 	import { toastStore } from '../../app/service/ToastService';
-	import { authTokenService } from '../../app/service/AuthTokenService';
+	import { authTokenService } from '../../app/service/auth/AuthTokenService';
 
 	const { data } = $props<{ data: any }>();
 	const currentUrl = data.url;

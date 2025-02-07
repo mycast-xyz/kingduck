@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { writable } from 'svelte/store';
-	import { GameSettingInitService } from '../../../service/GameSettingService';
+	import { GameSettingInitService } from '../../../service/game/GameSettingService';
+
+	// 캐릭터 리스트 서비스
+	import CharacterListService from '../../../../app/service/character/CharacterListService';
 
 	// 페이지 컴포넌트
 	import FooterView from '../../footer/FooterView.svelte';
 	import ListCardView from '../../list/ListCardView.svelte';
 
-	const { data } = $props<{}>();
+	const { data } = $props<{ data: any }>();
 
 	// 페이지 기본 정보
 	const currentUrl = data.url;
@@ -21,6 +24,13 @@
 	const TypeOption: any = writable({});
 	const selectedTypeOption: any = writable({});
 	const selectedRarity: any = writable('');
+
+	const searchText = writable('');
+	const rarityText = writable('');
+	const typeText = writable('');
+
+	// data.list를 반응형 상태로 만들기
+	let characterList = $state(data.list);
 
 	GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
@@ -57,66 +67,75 @@
 	};
 	// 메뉴 등급 버튼 토글 함수
 	const toggleMenuRarityButton = (key: string) => {
-		console.log(key);
-		// 현재 URL에서 쿼리 파라미터 업데이트
-		const url = new URL(window.location.href);
-		url.searchParams.set('rarity', key);
-		window.history.pushState({}, '', url);
-
+		rarityText.set(key);
 		selectedRarity.set(key);
 	};
 	// 메뉴 타입 버튼 토글 함수
-	const toggleMenuTypeButton = (key: string, value: string) => {
-		// 현재 URL에서 쿼리 파라미터 업데이트
-		const url = new URL(window.location.href);
-		const params = url.searchParams;
-
-		// 기존 type 파라미터 가져오기
-		const existingTypes = params.getAll('type');
-		let combinedType = '';
-
+	const toggleMenuTypeButton = async (key: string, value: string) => {
 		// 현재 key에 대한 기존 값 찾기 및 제거
-		existingTypes.forEach((type) => {
-			const types = type.split('*');
+		let currentTypeText = '';
+		typeText.subscribe((value) => {
+			currentTypeText = value;
+		});
+		if (currentTypeText) {
+			const types = currentTypeText.split('*');
+			const uniqueTypes = new Map(); // 중복 제거를 위한 Map 사용
+
 			types.forEach((t) => {
 				if (t.includes('+')) {
 					const [typeKey, typeValue] = t.split('+');
-					// 현재 key와 다른 타입만 유지
+					// 현재 key와 다른 타입만 저장
 					if (typeKey !== key) {
-						if (combinedType === '') {
-							combinedType = `${typeKey}+${typeValue}`;
-						} else {
-							combinedType += `++${typeKey}+${typeValue}`;
-						}
+						uniqueTypes.set(typeKey, typeValue);
 					}
 				}
 			});
-		});
+
+			// Map에서 문자열로 변환
+			currentTypeText = Array.from(uniqueTypes.entries())
+				.map(([k, v]) => `${k}+${v}`)
+				.join('*');
+		}
 
 		// 새로운 값이 있으면 추가
 		if (value) {
-			if (combinedType === '') {
-				combinedType = `${key}+${value}`;
+			if (currentTypeText === '') {
+				currentTypeText = `${key}+${value}`;
 			} else {
-				combinedType += `*${key}+${value}`;
+				// 중복 체크 후 추가
+				if (!currentTypeText.includes(key)) {
+					currentTypeText += `*${key}+${value}`;
+				}
 			}
 		}
 
-		// 기존 type 파라미터 모두 제거
-		params.delete('type');
-
-		// 새로운 조합된 값 추가
-		if (combinedType) {
-			params.append('type', combinedType);
-		}
-
-		goto(`${url}#showModal`, { replaceState: true });
+		typeText.set(currentTypeText);
 
 		let currentOptions: Record<string, string> = {};
+
 		selectedTypeOption.update((val: any) => {
 			currentOptions = val;
 			return { ...val, [key]: value };
 		});
+
+		await dataUpdate();
+	};
+
+	const dataUpdate = async () => {
+		const characterListConfig = CharacterListService.getCharacterListConfig(
+			data.info.id,
+			$typeText,
+			$rarityText
+		);
+
+		const newList = await CharacterListService.getCharacterList(
+			currentUrl,
+			data.params,
+			characterListConfig
+		);
+
+		// 상태 업데이트
+		characterList = newList;
 	};
 </script>
 
@@ -288,7 +307,7 @@
 		</div>
 
 		<div class="list h-auto w-[calc(100%-320px)] w-[inherit] overflow-y-auto pr-2 pt-16">
-			<ListCardView {data} />
+			<ListCardView data={{ ...data, list: characterList }} />
 
 			<FooterView />
 		</div>

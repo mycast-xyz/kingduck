@@ -3,8 +3,8 @@
 	import { register } from 'swiper/element/bundle';
 
 	// 커스텀 서비스 임포트
-	import { GameSettingInitService } from '../../service/GameSettingService';
-	import { CharacterRarityService } from '../../service/CharacterRarityService';
+	import { GameSettingInitService } from '../../service/game/GameSettingService';
+	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';

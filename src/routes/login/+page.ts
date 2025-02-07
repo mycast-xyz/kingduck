@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { redirect } from '@sveltejs/kit';
-import { authTokenService } from '../../app/service/AuthTokenService';
+import { authTokenService } from '../../app/service/auth/AuthTokenService';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params, url }) => {

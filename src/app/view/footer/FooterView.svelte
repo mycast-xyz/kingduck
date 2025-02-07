@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { GameSettingInitService } from '../../service/GameSettingService';
+	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	// 게임 정보 처리
 	let gameInit: any;
 

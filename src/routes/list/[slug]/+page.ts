@@ -2,12 +2,22 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import axios from 'axios';
 import { browser } from '$app/environment';
+
+// 유틸
 import { MobileUtils } from '../../../utils/mobile/MobileUtils';
-import { GameSettingInitService } from '../../../app/service/GameSettingService';
+
+// 캐릭터 리스트 서비스
+import CharacterListService from '../../../app/service/character/CharacterListService';
+
+// 게임 초기화
+import { GameSettingInitService } from '../../../app/service/game/GameSettingService';
+
+// 게임 초기화 모델
 import { HonkaiStarRailInit } from '../../../app/model/HonkaiStarRailInit';
 import { GirlsFrontline2Init } from '../../../app/model/GirlsFrontline2Init';
 import { nikkeInit } from '../../../app/model/nikkeInit';
 
+// 캐릭터 목록 서비스
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
 
@@ -41,16 +51,11 @@ export const load: PageLoad = async ({ params, url }) => {
 			console.log(err);
 		});
 
-	const characterListConfig = {
-		headers: {
-			//"x-access-token": userToken,
-		},
-		params: {
-			gameId: gameInfo.id,
-			type: url.searchParams.get('type'),
-			rarity: url.searchParams.get('rarity')
-		}
-	};
+	const characterListConfig = CharacterListService.getCharacterListConfig(
+		gameInfo.id,
+		url.searchParams.get('type'),
+		url.searchParams.get('rarity')
+	);
 
 	const gameTypeConfig = {
 		headers: {
@@ -92,20 +97,11 @@ export const load: PageLoad = async ({ params, url }) => {
 			break;
 	}
 
-	let data: any = {};
-
-	await axios
-		.get(currentUrl + '/api/v0/character/' + params.slug, characterListConfig)
-		.then((res) => {
-			if (res.data.resultCode === 200) {
-				data = res.data.items;
-			} else {
-				console.log('err: 서버 코드 에러');
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+	let data: any = await CharacterListService.getCharacterList(
+		currentUrl,
+		params.slug,
+		characterListConfig
+	);
 
 	return {
 		params: params.slug,

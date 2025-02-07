@@ -2,7 +2,7 @@
 	import { ContentBackgroundSet } from '../../../service/ContentBackgroundService';
 
 	// 커스텀 서비스 임포트
-	import { GameSettingInitService } from '../../../service/GameSettingService';
+	import { GameSettingInitService } from '../../../service/game/GameSettingService';
 
 	// 컴포넌트 임포트
 	import InfoMainImageView from '../../info/InfoMainImageView.svelte';

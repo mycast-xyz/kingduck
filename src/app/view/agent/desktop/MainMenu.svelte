@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { authTokenService } from '../../../../app/service/AuthTokenService';
+	import { authTokenService } from '../../../service/auth/AuthTokenService';
 	import { userNavActive } from '../../../../app/service/MainMenuService';
 
 	const { data } = $props<{ data: PageData }>();

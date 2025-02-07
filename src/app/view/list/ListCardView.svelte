@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { GameSettingInitService } from '../../service/GameSettingService';
-	import { CharacterRarityService } from '../../service/CharacterRarityService';
+	import { GameSettingInitService } from '../../service/game/GameSettingService';
+	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 
 	const { data } = $props<{ data: any }>();
 

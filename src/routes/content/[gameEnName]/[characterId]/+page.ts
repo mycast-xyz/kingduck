@@ -5,7 +5,7 @@ import { browser } from '$app/environment';
 import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
 import { GirlsFrontline2Init } from '../../../../app/model/GirlsFrontline2Init';
 import { HonkaiStarRailInit } from '../../../../app/model/HonkaiStarRailInit';
-import { GameSettingInitService } from '../../../../app/service/GameSettingService';
+import { GameSettingInitService } from '../../../../app/service/game/GameSettingService';
 import { nikkeInit } from '../../../../app/model/nikkeInit';
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;

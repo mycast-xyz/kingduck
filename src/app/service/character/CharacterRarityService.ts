@@ -1,4 +1,4 @@
-import { GameSettingInitService } from '../service/GameSettingService';
+import { GameSettingInitService } from '../game/GameSettingService';
 
 export class CharacterRarityService {
 	private static instance: CharacterRarityService;
