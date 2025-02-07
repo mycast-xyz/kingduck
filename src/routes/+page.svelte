@@ -6,7 +6,18 @@
 
 	// 1부터 5까지의 랜덤값 생성
 	const randomNumber = Math.floor(Math.random() * 5) + 1;
+
+	const { title, meta } = $props<{
+		title: string;
+		meta: { description: string; keywords: string };
+	}>();
 </script>
+
+<svelte:head>
+	<title>KingDuck</title>
+	<meta name="description" content="킹덕, KingDuck" />
+	<meta name="keywords" content="킹덕, KingDuck" />
+</svelte:head>
 
 <div
 	class="h-screen w-screen min-w-[1700px] overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800"

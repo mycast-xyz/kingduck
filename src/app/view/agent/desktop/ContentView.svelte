@@ -1,6 +1,4 @@
 <script lang="ts">
-	// 메인 메뉴 활성화 상태를 관리하는 스토어 임포트
-	import { mainMenuActive } from '$lib/stores/mainMenuStore';
 	import { ContentBackgroundSet } from '../../../service/ContentBackgroundService';
 
 	// 커스텀 서비스 임포트
@@ -41,12 +39,6 @@
 		skillInit = gameInit?.content?.info?.skill?.main;
 		gachaInit = gameInit?.content?.info?.gacha;
 	});
-
-	// 메인 뷰 활성화 상태에 따른 스타일 매핑
-	const mainViewActive: any = {
-		80: 'w-[calc(100%-80px)] ml-[80px]',
-		240: 'w-[calc(100%-240px)] ml-[240px]'
-	};
 </script>
 
 <div
@@ -55,7 +47,7 @@
 	<!-- Content -->
 	<article
 		id="info-componet"
-		class="{mainViewActive[$mainMenuActive]} my-0 mr-0 flex h-full overflow-hidden"
+		class="my-0 ml-[80px] mr-0 flex h-full w-[calc(100%-80px)] overflow-hidden"
 	>
 		<!-- 캐릭터 이미지 - InfoMainImageView -->
 		<InfoMainImageView {data} />

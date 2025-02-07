@@ -14,15 +14,42 @@ export const load: PageLoad = async ({ params, url }) => {
 		isMobile = MobileUtils.isMobile();
 	}
 
+	let gameInfo;
+	console.log(url.searchParams.get('type'));
+
 	const currentUrl = 'http://' + url.hostname + ':3000';
 	const characterListConfig = {
 		headers: {
 			//"x-access-token": userToken,
 		},
 		params: {
-			id: params.characterId
+			id: params.characterId,
+			type: url.searchParams.get('type'),
+			rarity: url.searchParams.get('rarity')
 		}
 	};
+
+	const gameInfoConfig = {
+		headers: {
+			//"x-access-token": userToken,
+		},
+		params: {
+			//en: params.slug
+		}
+	};
+
+	await axios
+		.get(currentUrl + '/api/v0/game/' + params.gameEnName, gameInfoConfig)
+		.then((res) => {
+			if (res.data.resultCode === 200) {
+				gameInfo = res.data.items;
+			} else {
+				console.log('err: 서버 코드 에러');
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 
 	// 추후에 init를 들고 오면 처리 구현이 틀려짐
 	let setInit;
@@ -59,6 +86,11 @@ export const load: PageLoad = async ({ params, url }) => {
 	return {
 		isMobile: isMobile,
 		url: currentUrl,
-		info: data
+		info: data,
+		title: `${data.name.kr} - ${gameInfo.title.kr}`,
+		meta: {
+			description: `${data.name.kr}의 상세 정보를 제공합니다.`,
+			keywords: `${gameInfo.title.kr}, 게임, 정보, 가이드, ${data.name.kr}`
+		}
 	};
 };

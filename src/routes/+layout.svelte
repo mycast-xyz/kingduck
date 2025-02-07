@@ -5,8 +5,16 @@
 	import MobileMainMenu from '../app/view/agent/mobile/MainMenu.svelte';
 	import Toast from '../app/view/toast/Toast.svelte';
 
-	const { data, children } = $props<{ data: PageData; children: any }>();
+	const {
+		data,
+		children,
+		title = '게임 정보 사이트'
+	} = $props<{ data: PageData; children: any; title?: string }>();
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
 
 <!-- 토스트 메시지 -->
 <Toast />

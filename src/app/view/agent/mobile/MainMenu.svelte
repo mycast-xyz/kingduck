@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { mainMenuActive, navActive } from '$lib/stores/mainMenuStore';
-
 	const { data } = $props<{ data: PageData }>();
 
+	let navActive = $state(false);
 	const toggleNav = () => {
-		navActive.update((navActive) => !navActive);
+		navActive = !navActive;
 	};
 </script>
 
-<header class="" class:active={$navActive}>
+<header class="" class:active={navActive}>
 	<div
 		class="fixed inset-y-0 left-0 z-50 flex h-16 w-screen flex-wrap items-center justify-between bg-white p-3"
 	>
@@ -40,9 +39,7 @@
 							src={data.url + '/' + gameItem.images[0].url}
 							alt="HonkaiStarRail"
 						/>
-						<span
-							class:active={navActive}
-							class="ml-2 text-sm font-medium transition-all delay-300 duration-200 ease-in-out"
+						<span class="ml-2 text-sm font-medium transition-all delay-300 duration-200 ease-in-out"
 							>{gameItem.title.kr}</span
 						>
 					</a>

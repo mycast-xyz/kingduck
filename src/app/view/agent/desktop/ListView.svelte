@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { writable } from 'svelte/store';
-	import { mainMenuActive } from '$lib/stores/mainMenuStore.js';
 	import { GameSettingInitService } from '../../../service/GameSettingService';
 
 	// 페이지 컴포넌트
@@ -11,11 +11,6 @@
 
 	// 페이지 기본 정보
 	const currentUrl = data.url;
-
-	const mainViewActive: any = {
-		80: 'w-[calc(100%-80px)] ml-[80px]',
-		240: 'w-[calc(100%-240px)] ml-[240px]'
-	};
 
 	// 게임 정보 처리
 	let gameInit: any;
@@ -62,10 +57,61 @@
 	};
 	// 메뉴 등급 버튼 토글 함수
 	const toggleMenuRarityButton = (key: string) => {
+		console.log(key);
+		// 현재 URL에서 쿼리 파라미터 업데이트
+		const url = new URL(window.location.href);
+		url.searchParams.set('rarity', key);
+		window.history.pushState({}, '', url);
+
 		selectedRarity.set(key);
 	};
 	// 메뉴 타입 버튼 토글 함수
 	const toggleMenuTypeButton = (key: string, value: string) => {
+		// 현재 URL에서 쿼리 파라미터 업데이트
+		const url = new URL(window.location.href);
+		const params = url.searchParams;
+
+		// 기존 type 파라미터 가져오기
+		const existingTypes = params.getAll('type');
+		let combinedType = '';
+
+		// 현재 key에 대한 기존 값 찾기 및 제거
+		existingTypes.forEach((type) => {
+			const types = type.split('*');
+			types.forEach((t) => {
+				if (t.includes('+')) {
+					const [typeKey, typeValue] = t.split('+');
+					// 현재 key와 다른 타입만 유지
+					if (typeKey !== key) {
+						if (combinedType === '') {
+							combinedType = `${typeKey}+${typeValue}`;
+						} else {
+							combinedType += `++${typeKey}+${typeValue}`;
+						}
+					}
+				}
+			});
+		});
+
+		// 새로운 값이 있으면 추가
+		if (value) {
+			if (combinedType === '') {
+				combinedType = `${key}+${value}`;
+			} else {
+				combinedType += `*${key}+${value}`;
+			}
+		}
+
+		// 기존 type 파라미터 모두 제거
+		params.delete('type');
+
+		// 새로운 조합된 값 추가
+		if (combinedType) {
+			params.append('type', combinedType);
+		}
+
+		goto(`${url}#showModal`, { replaceState: true });
+
 		let currentOptions: Record<string, string> = {};
 		selectedTypeOption.update((val: any) => {
 			currentOptions = val;
@@ -77,9 +123,9 @@
 <div class="h-screen w-screen min-w-[1700px] overflow-hidden bg-gray-100 dark:bg-gray-800">
 	<article
 		id="list-componet"
-		class="{mainViewActive[$mainMenuActive]} my-0 mr-0 flex h-full overflow-hidden"
+		class="my-0 ml-[80px] mr-0 flex h-full w-[calc(100%-80px)] overflow-hidden"
 	>
-		<div class="list-menu flex h-full p-4">
+		<div class="list-menu flex h-full p-4 pr-2">
 			<div
 				class="mt-12 w-80 flex-col items-center rounded border border-gray-100 bg-white text-gray-700 shadow-md"
 			>
@@ -241,7 +287,7 @@
 			</div>
 		</div>
 
-		<div class="list h-auto w-[calc(100%-320px)] w-[inherit] overflow-y-auto px-2 pt-16">
+		<div class="list h-auto w-[calc(100%-320px)] w-[inherit] overflow-y-auto pr-2 pt-16">
 			<ListCardView {data} />
 
 			<FooterView />

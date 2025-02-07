@@ -1,21 +1,9 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { mainMenuActive, navActive, userNavActive } from '$lib/stores/mainMenuStore';
 	import { authTokenService } from '../../../../app/service/AuthTokenService';
+	import { userNavActive } from '../../../../app/service/MainMenuService';
 
 	const { data } = $props<{ data: PageData }>();
-
-	const toggleNav = () => {
-		navActive.update((navActive) => !navActive);
-		if ($navActive === false) {
-			mainMenuActive.set(80);
-		} else {
-			mainMenuActive.set(240);
-		}
-	};
-	const toggleUserNav = () => {
-		userNavActive.update((userNavActive) => !userNavActive);
-	};
 
 	// 토큰 유효성 검사
 	const checkToken = () => {
@@ -42,29 +30,27 @@
 		userInfo.set({}); // 유저 정보 초기화
 		window.location.href = '/'; // 홈페이지로 리다이렉트
 	};
+
+	const toggleUserNav = () => {
+		userNavActive.update((userNavActive) => !userNavActive);
+	};
+
+	// tooltip 표시 상태를 위한 상태 변수
+	let showTooltip = $state(null);
+
+	console.log(data.params);
 </script>
 
 <header
-	class:active={$navActive}
-	class=" fixed inset-y-0 left-0 z-50 flex h-full w-[{$mainMenuActive}px] flex-col items-center rounded border-r border-r-gray-100 bg-white text-gray-700 shadow-md transition-all duration-75 ease-in-out dark:border-r-gray-800 dark:bg-gray-950"
+	class=" w-80px] fixed inset-y-0 left-0 z-50 flex h-full flex-col items-center rounded border-r border-r-gray-100 bg-white text-gray-700 shadow-md transition-all duration-75 ease-in-out dark:border-r-gray-800 dark:bg-gray-950"
 >
 	<!-- Logo area -->
-	<a
-		href="#top"
-		id="menu-item"
-		class="mt-3 flex w-full items-center px-4 pl-5"
-		onclick={() => toggleNav()}
-	>
+	<a href="/" id="menu-item" class="mt-3 flex w-full items-center px-4 pl-5">
 		<img
 			class="h-10 w-10 rounded-full fill-current"
 			src="/assets/logo/500.png"
 			alt="Your Company"
 		/>
-		<span
-			class:active={$navActive}
-			class="ml-2 text-sm font-bold transition-all delay-300 duration-200 ease-in-out"
-			>King Duck</span
-		>
 	</a>
 	<!-- Logo area -->
 	<!-- Favorites area -->
@@ -72,23 +58,37 @@
 		<!-- 반복 area -->
 		<div class="mt-3 flex w-full flex-col items-center border-t border-gray-300">
 			{#each data.info as gameItem}
-				<a
-					data-sveltekit-preload-data="false"
-					id="menu-item"
-					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
-					href="/list/{gameItem.title.slug}"
-				>
-					<img
-						class="h-10 w-10 rounded-full fill-current"
-						src={data.url + '/' + gameItem.images[0].url}
-						alt="HonkaiStarRail"
-					/>
-					<span
-						class:active={navActive}
-						class="ml-2 text-sm font-medium transition-all delay-300 duration-200 ease-in-out"
-						>{gameItem.title.kr}</span
+				<div class="relative">
+					<a
+						data-sveltekit-preload-data="false"
+						id="menu-item"
+						class:active={data.params === gameItem.title.slug}
+						class="mt-2 flex h-12 w-full items-center rounded px-3"
+						href="/list/{gameItem.title.slug}"
+						onmouseenter={() => (showTooltip = gameItem.title.slug)}
+						onmouseleave={() => (showTooltip = null)}
 					>
-				</a>
+						<img
+							class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200"
+							src={data.url + '/' + gameItem.images[0].url}
+							alt="HonkaiStarRail"
+						/>
+					</a>
+
+					{#if showTooltip === gameItem.title.slug}
+						<div
+							class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300"
+							role="tooltip"
+						>
+							<p class="block whitespace-nowrap text-sm font-medium">
+								{gameItem.title.kr}
+							</p>
+							<div class="tooltip-arrow" data-popper-arrow>
+								<div class="absolute -left-1 top-3 h-4 w-4 rotate-45 bg-orange-400"></div>
+							</div>
+						</div>
+					{/if}
+				</div>
 			{/each}
 		</div>
 		<!-- 반복 area 
@@ -176,21 +176,31 @@
 
 <style lang="scss">
 	header {
-		&.active {
-			width: 240px;
-
-			#menu-item {
-				span {
-					display: block;
-					opacity: 1;
+		#menu-item {
+			&.active {
+				img {
+					outline-color: #fcba49;
 				}
 			}
-		}
-		#menu-item {
+
 			span {
 				display: none;
 				opacity: 0;
 			}
+		}
+	}
+
+	.tooltip {
+		opacity: 0;
+		animation: fadeIn 0.2s ease-in-out forwards;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
 		}
 	}
 </style>

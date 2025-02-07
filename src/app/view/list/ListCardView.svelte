@@ -90,11 +90,17 @@
 				)} relative m-2 block w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
 				href="/content/{data.params}/{item.id}"
 			>
-				<div class="card-Rating-{rarityService.rarityData(item.rarity)} rounded-t-lg">
+				<div class="card-Rating-{rarityService.rarityData(item.rarity)} relative rounded-t-lg">
 					<img src="{currentUrl}/{item.images.url}.webp" alt={item.name.kr} />
+
+					<div
+						class="image-info card-Rating-{rarityService.rarityData(
+							item.rarity
+						)}-bg absolute inset-x-0 bottom-0 h-16 px-4 py-2"
+					></div>
 				</div>
 				<div
-					class="image-info card-HY-Rating-{rarityService.rarityData(
+					class="image-info card-Rating-{rarityService.rarityData(
 						item.rarity
 					)}-bg absolute inset-x-0 bottom-0 px-4 py-2"
 				>
@@ -170,14 +176,7 @@
 	}
 	.card-Rating-5-bg {
 		background: rgb(201, 163, 106);
-		background: -moz-linear-gradient(0deg, rgba(201, 163, 106, 1) 50%, rgba(201, 163, 106, 0) 100%);
-		background: -webkit-linear-gradient(
-			0deg,
-			rgba(201, 163, 106, 1) 50%,
-			rgba(201, 163, 106, 0) 100%
-		);
-		background: linear-gradient(0deg, rgba(201, 163, 106, 1) 50%, rgba(201, 163, 106, 0) 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#c9a36a",endColorstr="#c9a36a",GradientType=1);
+		background: linear-gradient(0deg, rgba(201, 163, 106, 1) 0%, rgba(201, 163, 106, 0) 100%);
 	}
 	.card-Rating-4 {
 		background: #8a5fcc;
@@ -186,14 +185,7 @@
 	}
 	.card-Rating-4-bg {
 		background: rgb(138, 95, 204);
-		background: -moz-linear-gradient(0deg, rgba(138, 95, 204, 1) 50%, rgba(138, 95, 204, 0) 100%);
-		background: -webkit-linear-gradient(
-			0deg,
-			rgba(138, 95, 204, 1) 50%,
-			rgba(138, 95, 204, 0) 100%
-		);
-		background: linear-gradient(0deg, rgba(138, 95, 204, 1) 50%, rgba(138, 95, 204, 0) 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8a5fcc",endColorstr="#8a5fcc",GradientType=1);
+		background: linear-gradient(0deg, rgba(138, 95, 204, 1) 0%, rgba(138, 95, 204, 0) 100%);
 	}
 	.card-Rating-3 {
 		background: #4175bb;
@@ -201,11 +193,8 @@
 		border-bottom-color: #4175bb;
 	}
 	.card-Rating-3-bg {
-		background: rgb(48, 48, 81);
-		background: -moz-linear-gradient(180deg, rgba(48, 48, 81, 1) 0%, rgba(65, 117, 187, 1) 100%);
-		background: -webkit-linear-gradient(180deg, rgba(48, 48, 81, 1) 0%, rgba(65, 117, 187, 1) 100%);
-		background: linear-gradient(180deg, rgba(48, 48, 81, 1) 0%, rgba(65, 117, 187, 1) 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#303051",endColorstr="#4175bb",GradientType=1);
+		background: rgb(65, 117, 187);
+		background: linear-gradient(0deg, rgba(65, 117, 187, 1) 0%, rgba(65, 117, 187, 0) 100%);
 	}
 
 	/* 호요버스 - 원신, 스타레일 색상 처리*/

@@ -46,7 +46,9 @@ export const load: PageLoad = async ({ params, url }) => {
 			//"x-access-token": userToken,
 		},
 		params: {
-			gameId: gameInfo.id
+			gameId: gameInfo.id,
+			type: url.searchParams.get('type'),
+			rarity: url.searchParams.get('rarity')
 		}
 	};
 
@@ -111,6 +113,11 @@ export const load: PageLoad = async ({ params, url }) => {
 		isMobile: !!isMobile,
 		info: gameInfo,
 		list: data,
-		type: gameType
+		type: gameType,
+		title: `${gameInfo.title.kr} - 게임 정보`,
+		meta: {
+			description: `${gameInfo.title.kr}의 상세 정보를 제공합니다.`,
+			keywords: `${gameInfo.title.kr}, 게임, 정보, 가이드`
+		}
 	};
 };
