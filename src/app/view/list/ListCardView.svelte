@@ -2,7 +2,7 @@
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 
-	const { data } = $props<{ data: any }>();
+	const { data, list } = $props<{ data: any; list: any }>();
 
 	const currentUrl = data.url;
 
@@ -18,7 +18,7 @@
 </script>
 
 <div class="con flex h-auto w-full flex-wrap content-start items-stretch justify-start">
-	{#each data.list as item}
+	{#each list as item}
 		{#if data.isMobile}
 			<a class="flex-box basis-1/3" href="/content/{data.params}/{item.id}">
 				<div

@@ -3,10 +3,10 @@ import type { PageLoad } from './$types';
 import axios from 'axios';
 import { browser } from '$app/environment';
 import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
-import { GirlsFrontline2Init } from '../../../../app/model/GirlsFrontline2Init';
-import { HonkaiStarRailInit } from '../../../../app/model/HonkaiStarRailInit';
+import { GirlsFrontline2Init } from '../../../../app/model/game/GirlsFrontline2Init';
+import { HonkaiStarRailInit } from '../../../../app/model/game/HonkaiStarRailInit';
 import { GameSettingInitService } from '../../../../app/service/game/GameSettingService';
-import { nikkeInit } from '../../../../app/model/nikkeInit';
+import { nikkeInit } from '../../../../app/model/game/nikkeInit';
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
 

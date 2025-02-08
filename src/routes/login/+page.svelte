@@ -82,7 +82,9 @@
 		<!-- Right side - Login form -->
 		<div class="ml-auto flex h-full w-full flex-col justify-center bg-white p-8 md:w-1/3">
 			<div class="mb-8">
-				<img src="/assets/logo/500.png" alt="Logo" class="mb-4 h-20 w-20 rounded-full" />
+				<a href="/">
+					<img src="/assets/logo/500.png" alt="Logo" class="mb-4 h-20 w-20 rounded-full" />
+				</a>
 				<h2 class="mb-2 text-2xl font-bold">환영합니다!</h2>
 				<p class="text-sm text-gray-600">계정에 로그인해주세요</p>
 			</div>

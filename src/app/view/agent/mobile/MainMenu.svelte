@@ -1,23 +1,28 @@
 <script lang="ts">
+	import { WindowService } from '../../../service/WindowService';
+
 	const { data } = $props<{ data: PageData }>();
 
 	let navActive = $state(false);
 	const toggleNav = () => {
 		navActive = !navActive;
+		WindowService.closeModal();
 	};
 </script>
 
 <header class="" class:active={navActive}>
 	<div
-		class="fixed inset-y-0 left-0 z-50 flex h-16 w-screen flex-wrap items-center justify-between bg-white p-3"
+		class="shadow-m fixed inset-y-0 left-0 z-50 flex h-16 w-screen flex-wrap items-center justify-between border-b border-gray-200 bg-white p-3"
 	>
-		<img
-			class="h-10 w-10 rounded-full fill-current"
-			src="/assets/logo/500.png"
-			alt="Your Company"
-		/>
+		<a href="/">
+			<img
+				class="h-10 w-10 rounded-full fill-current"
+				src="/assets/logo/500.png"
+				alt="Your Company"
+			/>
+		</a>
 		<div class="flex">
-			<button id="hamburger" onclick={toggleNav}>
+			<button id="hamburger" onclick={toggleNav} aria-label="메뉴 열기">
 				<i class="ri-menu-line h-10 w-10 text-2xl"></i>
 			</button>
 		</div>
@@ -33,6 +38,9 @@
 						id="menu-item"
 						class=" mt-2 flex h-12 w-full items-center rounded px-1 hover:bg-gray-300"
 						href="/list/{gameItem.title.slug}"
+						onclick={() => {
+							toggleNav();
+						}}
 					>
 						<img
 							class="h-10 w-10 rounded-full fill-current"

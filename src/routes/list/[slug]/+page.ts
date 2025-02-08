@@ -7,19 +7,25 @@ import { browser } from '$app/environment';
 import { MobileUtils } from '../../../utils/mobile/MobileUtils';
 
 // 캐릭터 리스트 서비스
-import CharacterListService from '../../../app/service/character/CharacterListService';
+import {
+	CharacterListService,
+	characterList
+} from '../../../app/service/character/CharacterListService';
 
 // 게임 초기화
 import { GameSettingInitService } from '../../../app/service/game/GameSettingService';
 
 // 게임 초기화 모델
-import { HonkaiStarRailInit } from '../../../app/model/HonkaiStarRailInit';
-import { GirlsFrontline2Init } from '../../../app/model/GirlsFrontline2Init';
-import { nikkeInit } from '../../../app/model/nikkeInit';
+import { HonkaiStarRailInit } from '../../../app/model/game/HonkaiStarRailInit';
+import { GirlsFrontline2Init } from '../../../app/model/game/GirlsFrontline2Init';
+import { nikkeInit } from '../../../app/model/game/nikkeInit';
 
 // 캐릭터 목록 서비스
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
+	let gameInfo;
+	let gameType;
+	let setInit;
 
 	if (browser) {
 		isMobile = MobileUtils.isMobile();
@@ -36,8 +42,6 @@ export const load: PageLoad = async ({ params, url }) => {
 		}
 	};
 
-	let gameInfo;
-
 	await axios
 		.get(currentUrl + '/api/v0/game/' + params.slug, gameInfoConfig)
 		.then((res) => {
@@ -51,11 +55,10 @@ export const load: PageLoad = async ({ params, url }) => {
 			console.log(err);
 		});
 
-	const characterListConfig = CharacterListService.getCharacterListConfig(
-		gameInfo.id,
-		url.searchParams.get('type'),
-		url.searchParams.get('rarity')
-	);
+	// CharacterListService의 메서드 호출 전에 gameInfo가 있는지 확인
+	if (!gameInfo) {
+		throw error(404, 'Game not found');
+	}
 
 	const gameTypeConfig = {
 		headers: {
@@ -65,8 +68,6 @@ export const load: PageLoad = async ({ params, url }) => {
 			gameId: gameInfo.id
 		}
 	};
-
-	let gameType;
 
 	await axios
 		.get(currentUrl + '/api/v0/type/get/' + params.slug, gameInfoConfig)
@@ -82,7 +83,6 @@ export const load: PageLoad = async ({ params, url }) => {
 		});
 
 	// 추후에 init를 들고 오면 처리 구현이 틀려짐
-	let setInit;
 	switch (params.slug) {
 		case 'HonkaiStarRail':
 			GameSettingInitService.updateGameInit(new HonkaiStarRailInit().setInit());
@@ -96,19 +96,18 @@ export const load: PageLoad = async ({ params, url }) => {
 		default:
 			break;
 	}
-
-	let data: any = await CharacterListService.getCharacterList(
-		currentUrl,
-		params.slug,
-		characterListConfig
-	);
+	CharacterListService.clearCharacterConfig();
+	CharacterListService.getCharacterListConfig(gameInfo.id, '', '');
+	await CharacterListService.getCharacterList(currentUrl, params.slug);
+	let characterListData;
+	characterList.subscribe((value) => (characterListData = value));
 
 	return {
 		params: params.slug,
 		url: currentUrl,
 		isMobile: !!isMobile,
 		info: gameInfo,
-		list: data,
+		list: characterListData,
 		type: gameType,
 		title: `${gameInfo.title.kr} - 게임 정보`,
 		meta: {

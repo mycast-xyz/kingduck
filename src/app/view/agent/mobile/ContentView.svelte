@@ -34,9 +34,12 @@
 	let gachaData = Object.values(infoData.info.ranks);
 
 	// 캐릭터 정보 배경색 계산 함수
-	let contentColor = ContentBackgroundSet.calculateInfoContentColor(
-		infoData.type.element.image.backgroundColor
-	);
+	let contentColor = '#ffffff';
+	if (infoData?.type?.element?.image?.backgroundColor) {
+		contentColor = ContentBackgroundSet.calculateInfoContentColor(
+			infoData?.type?.element?.image?.backgroundColor
+		);
+	}
 
 	// 게임 정보 처리
 	let gameInit, skillInit, gachaInit: any;
