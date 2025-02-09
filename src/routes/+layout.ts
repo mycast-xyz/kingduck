@@ -7,13 +7,16 @@ import { error } from '@sveltejs/kit';
 
 export const load: LayoutLoad = async ({ params, url }) => {
 	let isMobile = false;
-	let isAuthPage = false;
+	let isNotLayoutPage = false;
 
 	if (browser) {
 		isMobile = MobileUtils.isMobile();
 	}
 	if (url.pathname.includes('login')) {
-		isAuthPage = true;
+		isNotLayoutPage = true;
+	}
+	if (url.pathname.includes('admin')) {
+		isNotLayoutPage = true;
 	}
 
 	let data: any = {};
@@ -34,7 +37,7 @@ export const load: LayoutLoad = async ({ params, url }) => {
 
 	return {
 		params: params.slug,
-		isAuthPage: isAuthPage,
+		isNotLayoutPage: isNotLayoutPage,
 		isMobile: isMobile,
 		url: currentUrl,
 		info: data

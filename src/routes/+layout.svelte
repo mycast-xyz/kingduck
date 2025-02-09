@@ -20,7 +20,7 @@
 <Toast />
 
 <!-- 메인 메뉴 -->
-{#if !data.isAuthPage}
+{#if !data.isNotLayoutPage}
 	{#if data.isMobile}
 		<MobileMainMenu {data} />
 	{:else}
