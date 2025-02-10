@@ -6,7 +6,6 @@
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 
-	console.log(data.url + '/api/v0/game/list');
 	let gameList: any = $state([]);
 
 	onMount(async () => {
