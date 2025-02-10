@@ -83,7 +83,7 @@
 					class="dropdownMenuContnet hidden w-full rounded-lg bg-white font-normal text-gray-400 transition-all duration-300"
 				>
 					<a
-						href="/admin/layouts/collapsed"
+						href="/admin/character"
 						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
 					>
 						<i class="ri-circle-line mr-2 text-sm"></i>
@@ -97,7 +97,7 @@
 						아이템
 					</a>
 					<a
-						href="/admin/layouts/collapsed"
+						href="/admin/game"
 						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
 					>
 						<i class="ri-circle-line mr-2 text-sm"></i>
