@@ -8,12 +8,30 @@
 	function toggleSidebar() {
 		AdminSideMenuService.toggleSidebar();
 	}
-	// 드롭다운 활성화 상태
-	let isDropdownActive = $state(false);
+
+	// 드롭다운 활성화 상태 관리
+	let dropdownStates = $state({
+		menu1: false,
+		menu2: false,
+		menu3: false
+	});
 
 	// 드롭다운 토글 함수
-	function dropdownButton() {
-		isDropdownActive = !isDropdownActive;
+	function toggleDropdown(menuId: 'menu1' | 'menu2' | 'menu3') {
+		console.log(menuId);
+
+		// 다른 메뉴는 닫기
+		Object.keys(dropdownStates).forEach((key) => {
+			if (key !== menuId) {
+				dropdownStates[key as keyof typeof dropdownStates] = false;
+			} else {
+				if (dropdownStates[key as keyof typeof dropdownStates]) {
+					dropdownStates[key as keyof typeof dropdownStates] = false;
+				} else {
+					dropdownStates[key as keyof typeof dropdownStates] = true;
+				}
+			}
+		});
 	}
 
 	// 사이드바 너비 상태 감시
@@ -69,14 +87,15 @@
 				<i class="ri-calendar-schedule-line"></i>
 				<span class="collapsed-hidden">캘린더</span>
 			</a>
-			<div class="dropdownMenu relative" class:active={isDropdownActive}>
+			<div class="dropdownMenu relative" class:active={dropdownStates.menu1}>
 				<button
-					onclick={() => dropdownButton()}
+					onclick={() => toggleDropdown('menu1')}
 					class="flex w-full items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
 				>
 					<i class="ri-database-2-line"></i>
 					<span class="collapsed-hidden">데이터 관리</span>
-					<i class="ri-arrow-down-s-line {isDropdownActive ? 'rotate-180' : ''} collapsed-hidden"
+					<i
+						class="ri-arrow-down-s-line {dropdownStates.menu1 ? 'rotate-180' : ''} collapsed-hidden"
 					></i>
 				</button>
 				<div
@@ -112,13 +131,43 @@
 					</a>
 				</div>
 			</div>
-			<a
-				href="/admin/projects"
-				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-orange-500 hover:text-white"
-			>
-				<i class="ri-project-line"></i>
-				<span class="collapsed-hidden">Projects</span>
-			</a>
+			<div class="dropdownMenu relative" class:active={dropdownStates.menu2}>
+				<button
+					onclick={() => toggleDropdown('menu2')}
+					class="flex w-full items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
+				>
+					<i class="ri-flask-line"></i>
+					<span class="collapsed-hidden">입력 테스트</span>
+					<i
+						class="ri-arrow-down-s-line {dropdownStates.menu2 ? 'rotate-180' : ''} collapsed-hidden"
+					></i>
+				</button>
+				<div
+					class="dropdownMenuContnet hidden w-full rounded-lg bg-white font-normal text-gray-400 transition-all duration-300"
+				>
+					<a
+						href="/admin/character"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-circle-line mr-2 text-sm"></i>
+						나무위키 테스트
+					</a>
+					<a
+						href="/admin/layouts/collapsed"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-circle-line mr-2 text-sm"></i>
+						prydwen 테스트
+					</a>
+					<a
+						href="/admin/game"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-circle-line mr-2 text-sm"></i>
+						hakush 테스트
+					</a>
+				</div>
+			</div>
 		</nav>
 	</div>
 </aside>

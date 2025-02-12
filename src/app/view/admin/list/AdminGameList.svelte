@@ -1,7 +1,7 @@
 <script lang="ts">
 	import axios from 'axios';
 	import { onMount } from 'svelte';
-	import { WindowService } from '../../service/WindowService';
+	import { WindowService } from '../../../service/WindowService';
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();

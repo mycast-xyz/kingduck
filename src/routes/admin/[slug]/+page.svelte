@@ -4,8 +4,8 @@
 	// 컴포넌트 관리
 	import AdminHeadMenu from '../../../app/view/menu/AdminHeadMenu.svelte';
 	import AdminKanban from '../../../app/view/admin/AdminKanban.svelte';
-	import AdminGameList from '../../../app/view/admin/AdminGameList.svelte';
-	import AdminCharacterList from '../../../app/view/admin/AdminCharacterList.svelte';
+	import AdminGameList from '../../../app/view/admin/list/AdminGameList.svelte';
+	import AdminCharacterList from '../../../app/view/admin/list/AdminCharacterList.svelte';
 
 	// 모달 관리
 	import DesktopModal from '../../../app/view/modal/DesktopModal.svelte';
