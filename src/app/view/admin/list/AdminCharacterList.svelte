@@ -1,5 +1,5 @@
 <script lang="ts">
-	import axios from 'axios';
+	import client from '../../../service/api/client';
 	import { onMount } from 'svelte';
 	import { WindowService } from '../../../service/WindowService';
 
@@ -17,7 +17,7 @@
 
 	async function getCharacterList() {
 		try {
-			const response = await axios.get(data.url + '/api/v0/character/admin');
+			const response = await client.get('/api/v0/character/admin');
 			if (response.data.resultCode === 200) {
 				characterListData = response.data.items;
 			} else {
@@ -29,7 +29,7 @@
 	}
 	async function getGameList() {
 		try {
-			const response = await axios.get(data.url + '/api/v0/game/admin/list');
+			const response = await client.get('/api/v0/game/admin/list');
 			if (response.data.resultCode === 200) {
 				gameList = response.data.items;
 			} else {
@@ -137,7 +137,7 @@
 	let currentPage = $state(1);
 
 	// 페이지네이션을 위한 상태
-	let paginatedList = $state([]);
+	let paginatedList: any = $state([]);
 	let totalPages = $state(0);
 
 	// 페이지당 항목 수 변경 처리
@@ -217,22 +217,22 @@
 						<td class="px-6 py-4 font-medium text-gray-900">
 							<div class="flex items-center">
 								<img
-									src={data.url + '/' + item.images.url + '.webp'}
-									alt={item.name.kr}
+									src={data.url + '/' + item.imageUrl}
+									alt={item.name}
 									class="mr-3 h-10 w-10 rounded-full"
 								/>
 
 								<div>
-									<div class="text-sm font-medium">{item.name.kr}</div>
-									<div class="text-xs font-normal text-gray-500">
-										영문 : {item.name.en}, 일본어 : {item.name.jp}
-									</div>
+									<div class="text-sm font-medium">{item.name}</div>
+									<!-- <div class="text-xs font-normal text-gray-500">
+										영문 : {item.name.en}, 일본어 : {item.name.jp} 
+									</div> -->
 								</div>
 							</div>
 						</td>
 						<td class="px-6 py-4">
 							<div class="flex items-center">
-								<p class="text-sm font-normal">{item.game.title.kr}</p>
+								<p class="text-sm font-normal">{item.game?.name}</p>
 							</div>
 						</td>
 						<td class="px-6 py-4">

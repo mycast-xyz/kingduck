@@ -35,8 +35,6 @@
 	let ContentComponent: any = $state();
 	let ContentTitle = $state('');
 	let ContentInfoText = $state('');
-
-	console.log(data.info);
 </script>
 
 <div class="{mainMargin} min-h-screen flex-1 bg-gray-100 p-8">

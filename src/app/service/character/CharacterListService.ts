@@ -1,77 +1,105 @@
 import { writable } from 'svelte/store';
-import axios from 'axios';
+import client from '../api/client';
+import type { CharacterType, ResultCodeType } from '../../model/api/api';
 
 class CharacterListServiceInit {
 	static _characterConfig: {
-		headers: {};
 		params: { gameId: number; type: string; rarity: string };
 	};
-	static _characterData: any;
+	static _characterData: CharacterType[];
 
-	private _characterConfig = {};
+	private _allCharacters: CharacterType[] = [];
+
 	private _characterRarity = writable('');
 	private _characterType = writable('');
 
 	public clearCharacterConfig() {
 		this._characterRarity.set('');
 		this._characterType.set('');
+		this._allCharacters = [];
 	}
 
 	public getCharacterListConfig(gameId: number, type: string | null, rarity: string | null) {
-		const params: Record<string, any> = {
-			gameId: gameId
-		};
-
-		console.log(rarity);
-
-		if (type && type !== '' && type !== null) {
-			console.log('set2');
+		// Update stores with new values if provided
+		if (type !== null) {
 			this._characterType.set(type);
 		}
-		if (rarity && rarity !== '' && rarity !== null) {
-			console.log('set');
+		if (rarity !== null) {
 			this._characterRarity.set(rarity);
 		}
 
-		this._characterType.subscribe((value) => {
-			params.type = value;
-		});
-		this._characterRarity.subscribe((value) => {
-			params.rarity = value;
-		});
-
-		console.log(params.rarity);
-
-		this._characterConfig = {
-			headers: {},
-			params: {
-				gameId: params.gameId,
-				type: params.type || '',
-				rarity: params.rarity || ''
-			}
-		};
+		// Apply client-side filter
+		this.applyFilter();
 	}
 
-	public async getCharacterList(currentUrl: string, slug: string) {
+	public async getCharacterList(slug: string) {
 		try {
-			const response = await axios.get(
-				`${currentUrl}/api/v0/character/${slug}`,
-				this._characterConfig
-			);
+			// Always fetch fresh data on initial load of the page/component call
+			const response = await client.get<CharacterType[]>(`/api/v0/character/${slug}/list`);
 
-			if (response.data && response.data.resultCode == 200) {
-				characterList.set(response.data.items || []);
+			if (response.data) {
+				this._allCharacters = response.data || [];
+				this.applyFilter();
 			} else {
 				console.log('err: 서버 코드 에러');
+				this._allCharacters = [];
 				characterList.set([]);
 			}
 		} catch (error) {
 			console.error('캐릭터 리스트 조회 중 오류 발생:', error);
+			this._allCharacters = [];
 			characterList.set([]);
 		}
+	}
+
+	private applyFilter() {
+		let currentType = '';
+		let currentRarity = '';
+
+		const unsubscribeType = this._characterType.subscribe((v) => (currentType = v));
+		const unsubscribeRarity = this._characterRarity.subscribe((v) => (currentRarity = v));
+		unsubscribeType();
+		unsubscribeRarity();
+
+		let filtered = [...this._allCharacters];
+
+		// Filter by Type (Element, Path, etc.)
+		if (currentType) {
+			const typeList = currentType.split('*');
+
+			// Filter logic: Pass if character matches ALL filter criteria specified.
+			// Criteria come as key+value.
+			filtered = filtered.filter((char) => {
+				return typeList.every((t) => {
+					const [k, v] = t.split('+');
+					// 'elementId' -> check char.elementId
+					// 'pathId' -> check char.pathId
+					// 'damageType', 'baseTypeChar' -> maps to elementId/pathId usually, but strictly using correct keys now
+
+					if (k === 'elementId' || k === 'damageType' || k === 'elementType') {
+						return char.elementId == Number(v);
+					}
+					if (k === 'pathId' || k === 'baseTypeChar') {
+						return char.pathId == Number(v);
+					}
+					if (k === 'weaponType') {
+						return char.weaponType == v || char.metadata?.weaponType == v;
+					}
+					// Default fallback check?
+					return true;
+				});
+			});
+		}
+
+		// Filter by Rarity
+		if (currentRarity) {
+			filtered = filtered.filter((char) => char.rarity == Number(currentRarity));
+		}
+
+		characterList.set(filtered);
 	}
 }
 
 export const CharacterListService = new CharacterListServiceInit();
 
-export const characterList = writable([]);
+export const characterList = writable<CharacterType[]>([]);

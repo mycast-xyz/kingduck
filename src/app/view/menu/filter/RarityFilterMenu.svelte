@@ -19,10 +19,13 @@
 
 	// 레어리티 메뉴 토글 함수
 	const toggleMenuRarity = () => {
-		RarityOption.update((curr) => ({
-			...curr,
-			isMenuOpen: !curr.isMenuOpen
-		}));
+		RarityOption.update((curr) => {
+			if (!curr) return curr;
+			return {
+				...curr,
+				isMenuOpen: !curr.isMenuOpen
+			};
+		});
 	};
 
 	// 레어리티 버튼 토글 함수
@@ -35,11 +38,9 @@
 
 	// 데이터 업데이트 함수
 	const dataUpdate = async () => {
-		console.log($rarityText);
-
 		// 캐릭터 리스트 설정 및 데이터 가져오기
 		CharacterListService.getCharacterListConfig(data.info.id, null, $rarityText);
-		await CharacterListService.getCharacterList(data.url, data.params);
+		await CharacterListService.getCharacterList(data.params);
 	};
 </script>
 
@@ -53,7 +54,7 @@
 			<i class="ri-arrow-down-s-line pr-2"></i>
 		</button>
 	</div>
-	{#if $RarityOption?.isMenuOpen}
+	{#if $RarityOption?.isMenuOpen && $RarityOption?.list}
 		<div class="grid w-full grid-cols-3 gap-2 p-4 pt-2" id="rarity-filter">
 			<button
 				onclick={() => toggleMenuRarityButton('')}
@@ -63,9 +64,9 @@
 				<i class="ri-star-fill mr-1 text-[#f9822c]"></i>
 				<span class="text-sm font-medium">전체</span>
 			</button>
-			{#each [...Object.entries($RarityOption?.list)].sort((a, b) => Number(b[0]) - Number(a[0])) as [key, name]}
+			{#each [...Object.entries($RarityOption.list)].sort((a, b) => Number(b[0]) - Number(a[0])) as [key, name]}
 				<button
-					onclick={() => toggleMenuRarityButton(name)}
+					onclick={() => toggleMenuRarityButton(key)}
 					class:active={$selectedRarity === name}
 					class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100"
 				>

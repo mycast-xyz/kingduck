@@ -1,5 +1,4 @@
 <script lang="ts">
-	import axios from 'axios';
 	import { onMount } from 'svelte';
 
 	// props에서 데이터 가져오기

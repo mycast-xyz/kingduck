@@ -13,14 +13,20 @@
 	>
 		<div class="gmae-title my-2 h-auto w-full p-4">
 			<div class="gmae-logo-img">
-				<img
-					src={data.url + '/' + data.info.images[0].url}
-					class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
-					alt={data.params}
-				/>
+				{#if data?.info?.iconUrl && data.info.iconUrl.length > 0}
+					<img
+						src={data.url + '/' + data.info.iconUrl}
+						class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
+						alt={data.params}
+					/>
+				{:else}
+					<div
+						class="-mt-20 h-28 w-28 rounded-full border border-gray-100 bg-gray-200 shadow-md"
+					></div>
+				{/if}
 			</div>
 			<h3 class="pb-3 pt-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
-				{data.info.title.kr}
+				{data?.info?.name || '게임 정보'}
 			</h3>
 		</div>
 		<div class="flex w-full items-center">
@@ -32,11 +38,11 @@
 					class="py-3text-base mr-2 grow border-none bg-transparent px-5 font-normal text-gray-700 focus:outline-none dark:border-gray-700 dark:text-white"
 					placeholder="검색어를 입력하세요"
 				/>
-				<button
+				<buttons
 					class="flex h-full items-center border-l bg-gray-300 p-3 px-4 text-gray-600 hover:bg-[#f9822c] hover:text-white"
 				>
 					<i class="ri-search-line text-xl"></i>
-				</button>
+				</buttons>
 			</div>
 		</div>
 		<div
@@ -81,7 +87,7 @@
 			<!-- 필터 기능 -->
 			<RarityFilterMenu {data} />
 			<!-- 필터 기능 -->
-			{#if data?.type && Object.keys(data.type).length > 0}
+			{#if data?.info?.elements && Object.keys(data.info.elements).length > 0}
 				<ListFilterMenu {data} />
 			{/if}
 		</div>

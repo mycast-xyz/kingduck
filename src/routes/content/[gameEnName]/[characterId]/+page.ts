@@ -1,12 +1,15 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import axios from 'axios';
+import client from '../../../../app/service/api/client';
 import { browser } from '$app/environment';
 import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
 import { GirlsFrontline2Init } from '../../../../app/model/game/GirlsFrontline2Init';
 import { HonkaiStarRailInit } from '../../../../app/model/game/HonkaiStarRailInit';
 import { GameSettingInitService } from '../../../../app/service/game/GameSettingService';
 import { nikkeInit } from '../../../../app/model/game/nikkeInit';
+import { Reverse1999Init } from '../../../../app/model/game/Reverse1999Init';
+import type { CharacterType, GameType, ResultCodeType } from '../../../../app/model/api/api';
+
 export const load: PageLoad = async ({ params, url }) => {
 	let isMobile = false;
 
@@ -14,14 +17,10 @@ export const load: PageLoad = async ({ params, url }) => {
 		isMobile = MobileUtils.isMobile();
 	}
 
-	let gameInfo;
+	let gameInfo: GameType | undefined;
 	console.log(url.searchParams.get('type'));
 
-	const currentUrl = 'http://' + url.hostname + ':3000';
 	const characterListConfig = {
-		headers: {
-			//"x-access-token": userToken,
-		},
 		params: {
 			id: params.characterId,
 			type: url.searchParams.get('type'),
@@ -30,19 +29,16 @@ export const load: PageLoad = async ({ params, url }) => {
 	};
 
 	const gameInfoConfig = {
-		headers: {
-			//"x-access-token": userToken,
-		},
 		params: {
 			//en: params.slug
 		}
 	};
 
-	await axios
-		.get(currentUrl + '/api/v0/game/' + params.gameEnName, gameInfoConfig)
+	await client
+		.get<GameType>('/api/v0/game/' + params.gameEnName, gameInfoConfig)
 		.then((res) => {
-			if (res.data.resultCode === 200) {
-				gameInfo = res.data.items;
+			if (res.data) {
+				gameInfo = res.data;
 			} else {
 				console.log('err: 서버 코드 에러');
 			}
@@ -62,19 +58,20 @@ export const load: PageLoad = async ({ params, url }) => {
 			break;
 		case 'nikke':
 			GameSettingInitService.updateGameInit(new nikkeInit().setInit());
+			break;
+		case 'reverse1999':
+			GameSettingInitService.updateGameInit(new Reverse1999Init().setInit());
+			break;
 		default:
 			break;
 	}
 
-	let data: any = {};
-	await axios
-		.get(
-			currentUrl + '/api/v0/character/' + params.gameEnName + '/' + params.characterId,
-			characterListConfig
-		)
+	let data: CharacterType | undefined;
+	await client
+		.get<CharacterType>('/api/v0/character/' + params.gameEnName + '/' + params.characterId)
 		.then((res) => {
-			if (res.data.resultCode === 200) {
-				data = res.data.items;
+			if (res.data) {
+				data = res.data;
 			} else {
 				error(500, { message: '서버 코드 에러' });
 			}
@@ -85,12 +82,12 @@ export const load: PageLoad = async ({ params, url }) => {
 
 	return {
 		isMobile: isMobile,
-		url: currentUrl,
+		url: client.defaults.baseURL,
 		info: data,
-		title: `${data.name.kr} - ${gameInfo.title.kr}`,
+		title: `${data?.name} - ${gameInfo?.name}`,
 		meta: {
-			description: `${data.name.kr}의 상세 정보를 제공합니다.`,
-			keywords: `${gameInfo.title.kr}, 게임, 정보, 가이드, ${data.name.kr}`
+			description: `${data?.name}의 상세 정보를 제공합니다.`,
+			keywords: `${gameInfo?.name}, 게임, 정보, 가이드, ${data?.name}`
 		}
 	};
 };

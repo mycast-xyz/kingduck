@@ -26,8 +26,6 @@
 		}
 	});
 
-	$inspect(initData.level);
-
 	// 스킬 관련 상태 관리
 	let selectedList = $state(null);
 	let selectedLevel = $state(1);

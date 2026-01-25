@@ -18,8 +18,6 @@
 
 	// 드롭다운 토글 함수
 	function toggleDropdown(menuId: 'menu1' | 'menu2' | 'menu3') {
-		console.log(menuId);
-
 		// 다른 메뉴는 닫기
 		Object.keys(dropdownStates).forEach((key) => {
 			if (key !== menuId) {

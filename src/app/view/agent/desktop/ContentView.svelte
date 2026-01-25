@@ -20,13 +20,22 @@
 
 	// 캐릭터 정보 데이터 초기화
 	let infoData = data.info;
-	let itemData = infoData.info.itemData;
-	let propertyBase = infoData.info.propertyBase;
-	let gachaData = Object.values(infoData.info.ranks);
+	// API Refactor: Use metadata for game specific info
+	let meta = infoData.metadata || {};
+
+	let itemData = meta.itemData || {};
+	let propertyBase = meta.propertyBase || {};
+	let gachaData = meta.ranks ? Object.values(meta.ranks) : [];
+	let skillData = meta.skill || [];
 
 	// 캐릭터 정보 배경색 계산 함수
 	let contentColor = '#ffffff';
-	if (infoData?.type?.element?.image?.backgroundColor) {
+	// Update path if needed, safeguarding for now
+	if (infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor) {
+		const bg = infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor;
+		contentColor = ContentBackgroundSet.calculateInfoContentColor(bg);
+	} else if (infoData?.type?.element?.image?.backgroundColor) {
+		// Legacy fallback
 		contentColor = ContentBackgroundSet.calculateInfoContentColor(
 			infoData?.type?.element?.image?.backgroundColor
 		);
@@ -56,50 +65,35 @@
 			<div class="w-full px-5 pt-5">
 				{#if gameInit.gameId === 'HonkaiStarRail'}
 					<!-- 메인 아이템 - MainItemView -->
-					<MainItemView itemData={infoData.info.itemData.card} {currentUrl} {isMobile} />
+					<MainItemView itemData={itemData.card || []} {currentUrl} {isMobile} />
 					<!-- 장착용 아이템 - EquipmentItemView -->
 					<EquipmentItemView {itemData} {propertyBase} {currentUrl} {isMobile} {contentColor} />
 					<!-- 스킬 처리 -CarouselListView -->
-					<CarouselListView
-						listData={infoData.skill}
-						{currentUrl}
-						{isMobile}
-						initData={skillInit}
-					/>
+					<CarouselListView listData={skillData} {currentUrl} {isMobile} initData={skillInit} />
 					<!-- 가챠 처리 -CarouselListView -->
 					<CarouselListView listData={gachaData} {currentUrl} {isMobile} initData={gachaInit} />
 				{:else if gameInit.gameId === 'GirlsFrontline2Exilium'}
 					<!-- 메인 아이템 - MainItemView -->
-					<MainItemView itemData={infoData.info.itemData.weapon} {currentUrl} {isMobile} />
+					<MainItemView itemData={itemData.weapon || []} {currentUrl} {isMobile} />
 					<!-- 스킬 처리 -CarouselListView -->
-					<CarouselListView
-						listData={infoData.skill}
-						{currentUrl}
-						{isMobile}
-						initData={skillInit}
-					/>
+					<CarouselListView listData={skillData} {currentUrl} {isMobile} initData={skillInit} />
 					<!-- 뉴럴 헬릭스 처리 -CarouselListView -->
 					<CarouselListView
-						listData={infoData.info.stats.helix}
+						listData={meta.stats?.helix || []}
 						{currentUrl}
 						{isMobile}
 						initData={gameInit?.content?.info?.helix}
 					/>
 					<!-- 뉴럴 헬릭스 처리 -CarouselListView -->
 					<CarouselListView
-						listData={infoData.info.ranks}
+						listData={meta.ranks || []}
 						{currentUrl}
 						{isMobile}
 						initData={gameInit?.content?.info?.gacha}
 					/>
 				{:else if gameInit.gameId === 'nikke'}
 					<!-- 스킬 처리 -CarouselListView -->
-					<CarouselListView
-						listData={infoData.skill}
-						{currentUrl}
-						{isMobile}
-						initData={skillInit}
-					/>
+					<CarouselListView listData={skillData} {currentUrl} {isMobile} initData={skillInit} />
 				{/if}
 				<!-- 속성정보 - 기본틀 -->
 				<div
@@ -123,7 +117,6 @@
 									class="max-w-42 mx-4 my-3 rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-[#d34e44] dark:border-gray-700"
 								>
 									<div class="h-auto w-36 object-scale-down p-2">
-										<img class="m-auto max-w-14 items-center" src="/assets/test/3/1.webp" alt="" />
 										<h5
 											class="break-keep border-b-2 border-white pb-3 text-center text-base tracking-tight text-white"
 										>

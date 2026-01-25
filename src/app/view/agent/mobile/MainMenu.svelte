@@ -37,18 +37,18 @@
 					<a
 						id="menu-item"
 						class=" mt-2 flex h-12 w-full items-center rounded px-1 hover:bg-gray-300"
-						href="/list/{gameItem.title.slug}"
+						href="/list/{gameItem.slug}"
 						onclick={() => {
 							toggleNav();
 						}}
 					>
 						<img
 							class="h-10 w-10 rounded-full fill-current"
-							src={data.url + '/' + gameItem.images[0].url}
+							src={data.url + '/' + gameItem.iconUrl}
 							alt="HonkaiStarRail"
 						/>
 						<span class="ml-2 text-sm font-medium transition-all delay-300 duration-200 ease-in-out"
-							>{gameItem.title.kr}</span
+							>{gameItem.name}</span
 						>
 					</a>
 				{/each}

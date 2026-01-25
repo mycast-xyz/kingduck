@@ -1,5 +1,7 @@
+import type { GameInitConfig } from './GameInitConfig';
+
 export class HonkaiStarRailInit {
-	init() {
+	init(): GameInitConfig {
 		return {
 			gameId: 'HonkaiStarRail',
 			copyright: {
@@ -9,80 +11,114 @@ export class HonkaiStarRailInit {
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'
 			},
-			// 속성 정보
+			// 속성 정보 (damageType -> elementId, baseTypeChar -> elementId handled by service)
 			type: {
-				damageType: {
+				DamageType: {
 					name: '속성',
+					apiPoint: 'elementId',
 					isWhite: false,
 					isTwoRow: false,
 					isMenuOpen: false
-				}, // 위상 속성
+				},
 				baseTypeChar: {
 					name: '운명의 길',
+					apiPoint: 'pathId',
 					isWhite: true,
 					isTwoRow: false,
 					isMenuOpen: false
-				} // 위상 속성 // 무기 속성
+				}
 			},
 			// 등급 정보
 			rarity: {
-				// 기본은 1~5 단위로 숫자로 매길것
 				default: true,
 				type: 'number',
 				list: {
 					'5': '5',
-					'4': '4',
-					'3': '3'
+					'4': '4'
 				},
 				isMenuOpen: false
 			},
 			// 목록 표시 설정
 			list: {
-				// 캐릭터 목록 설정
 				character: {
 					view: true,
 					search: {
 						text: true
 					}
 				},
-				// 아이템 목록 설정
 				item: {
 					view: true,
 					search: {
 						text: true,
 						attribute: {
-							element: false, // 위상 속성
-							path: true // 무기 속성
+							element: false,
+							path: true
+						}
+					}
+				},
+				card: {
+					element: {
+						display: 'iconUrl',
+						mobilePath: '/assets/image/{gameSlug}/elements/{elementName}.webp'
+					},
+					path: {
+						display: true
+					},
+					rarityColors: {
+						'5': {
+							border: '#fcba49',
+							background: '#fcba49',
+							text: '#fcba49',
+							gradient: {
+								from: '#885550',
+								to: '#c9a36a',
+								stop: '53%'
+							}
+						},
+						'4': {
+							border: '#9f66c8',
+							background: '#9f66c8',
+							text: '#9f66c8',
+							gradient: {
+								from: '#343659',
+								to: '#8a5fcc',
+								stop: '53%'
+							}
+						},
+						'3': {
+							border: '#4175bb',
+							background: '#4175bb',
+							text: '#4175bb',
+							gradient: {
+								from: '#303051',
+								to: '#4175bb',
+								stop: '53%'
+							}
 						}
 					}
 				}
 			},
 			// 상세 내용 표시 설정
 			content: {
-				// 이미지/영상 표시 설정
 				image: {
 					video: true,
 					image: true
 				},
 				name: true,
-				// 캐릭터 속성 표시 설정
 				attribute: {
-					element: true, // 위상 속성
-					path: true, // 무기 속성
-					corp: false // 소속 정보
+					element: true,
+					path: true,
+					corp: false
 				},
 				releaseDate: true,
-				// 상세 정보 표시 설정
 				info: {
-					// 주 장비 정보
 					mainItem: {
 						name: '광추',
 						view: true
 					},
-					// 아이템 정보
 					item: {
-						view: true,
 						name: '유물',
+						view: true,
 						list: {
 							relics: {
 								name: '터널 유물',
@@ -98,19 +134,15 @@ export class HonkaiStarRailInit {
 							sub: true
 						}
 					},
-					// 스킬 정보
 					skill: {
-						main: {
-							name: '캐릭터 스킬',
-							option: true,
-							view: true,
-							level: true
-						}
+						name: '캐릭터 스킬',
+						option: { default: true },
+						view: true,
+						level: true
 					},
-					// 돌파 정보
 					gacha: {
 						name: '성흔 돌파',
-						option: true,
+						option: { default: true },
 						view: true,
 						color: '#242a4d',
 						level: false
@@ -122,9 +154,5 @@ export class HonkaiStarRailInit {
 
 	setInit() {
 		return this.init();
-	}
-
-	constructor() {
-		// 초기화 로직
 	}
 }

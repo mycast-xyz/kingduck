@@ -1,9 +1,10 @@
 import type { LayoutLoad } from './$types';
 import { browser } from '$app/environment';
 import { page } from '$app/stores';
-import axios from 'axios';
+import client from '../app/service/api/client';
 import { MobileUtils } from '../utils/mobile/MobileUtils';
 import { error } from '@sveltejs/kit';
+import type { GameType, ResultCodeType } from '../app/model/api/api';
 
 export const load: LayoutLoad = async ({ params, url }) => {
 	let isMobile = false;
@@ -19,17 +20,12 @@ export const load: LayoutLoad = async ({ params, url }) => {
 		isNotLayoutPage = true;
 	}
 
-	let data: any = {};
+	let data: GameType[] = [];
 
-	const currentUrl = 'http://' + url.hostname + ':3000';
-	await axios
-		.get(currentUrl + '/api/v0/game/list')
+	await client
+		.get<GameType[]>('/api/v0/game/list')
 		.then((res) => {
-			if (res.data.resultCode === 200) {
-				data = res.data.items;
-			} else {
-				console.log('err: 서버 코드 에러');
-			}
+			data = res.data || [];
 		})
 		.catch((err) => {
 			console.log(err);
@@ -39,7 +35,7 @@ export const load: LayoutLoad = async ({ params, url }) => {
 		params: params.slug,
 		isNotLayoutPage: isNotLayoutPage,
 		isMobile: isMobile,
-		url: currentUrl,
-		info: data
+		url: client.defaults.baseURL,
+		info: Array.isArray(data) ? data : []
 	};
 };

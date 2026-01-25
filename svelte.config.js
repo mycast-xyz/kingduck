@@ -8,13 +8,16 @@ const config = {
 	preprocess: vitePreprocess({ typescript: true, scss: true }),
 	kit: {
 		adapter: adapter({
-			fallback: 'index.html', // CSR 모드에서는 index.html을 fallback으로 설정
+			fallback: 'index.html' // CSR 모드에서는 index.html을 fallback으로 설정
 		}),
 		paths: {
-			base: process.env.BASE_PATH || '', // GitHub Pages 경로 설정
+			base: process.env.BASE_PATH || '' // GitHub Pages 경로 설정
 		},
 		prerender: {
 			entries: []
+		},
+		alias: {
+			$service: 'src/service'
 		}
 	}
 };

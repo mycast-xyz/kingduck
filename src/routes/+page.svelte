@@ -59,13 +59,9 @@
 					<h2 class="text-xl font-bold text-white">최근 추가된 게임</h2>
 					<div class="mt-4 flex gap-3">
 						{#each data.info as gameItem}
-							<a href="/list/{gameItem.title.slug}" class="mr-4 flex flex-col items-center">
-								<img
-									src={data.url + '/' + gameItem.images[0].url}
-									alt="Honkai Star Rail"
-									class="w-32"
-								/>
-								<p class="mt-2 text-xs font-medium text-white">{gameItem.title.kr}</p>
+							<a href="/list/{gameItem.slug}" class="mr-4 flex flex-col items-center">
+								<img src={data.url + '/' + gameItem.iconUrl} alt="Honkai Star Rail" class="w-32" />
+								<p class="mt-2 text-xs font-medium text-white">{gameItem.name}</p>
 							</a>
 						{/each}
 					</div>
@@ -121,13 +117,9 @@
 					<h2 class="text-2xl font-bold text-white">최근 추가된 게임</h2>
 					<div class="mt-4 flex gap-3">
 						{#each data.info as gameItem}
-							<a href="/list/{gameItem.title.slug}" class="mr-4 flex flex-col items-center">
-								<img
-									src={data.url + '/' + gameItem.images[0].url}
-									alt="Honkai Star Rail"
-									class="w-32"
-								/>
-								<p class="mt-2 text-xs font-medium text-white">{gameItem.title.kr}</p>
+							<a href="/list/{gameItem.slug}" class="mr-4 flex flex-col items-center">
+								<img src={data.url + '/' + gameItem.iconUrl} alt="Honkai Star Rail" class="w-32" />
+								<p class="mt-2 text-xs font-medium text-white">{gameItem.name}</p>
 							</a>
 						{/each}
 					</div>

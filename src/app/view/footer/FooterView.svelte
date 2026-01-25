@@ -15,8 +15,12 @@
 			<p class="text-base font-bold">
 				<a href="https://flowbite.com/" class="text-[#f9822c] hover:underline">KingDuck</a>
 			</p>
-			<p>{gameInit.copyright.title}</p>
-			<p>{gameInit.copyright.description}</p>
+			{#if gameInit?.copyright?.title}
+				<p>{gameInit.copyright.title}</p>
+			{/if}
+			{#if gameInit?.copyright?.description}
+				<p>{gameInit.copyright.description}</p>
+			{/if}
 		</span>
 		<span class="ml-auto mt-4 flex justify-center">
 			<a href="#" class="ms-5 text-gray-500 hover:text-gray-900 dark:hover:text-white">

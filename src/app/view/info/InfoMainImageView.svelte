@@ -12,7 +12,7 @@
 
 	// 게임 초기화 정보 초기화
 	let gameInit: any;
-	let rarityService: CharacterRarityService;
+	let rarityService = $state<CharacterRarityService>();
 
 	GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
@@ -26,10 +26,34 @@
 
 	// 이미지 슬라이더 관련 상태 관리
 	let slideIndex = $state(0);
-	let slideData = $state(infoData.images);
+	// API Refactor: Use metadata for images
+	let meta = infoData.metadata || {};
+	let videoArray = infoData.videos;
+
+	let slideData = $state([
+		...(videoArray || []).map((v: any) => ({
+			...v,
+			url: v.localPath,
+			ytUrl: v.url,
+			layout: 'video'
+		})),
+		...(meta.images || []),
+		...(meta.skins || []).map((skin: any) => ({ url: skin.imageUrl })),
+		...(meta.cardImageUrl ? [{ url: meta.cardImageUrl }] : [])
+	]);
+
 	let currentSlide = $derived.by(() => {
-		return slideData[slideIndex];
+		return slideData[slideIndex] || {};
 	});
+
+	const getImageUrl = (slide: any) => {
+		if (!slide?.url) return '';
+		if (slide.url.startsWith('http')) return slide.url;
+
+		// Check if URL already has an extension
+		const hasExtension = /\.[a-z0-9]+$/i.test(slide.url);
+		return `${currentUrl}/${slide.url}${hasExtension ? '' : '.' + ext}`;
+	};
 
 	// 비디오 재생/일시정지 토글 함수
 	const togglePause = () => {
@@ -39,14 +63,18 @@
 	// 슬라이드 제어 함수
 	const controlSlide = (type = '') => {
 		let nextIndex;
-		if ((type = 'NEXT')) {
+		if (type === 'NEXT') {
 			nextIndex = (slideIndex + 1) % slideData.length;
-		} else if ((type = 'PREV')) {
-			nextIndex = (slideIndex - 1) % slideData.length;
+		} else if (type === 'PREV') {
+			nextIndex = (slideIndex - 1 + slideData.length) % slideData.length;
 		}
 
-		slideIndex = nextIndex || 0;
+		slideIndex = nextIndex ?? 0;
 	};
+
+	$effect(() => {
+		console.log(rarityService?.rarityType(infoData.rarity));
+	});
 </script>
 
 <!-- 캐릭터 이미지 표기 처리 -->
@@ -59,16 +87,28 @@
 				{#if currentSlide?.layout == 'video'}
 					<video
 						class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top"
-						src="{currentUrl}/{currentSlide.url}.webm"
+						src={getImageUrl(currentSlide)}
 						bind:paused
 						onclick={() => togglePause()}
 						loop
 						muted
 						playsinline
 					></video>
+					{#if currentSlide.ytUrl}
+						<a
+							href={currentSlide.ytUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="absolute right-4 top-20 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70 md:top-4"
+							title="View on YouTube"
+							aria-label="View on YouTube"
+						>
+							<i class="ri-youtube-line text-xl"></i>
+						</a>
+					{/if}
 				{:else}
 					<img
-						src="{currentUrl}/{currentSlide.url}.webp"
+						src={getImageUrl(currentSlide)}
 						class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top pt-16 md:p-0"
 						alt="..."
 					/>
@@ -103,9 +143,9 @@
 			<!--서브타이틀-->
 			<h5 class="break-keep pb-1 text-lg font-extrabold"></h5>
 			<!-- 메인타이틀-->
-			<h3 class="break-keep pb-1 text-3xl font-extrabold md:text-4xl">{infoData.name.kr}</h3>
+			<h3 class="break-keep pb-1 text-3xl font-extrabold md:text-4xl">{infoData.name}</h3>
 			<!-- 외래어 표기 | 영어, 일본어, 중국어 간체 일부 가능 -->
-			<p class="text-lg font-normal">{infoData.name.en}</p>
+			<!-- <p class="text-lg font-normal">{infoData.name.en}</p> -->
 		</div>
 		<!-- 캐릭터 등급 표기 -->
 		<div class="rating-info flex border-b p-2">
@@ -144,25 +184,32 @@
 					{/if}
 				</div>
 			</div>
-			<div class="flex w-1/2 justify-start">
+			<!-- 출시일 표기 -->
+			<!--<div class="flex w-1/2 justify-start">
 				<h3 class="break-keep pb-1 pr-1 pt-0.5 text-lg font-normal md:pr-3">출시일 :</h3>
 				<h3 class="break-keep pb-1 pr-1 pt-0.5 text-lg font-extrabold md:pr-3">
-					{infoData.releaseDate}
+					{meta.releaseDate}
 				</h3>
-			</div>
+			</div>-->
 		</div>
 		<!-- 캐릭터 타입 표기 -->
 		<div class="flex w-auto flex-wrap justify-start gap-3 p-2 pt-3">
-			{#each Object.entries(infoData.type) as [key, value]}
-				{#if value?.image?.url}
-					<div class="mr-4 flex h-6">
-						<img src="{currentUrl}/{value.image.url}.webp" class="mr-2 h-6 pt-1" alt="" />
-						<h3 class="text-lg font-medium md:text-xl">
-							{value.name.ko}
-						</h3>
-					</div>
-				{/if}
-			{/each}
+			{#if infoData.element}
+				<div class="mr-4 flex h-6">
+					<img src="{currentUrl}/{infoData.element.iconUrl}" class="mr-2 h-6 pt-1" alt="" />
+					<h3 class="text-lg font-medium md:text-xl">
+						{infoData.element.name}
+					</h3>
+				</div>
+			{/if}
+			{#if infoData.path}
+				<div class="mr-4 flex h-6">
+					<img src="{currentUrl}/{infoData.path.iconUrl}" class="mr-2 h-6 pt-1" alt="" />
+					<h3 class="text-lg font-medium md:text-xl">
+						{infoData.path.name}
+					</h3>
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>

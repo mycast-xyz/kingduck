@@ -29,7 +29,12 @@ export class CharacterRarityService {
 		}
 
 		if (setting.default) {
-			rarity.data = item;
+			// default가 true일 때, item을 그대로 사용하되 타입에 맞게 변환
+			if (setting.type === 'number') {
+				rarity.data = typeof item === 'string' ? parseInt(item, 10) : Number(item);
+			} else {
+				rarity.data = item;
+			}
 			rarity.type = setting.type;
 		} else {
 			rarity.type = setting.type;
