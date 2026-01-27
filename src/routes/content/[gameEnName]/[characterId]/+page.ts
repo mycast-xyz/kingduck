@@ -8,6 +8,7 @@ import { HonkaiStarRailInit } from '../../../../app/model/game/HonkaiStarRailIni
 import { GameSettingInitService } from '../../../../app/service/game/GameSettingService';
 import { nikkeInit } from '../../../../app/model/game/nikkeInit';
 import { Reverse1999Init } from '../../../../app/model/game/Reverse1999Init';
+import { WutheringWavesInit } from '../../../../app/model/game/WutheringWavesInit';
 import type { CharacterType, GameType, ResultCodeType } from '../../../../app/model/api/api';
 
 export const load: PageLoad = async ({ params, url }) => {
@@ -61,6 +62,9 @@ export const load: PageLoad = async ({ params, url }) => {
 			break;
 		case 'reverse1999':
 			GameSettingInitService.updateGameInit(new Reverse1999Init().setInit());
+			break;
+		case 'wutheringwaves':
+			GameSettingInitService.updateGameInit(new WutheringWavesInit().setInit());
 			break;
 		default:
 			break;

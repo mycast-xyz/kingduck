@@ -26,6 +26,7 @@ import { HonkaiStarRailInit } from '../../../app/model/game/HonkaiStarRailInit';
 import { GirlsFrontline2Init } from '../../../app/model/game/GirlsFrontline2Init';
 import { nikkeInit } from '../../../app/model/game/nikkeInit';
 import { Reverse1999Init } from '../../../app/model/game/Reverse1999Init';
+import { WutheringWavesInit } from '../../../app/model/game/WutheringWavesInit';
 
 // 캐릭터 목록 서비스
 export const load: PageLoad = async ({ params, url }) => {
@@ -75,6 +76,9 @@ export const load: PageLoad = async ({ params, url }) => {
 			break;
 		case 'reverse1999':
 			GameSettingInitService.updateGameInit(new Reverse1999Init().setInit());
+			break;
+		case 'wutheringwaves':
+			GameSettingInitService.updateGameInit(new WutheringWavesInit().setInit());
 			break;
 		default:
 			break;
