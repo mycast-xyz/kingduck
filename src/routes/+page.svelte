@@ -1,5 +1,8 @@
 <script lang="ts">
 	import type { PageData } from '$types';
+	import { authTokenService } from '../app/service/auth/AuthTokenService';
+
+	const isAuthenticated = authTokenService.isAuthenticated;
 
 	// 1부터 5까지의 랜덤값 생성
 	const randomNumber = Math.floor(Math.random() * 5) + 1;
@@ -39,20 +42,22 @@
 					</p>
 
 					<!-- 버튼 그룹 -->
-					<div class="flex gap-4">
-						<a
-							href="/login/create"
-							class="rounded-lg bg-white px-5 py-2 font-semibold text-gray-900 transition-colors hover:bg-gray-200"
-						>
-							회원가입
-						</a>
-						<a
-							href="/login/"
-							class="rounded-lg border-2 border-white px-5 py-2 font-semibold text-white transition-colors hover:bg-white hover:text-gray-900"
-						>
-							로그인
-						</a>
-					</div>
+					{#if !$isAuthenticated}
+						<div class="flex gap-4">
+							<a
+								href="/login/create"
+								class="rounded-lg bg-white px-5 py-2 font-semibold text-gray-900 transition-colors hover:bg-gray-200"
+							>
+								회원가입
+							</a>
+							<a
+								href="/login/"
+								class="rounded-lg border-2 border-white px-5 py-2 font-semibold text-white transition-colors hover:bg-white hover:text-gray-900"
+							>
+								로그인
+							</a>
+						</div>
+					{/if}
 				</div>
 				<!-- 버튼 그룹 -->
 				<div class="mb-5 mt-10 flex flex-col pl-2">
@@ -97,20 +102,22 @@
 					</p>
 
 					<!-- 버튼 그룹 -->
-					<div class="flex gap-4">
-						<a
-							href="/login/create"
-							class="rounded-lg bg-white px-8 py-3 font-semibold text-gray-900 transition-colors hover:bg-gray-200"
-						>
-							회원가입
-						</a>
-						<a
-							href="/login/"
-							class="rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-gray-900"
-						>
-							로그인
-						</a>
-					</div>
+					{#if !$isAuthenticated}
+						<div class="flex gap-4">
+							<a
+								href="/login/create"
+								class="rounded-lg bg-white px-8 py-3 font-semibold text-gray-900 transition-colors hover:bg-gray-200"
+							>
+								회원가입
+							</a>
+							<a
+								href="/login/"
+								class="rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-gray-900"
+							>
+								로그인
+							</a>
+						</div>
+					{/if}
 				</div>
 				<!-- 버튼 그룹 -->
 				<div class="absolute bottom-10 left-20 flex flex-col pl-20">

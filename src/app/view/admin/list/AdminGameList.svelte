@@ -14,7 +14,7 @@
 
 	async function getGameList() {
 		try {
-			const response = await client.get('/api/v0/game/admin/list');
+			const response = await client.get('/api/v0/admin/game/list');
 			if (response.data.resultCode === 200) {
 				gameList = response.data.items;
 			} else {
@@ -87,7 +87,7 @@
 						</td>
 						<td class="px-6 py-4">
 							<div class="flex items-center justify-between">
-								<p>{game.characterCount}</p>
+								<p>{game.counts.characters}</p>
 								<a
 									href="/admin/character?gameId={game.id}"
 									aria-label="캐릭터 관리"
@@ -100,7 +100,7 @@
 
 						<td class="px-6 py-4">
 							<div class="flex items-center justify-between">
-								<p>{game.itemCount}</p>
+								<p>{game.counts.items}</p>
 								<a
 									href="/admin/item?gameId={game.id}"
 									aria-label="아이템 관리"
@@ -113,7 +113,7 @@
 
 						<td class="px-6 py-4">
 							<div class="flex items-center justify-between">
-								<p>{game.typeCount}</p>
+								<p>{game.counts.types}</p>
 								<a
 									href="/admin/type?gameId={game.id}"
 									aria-label="타입 관리"

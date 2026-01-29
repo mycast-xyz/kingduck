@@ -6,7 +6,8 @@ export class HonkaiStarRailInit {
 			gameId: 'HonkaiStarRail',
 			copyright: {
 				title: 'KingDuck는 붕괴: 스타레일 플레이어를 위한 비공식 정보 웹사이트 입니다.',
-				description: '해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 HoYoverse에 있습니다.',
+				description:
+					'해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 HoYoverse에 있습니다. 참조 사이트 ',
 				author: 'KingDuck',
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'

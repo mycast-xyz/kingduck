@@ -149,7 +149,7 @@
 							<span>설정</span>
 						</a>
 						<div class="mt-2 border-t border-gray-200">
-							<a href="/add-account" class="flex items-center px-4 py-2 hover:bg-gray-100">
+							<a href="/admin/dashboard" class="flex items-center px-4 py-2 hover:bg-gray-100">
 								<i class="ri-instance-line mr-3"></i>
 								<span>어드민 페이지 이동</span>
 							</a>

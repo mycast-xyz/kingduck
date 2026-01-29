@@ -107,6 +107,25 @@ export class AuthTokenService {
 		const token = this.getToken();
 		return token ? { Authorization: `Bearer ${token}` } : {};
 	}
+
+	// 토큰에서 사용자 권한 확인
+	getUserRole(): string | null {
+		const token = this.getToken();
+		if (!token) return null;
+
+		try {
+			const payload = JSON.parse(atob(token.split('.')[1]));
+			return payload.role || null;
+		} catch (error) {
+			return null;
+		}
+	}
+
+	// 관리자 여부 확인
+	get isAdmin(): boolean {
+		const role = this.getUserRole();
+		return role === 'ADMIN' || role === 'MANAGER';
+	}
 }
 
 // 싱글톤 인스턴스 생성 및 export
