@@ -14,8 +14,8 @@
 
 <article>
 	{#if data.isMobile}
-		<MobileView {data} />
+		<MobileView {data} gameInit={data.gameInit} />
 	{:else}
-		<DesktopView {data} />
+		<DesktopView {data} gameInit={data.gameInit} />
 	{/if}
 </article>

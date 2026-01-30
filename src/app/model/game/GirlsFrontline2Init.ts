@@ -129,7 +129,13 @@ export class GirlsFrontline2Init {
 						color: '#373f46'
 					}
 				}
-			}
+			},
+			layout: [
+				{ component: 'MainItemView', dataKey: 'weapon' },
+				{ component: 'CarouselListView', dataKey: 'skill', initDataKey: 'skill.main' },
+				{ component: 'CarouselListView', dataKey: 'helix', initDataKey: 'helix' },
+				{ component: 'CarouselListView', dataKey: 'ranks', initDataKey: 'gacha' }
+			]
 		};
 	}
 

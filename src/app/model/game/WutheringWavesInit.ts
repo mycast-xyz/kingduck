@@ -144,7 +144,15 @@ export class WutheringWavesInit {
 						level: false
 					}
 				}
-			}
+			},
+			layout: [
+				{ component: 'StatsView', dataKey: 'stats' },
+				{ component: 'SkillTreeView', dataKey: 'skills', initDataKey: 'skill' },
+				{ component: 'TraceListView', dataKey: 'bonus' },
+				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' },
+				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
+				{ component: 'CostumeView', dataKey: 'costumes' }
+			]
 		};
 	}
 

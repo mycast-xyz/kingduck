@@ -155,7 +155,13 @@ export class Reverse1999Init {
 						level: true
 					}
 				}
-			}
+			},
+			layout: [
+				{ component: 'MainItemView', dataKey: 'psychube' },
+				{ component: 'SkillTreeView', dataKey: 'skill', initDataKey: 'skill' },
+				{ component: 'CarouselListView', dataKey: 'insight', initDataKey: 'insight' },
+				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' }
+			]
 		};
 	}
 

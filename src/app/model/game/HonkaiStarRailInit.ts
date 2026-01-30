@@ -149,7 +149,20 @@ export class HonkaiStarRailInit {
 						level: false
 					}
 				}
-			}
+			},
+			layout: [
+				{ component: 'MainItemView', dataKey: 'lightcones' },
+				{ component: 'StatsView', dataKey: 'stats' },
+				{
+					component: 'SkillTreeView',
+					dataKey: 'skills'
+				},
+				{ component: 'TraceListView', dataKey: 'skill_tree' },
+				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' },
+				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
+				{ component: 'CostumeView', dataKey: 'costumes' },
+				{ component: 'CalculatorView', dataKey: 'calculator' }
+			]
 		};
 	}
 

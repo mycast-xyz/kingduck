@@ -15,7 +15,7 @@
 	import CarouselListView from '../../info/CarouselListView.svelte';
 
 	// 페이지 데이터 및 모달 초기화
-	const { data } = $props<{ data: any }>();
+	const { data, gameInit } = $props<{ data: any; gameInit?: any }>();
 	const modal = new ContentManualModal();
 	const showModal = modal.showModal;
 
@@ -28,33 +28,32 @@
 	const currentUrl = data.url;
 	const isMobile = data.isMobile;
 	// 캐릭터 정보 데이터 초기화
-	let infoData = data.info;
+	let infoData = $derived(data.info);
 	// API Refactor: Use metadata for game specific info
-	let meta = infoData.metadata || {};
+	let meta = $derived(infoData.metadata || {});
 
-	let itemData = meta.itemData || {};
-	let propertyBase = meta.propertyBase || {};
-	let gachaData = meta.ranks ? Object.values(meta.ranks) : [];
-	let skillData = meta.skill || [];
+	let itemData = $derived(meta.itemData || {});
+	let propertyBase = $derived(meta.propertyBase || {});
+	let gachaData = $derived(meta.ranks ? Object.values(meta.ranks) : []);
+	let skillData = $derived(meta.skill || []);
 
 	// 캐릭터 정보 배경색 계산 함수
 	let contentColor = '#ffffff';
-	if (infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor) {
-		const bg = infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor;
-		contentColor = ContentBackgroundSet.calculateInfoContentColor(bg);
-	} else if (infoData?.type?.element?.image?.backgroundColor) {
-		contentColor = ContentBackgroundSet.calculateInfoContentColor(
-			infoData?.type?.element?.image?.backgroundColor
-		);
-	}
+    $effect(() => {
+        if (infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor) {
+            const bg = infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor;
+            contentColor = ContentBackgroundSet.calculateInfoContentColor(bg);
+        } else if (infoData?.type?.element?.image?.backgroundColor) {
+            contentColor = ContentBackgroundSet.calculateInfoContentColor(
+                infoData?.type?.element?.image?.backgroundColor
+            );
+        }
+    });
 
 	// 게임 정보 처리
-	let gameInit, skillInit, gachaInit: any;
-	GameSettingInitService.showList.subscribe((value) => {
-		gameInit = value;
-		skillInit = gameInit?.content?.info?.skill?.main;
-		gachaInit = gameInit?.content?.info?.gacha;
-	});
+    // Use prop if available, otherwise derived from store (but relying on prop now)
+	let skillInit = $derived(gameInit?.content?.info?.skill?.main);
+    let gachaInit = $derived(gameInit?.content?.info?.gacha);
 
 	// 스킬 정보 상태 관리
 	let selectedSkill = $state(null);

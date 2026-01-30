@@ -9,6 +9,7 @@ import { GameSettingInitService } from '../../../../app/service/game/GameSetting
 import { nikkeInit } from '../../../../app/model/game/nikkeInit';
 import { Reverse1999Init } from '../../../../app/model/game/Reverse1999Init';
 import { WutheringWavesInit } from '../../../../app/model/game/WutheringWavesInit';
+import { hsrItemService } from '../../../../app/service/game/starrail/HsrItemService';
 import type { CharacterType, GameType, ResultCodeType } from '../../../../app/model/api/api';
 
 export const load: PageLoad = async ({ params, url }) => {
@@ -16,6 +17,35 @@ export const load: PageLoad = async ({ params, url }) => {
 
 	if (browser) {
 		isMobile = MobileUtils.isMobile();
+	}
+
+	// 추후에 init를 들고 오면 처리 구현이 틀려짐
+	let gameInitConfig;
+	switch (params.gameEnName) {
+		case 'HonkaiStarRail':
+		case 'starrail':
+			gameInitConfig = new HonkaiStarRailInit().setInit();
+			break;
+		case 'GirlsFrontline2Exilium':
+			gameInitConfig = new GirlsFrontline2Init().setInit();
+			break;
+		case 'nikke':
+			gameInitConfig = new nikkeInit().setInit();
+			break;
+		case 'reverse1999':
+			gameInitConfig = new Reverse1999Init().setInit();
+			break;
+		case 'wutheringwaves':
+		case 'WutheringWaves':
+			gameInitConfig = new WutheringWavesInit().setInit();
+			break;
+		default:
+			break;
+	}
+
+	// Legacy support: still update service for any components outside of this flow
+	if (gameInitConfig) {
+		GameSettingInitService.updateGameInit(gameInitConfig);
 	}
 
 	let gameInfo: GameType | undefined;
@@ -48,28 +78,6 @@ export const load: PageLoad = async ({ params, url }) => {
 			console.log(err);
 		});
 
-	// 추후에 init를 들고 오면 처리 구현이 틀려짐
-	let setInit;
-	switch (params.gameEnName) {
-		case 'HonkaiStarRail':
-			GameSettingInitService.updateGameInit(new HonkaiStarRailInit().setInit());
-			break;
-		case 'GirlsFrontline2Exilium':
-			GameSettingInitService.updateGameInit(new GirlsFrontline2Init().setInit());
-			break;
-		case 'nikke':
-			GameSettingInitService.updateGameInit(new nikkeInit().setInit());
-			break;
-		case 'reverse1999':
-			GameSettingInitService.updateGameInit(new Reverse1999Init().setInit());
-			break;
-		case 'wutheringwaves':
-			GameSettingInitService.updateGameInit(new WutheringWavesInit().setInit());
-			break;
-		default:
-			break;
-	}
-
 	let data: CharacterType | undefined;
 	await client
 		.get<CharacterType>('/api/v0/character/' + params.gameEnName + '/' + params.characterId)
@@ -92,6 +100,7 @@ export const load: PageLoad = async ({ params, url }) => {
 		meta: {
 			description: `${data?.name}의 상세 정보를 제공합니다.`,
 			keywords: `${gameInfo?.name}, 게임, 정보, 가이드, ${data?.name}`
-		}
+		},
+		gameInit: gameInitConfig
 	};
 };

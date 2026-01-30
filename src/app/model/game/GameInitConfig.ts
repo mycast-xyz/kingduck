@@ -46,16 +46,19 @@ export interface GameInitConfig {
 			path?: {
 				display: boolean; // path 속성 표시 여부
 			};
-			rarityColors?: Record<string, {
-				border: string;
-				background: string;
-				text: string;
-				gradient?: {
-					from: string;
-					to: string;
-					stop: string;
-				};
-			}>;
+			rarityColors?: Record<
+				string,
+				{
+					border: string;
+					background: string;
+					text: string;
+					gradient?: {
+						from: string;
+						to: string;
+						stop: string;
+					};
+				}
+			>;
 		};
 	};
 	content: {
@@ -78,4 +81,22 @@ export interface GameInitConfig {
 			}
 		>;
 	};
+	layout?: ComponentLayout[];
+}
+
+export interface ComponentLayout {
+	component:
+		| 'MainItemView'
+		| 'EquipmentItemView'
+		| 'CarouselListView'
+		| 'SkillTreeView'
+		| 'RankListView'
+		| 'TraceListView'
+		| 'BuildRecommendationView'
+		| 'StatsView'
+		| 'CostumeView'
+		| 'CalculatorView';
+	dataKey: string;
+	initDataKey?: string;
+	props?: Record<string, any>;
 }

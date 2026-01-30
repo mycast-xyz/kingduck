@@ -127,7 +127,8 @@ export class nikkeInit {
 						}
 					}
 				}
-			}
+			},
+			layout: [{ component: 'CarouselListView', dataKey: 'skill', initDataKey: 'skill.main' }]
 		};
 	}
 
