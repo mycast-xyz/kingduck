@@ -17,16 +17,38 @@ export class HonkaiStarRailInit {
 				DamageType: {
 					name: '속성',
 					apiPoint: 'elementId',
+					apiType: 'DamageType',
 					isWhite: false,
 					isTwoRow: false,
-					isMenuOpen: false
+					isMenuOpen: false,
+					list: {
+						Ice: '얼음',
+						Wind: '바람',
+						Fire: '화염',
+						Imaginary: '허수',
+						Thunder: '번개',
+						Quantum: '양자',
+						Physical: '물리'
+					}
 				},
 				baseTypeChar: {
 					name: '운명의 길',
 					apiPoint: 'pathId',
+					apiType: 'Path',
 					isWhite: true,
 					isTwoRow: false,
-					isMenuOpen: false
+					isMenuOpen: false,
+					list: {
+						Knight: '보존',
+						Rogue: '수렵',
+						Mage: '지식',
+						Warlock: '공허',
+						Warrior: '파멸',
+						Shaman: '화합',
+						Priest: '풍요',
+						Memory: '기억',
+						Elation: '환락'
+					}
 				}
 			},
 			// 등급 정보
@@ -169,8 +191,8 @@ export class HonkaiStarRailInit {
 					component: 'SkillTreeView',
 					dataKey: 'skills'
 				},
+				{ component: 'RankListView', dataKey: 'ranks_raw', initDataKey: 'gacha' },
 				{ component: 'TraceListView', dataKey: 'skill_tree' },
-				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' },
 				{ component: 'CostumeView', dataKey: 'costumes' },
 				{ component: 'CalculatorView', dataKey: 'calculator' }
 			]

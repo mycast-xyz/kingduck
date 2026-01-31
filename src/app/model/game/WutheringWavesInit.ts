@@ -16,13 +16,15 @@ export class WutheringWavesInit {
 				DamageType: {
 					name: '속성',
 					apiPoint: 'elementId',
+					apiType: 'element',
 					isWhite: false,
 					isTwoRow: false,
 					isMenuOpen: false
 				},
 				baseTypeChar: {
 					name: '무기',
-					apiPoint: 'weaponId',
+					apiPoint: 'pathId',
+					apiType: 'weapon',
 					isWhite: true,
 					isTwoRow: false,
 					isMenuOpen: false
@@ -146,12 +148,12 @@ export class WutheringWavesInit {
 				}
 			},
 			layout: [
-				{ component: 'StatsView', dataKey: 'stats' },
-				{ component: 'SkillTreeView', dataKey: 'skills', initDataKey: 'skill' },
-				{ component: 'TraceListView', dataKey: 'bonus' },
-				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' },
+				{ component: 'SkillTreeView', dataKey: 'Skills', initDataKey: 'skill' },
+				{ component: 'StatsView', dataKey: 'Properties' },
+				{ component: 'TraceListView', dataKey: 'SkillTree' },
+				{ component: 'RankListView', dataKey: 'ResonantChain', initDataKey: 'gacha' },
 				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
-				{ component: 'CostumeView', dataKey: 'costumes' }
+				{ component: 'CostumeView', dataKey: 'Skins' }
 			]
 		};
 	}

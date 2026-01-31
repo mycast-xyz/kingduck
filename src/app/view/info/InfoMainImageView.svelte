@@ -52,6 +52,7 @@
 
 		// Check if URL already has an extension
 		const hasExtension = /\.[a-z0-9]+$/i.test(slide.url);
+		const ext = 'webp'; // Default extension if missing
 		return `${currentUrl}/${slide.url}${hasExtension ? '' : '.' + ext}`;
 	};
 
@@ -70,6 +71,15 @@
 		}
 
 		slideIndex = nextIndex ?? 0;
+	};
+
+	// 번역 함수 추가
+	const getTranslatedName = (key: string, name: string) => {
+		const translationMap = gameInit?.type?.[key]?.list;
+		if (translationMap && typeof name === 'string' && translationMap[name]) {
+			return translationMap[name];
+		}
+		return name;
 	};
 </script>
 
@@ -194,7 +204,7 @@
 				<div class="mr-4 flex h-6">
 					<img src="{currentUrl}/{infoData.element.iconUrl}" class="mr-2 h-6 pt-1" alt="" />
 					<h3 class="text-lg font-medium md:text-xl">
-						{infoData.element.name}
+						{getTranslatedName('DamageType', infoData.element.name)}
 					</h3>
 				</div>
 			{/if}
@@ -202,7 +212,7 @@
 				<div class="mr-4 flex h-6">
 					<img src="{currentUrl}/{infoData.path.iconUrl}" class="mr-2 h-6 pt-1" alt="" />
 					<h3 class="text-lg font-medium md:text-xl">
-						{infoData.path.name}
+						{getTranslatedName('baseTypeChar', infoData.path.name)}
 					</h3>
 				</div>
 			{/if}

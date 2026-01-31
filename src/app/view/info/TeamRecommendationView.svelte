@@ -57,7 +57,7 @@
 </script>
 
 <ContentLayer title={initData?.title || '추천 팀 구성'}>
-	<div class="space-y-8 p-4">
+	<div class="space-y-8 md:p-4">
 		{#if teams.length === 0}
 			<div
 				class="py-12 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-dashed border-gray-300 dark:border-gray-700"

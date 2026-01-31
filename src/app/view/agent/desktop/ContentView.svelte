@@ -138,6 +138,7 @@
 								{currentUrl}
 								{isMobile}
 								{gameId}
+								gameSlug={data.gameSlug}
 								initData={getInitData(section)}
 								{...section.props}
 							/>

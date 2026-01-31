@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { HsrStatsViewModel } from '../../service/game/starrail/HsrStatsViewModel.svelte';
+	import { WwStatsViewModel } from '../../service/game/wutheringwaves/WwStatsViewModel.svelte';
 	import { getCardBgStyle } from '../../util/StyleUtils';
 
 	const { listData, currentUrl, isMobile, initData, gameId } = $props<{
@@ -10,15 +11,35 @@
 		initData: any;
 		gameId: string;
 	}>();
-	// HSR 데이터 판별
-	let isHsrData = $derived(listData && listData['0'] && typeof listData['0'] === 'object');
+	// 데이터 판별
+	// ViewModel 타입 정의 (간략화)
+	interface StatsVM {
+		stats: any[];
+		currentLevel: number;
+		levels: number[];
+		[key: string]: any;
+	}
 
-	// ViewModel 초기화 (HSR 데이터일 때만 유효)
-	let vm = $derived(isHsrData ? new HsrStatsViewModel(listData, gameId) : null);
+	// ViewModel 통합 관리
+	const vm = $derived.by<StatsVM | null>(() => {
+		const gId = initData?.gameId || gameId;
+		const isHsr = gId === 'HonkaiStarRail' || gId === 2 || gId === '2';
+		const isWw = gId === 'WutheringWaves' || gId === '8' || gId === 8;
+
+		if (isHsr && listData && (listData['0'] || listData[0])) {
+			return new HsrStatsViewModel(listData, String(gId));
+		}
+		if (isWw && Array.isArray(listData)) {
+			return new WwStatsViewModel(listData);
+		}
+		return null;
+	});
+
+	// 일반 데이터 처리 (공통 VM이 없을 경우)
 
 	// 일반 데이터 처리 (HSR이 아닐 경우)
 	let genericStats = $derived.by(() => {
-		if (isHsrData) return [];
+		if (vm) return [];
 
 		if (Array.isArray(listData)) return listData;
 		if (!listData) return [];
@@ -55,7 +76,9 @@
 	});
 
 	// 최종 표시할 스탯 목록
-	let displayStats = $derived(isHsrData && vm ? vm.stats : genericStats);
+	let displayStats = $derived.by(() => {
+		return vm ? vm.stats : genericStats;
+	});
 </script>
 
 <Layer title={initData?.name || '기초 속성'}>
@@ -77,7 +100,7 @@
 							/>
 						{:else}
 							<span class="text-[10px] font-bold text-gray-500 dark:text-gray-400"
-								>{stat.key.substring(0, 3).toUpperCase()}</span
+								>{(stat.key || '').substring(0, 3).toUpperCase()}</span
 							>
 						{/if}
 					</div>
@@ -92,8 +115,8 @@
 			{/if}
 		</div>
 		<div class="px-4">
-			<!-- 승급 재료 표시 -->
-			{#if vm && vm.costList.length > 0}
+			<!-- 승급 재료 표시 (HSR 전용 - VM 속성으로 판단) -->
+			{#if vm && 'costList' in vm && vm.costList?.length > 0}
 				<div class="py-2">
 					<h4 class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 ml-1">승급 재료</h4>
 					<div class="flex flex-wrap gap-3">
@@ -132,47 +155,83 @@
 		</div>
 	</div>
 
-	<!-- HSR 전용 레벨 슬라이더 및 코스트 표시 -->
+	<!-- 하단 컨트롤 영역 (레벨 슬라이더 등) -->
 	{#if vm}
 		<div class="px-4 pt-5 pb-2 border-t border-gray-200 dark:border-gray-700/50">
-			<div class="relative w-full h-8 flex items-center mb-6">
-				<!-- 트랙 -->
-				<div class="absolute w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-				<!-- 슬라이더 입력 -->
-				<input
-					type="range"
-					min="0"
-					max="7"
-					step="1"
-					value={vm.levels.indexOf(vm.currentLevel)}
-					oninput={(e) => (vm.currentLevel = vm.levels[parseInt(e.currentTarget.value)])}
-					class="absolute w-full h-full opacity-0 cursor-pointer z-10"
-				/>
-				<!-- 커스텀 핸들 및 라벨 표시 -->
-				{#each vm.levels as level, i}
-					{@const percent = (i / (vm.levels.length - 1)) * 100}
-					<div
-						class="absolute flex flex-col items-center transform -translate-x-1/2"
-						style="left: {percent}%;"
-					>
-						<!-- 점 -->
-						<div
-							class="w-3 h-3 rounded-full transition-colors duration-200
-                            {vm.currentLevel === level
-								? 'bg-orange-500 scale-125'
-								: 'bg-gray-400 dark:bg-gray-600'}"
-						></div>
-						<!-- 라벨 -->
-						<span
-							class="mt-2 text-sm font-medium {vm.currentLevel === level
-								? 'text-orange-500'
-								: 'text-gray-400 dark:text-gray-500'}"
+			<!-- WW 전용 컨트롤 -->
+			{#if gameId === 'WutheringWaves'}
+				<div class="flex items-center justify-between mb-4">
+					<div class="flex items-center gap-4">
+						<span class="text-sm font-medium text-gray-500"
+							>레벨: <span class="text-indigo-600 dark:text-indigo-400 font-bold"
+								>{vm.currentLevel}</span
+							></span
 						>
-							{level}
-						</span>
+						<input
+							type="range"
+							min="1"
+							max="90"
+							step="1"
+							bind:value={vm.currentLevel}
+							class="w-48 accent-indigo-600"
+						/>
 					</div>
-				{/each}
-			</div>
+
+					{#if [20, 40, 50, 60, 70, 80].includes(vm.currentLevel)}
+						<div class="flex items-center gap-2">
+							<span class="text-xs text-gray-500">돌파 후</span>
+							<button
+								class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors {vm.isAscended
+									? 'bg-indigo-600'
+									: 'bg-gray-200 dark:bg-gray-700'}"
+								onclick={() => (vm.isAscended = !vm.isAscended)}
+								aria-label="돌파 여부 전환"
+							>
+								<span
+									class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform {vm.isAscended
+										? 'translate-x-6'
+										: 'translate-x-1'}"
+								></span>
+							</button>
+						</div>
+					{/if}
+				</div>
+			{:else}
+				<!-- 기본/HSR 스타일 슬라이더 -->
+				<div class="relative w-full h-8 flex items-center mb-6">
+					<div class="absolute w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+					<input
+						type="range"
+						min="0"
+						max={vm.levels.length - 1}
+						step="1"
+						value={vm.levels.indexOf(vm.currentLevel)}
+						oninput={(e) => (vm.currentLevel = vm.levels[parseInt(e.currentTarget.value)])}
+						class="absolute w-full h-full opacity-0 cursor-pointer z-10"
+					/>
+					{#each vm.levels as level, i}
+						{@const percent = (i / (vm.levels.length - 1)) * 100}
+						<div
+							class="absolute flex flex-col items-center transform -translate-x-1/2"
+							style="left: {percent}%;"
+						>
+							<div
+								class="w-3 h-3 rounded-full transition-colors duration-200
+                                {vm.currentLevel === level
+									? 'bg-orange-500 scale-125'
+									: 'bg-gray-400 dark:bg-gray-600'}"
+							></div>
+							<span
+								class="mt-2 text-sm font-medium {vm.currentLevel === level
+									? 'text-orange-500'
+									: 'text-gray-400 dark:text-gray-500'}"
+							>
+								{level}
+							</span>
+						</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	{/if}
 </Layer>

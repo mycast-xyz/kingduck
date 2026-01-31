@@ -13,7 +13,9 @@ export interface GameInitConfig {
 			isWhite: boolean;
 			isTwoRow: boolean;
 			apiPoint: string;
+			apiType: string;
 			isMenuOpen: boolean;
+			list?: Record<string, string>;
 		};
 	};
 	rarity: {

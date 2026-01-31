@@ -86,24 +86,21 @@
 
 	// Helper to get element list for a specific filter key
 	const getTypeList = (key: string) => {
+		const apiType = gameInit?.type?.[key]?.apiType;
+
 		if (data?.info?.elements && Array.isArray(data.info.elements)) {
 			return data.info.elements.filter((e: any) => {
 				const eType = e.type || '';
-				// Map gameInit keys to API Element types
-				if (key === 'DamageType' || key === 'damageType') {
-					return eType === 'DamageType' || eType === 'Element';
+				// use apiType from gameInit if it exists
+				if (apiType) {
+					return eType === apiType;
 				}
-				if (key === 'baseTypeChar') {
-					return eType === 'BaseType' || eType === 'Path';
-				}
-				if (key === 'elementType') return eType === 'Code'; // Nikke
-				if (key === 'weaponType') return eType === 'Weapon'; // Nikke
 
-				// Default loose match
+				// Fallback to loose match if apiType is missing (backup for old configs)
 				return eType.toLowerCase() === key.toLowerCase();
 			});
 		}
-		// Fallback to data.type if it exists (for backward compatibility or if organized there)
+		// Fallback to data.type if it exists (for backward compatibility)
 		if (data?.type && Array.isArray(data.type[key])) return data.type[key];
 
 		return [];
@@ -157,9 +154,16 @@
 								src="{currentUrl}/{item.iconUrl}"
 								alt={typeof item.name === 'string' ? item.name : item.name.ko}
 							/>
-							<span class="text-sm font-medium"
-								>{typeof item.name === 'object' ? item.name.ko : item.name}</span
-							>
+							<span class="text-sm font-medium">
+								{(() => {
+									const rawName = typeof item.name === 'object' ? item.name.ko : item.name;
+									const translationMap = gameInit?.type?.[key]?.list;
+									if (translationMap && typeof rawName === 'string' && translationMap[rawName]) {
+										return translationMap[rawName];
+									}
+									return rawName;
+								})()}
+							</span>
 						</button>
 					{/each}
 				</div>

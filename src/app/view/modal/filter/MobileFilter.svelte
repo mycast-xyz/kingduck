@@ -11,7 +11,7 @@
 	<!-- 필터 기능 -->
 	<RarityFilterMenu {data} />
 	<!-- 필터 기능 -->
-	{#if data?.type && Object.keys(data.type).length > 0}
+	{#if data?.info?.elements && Object.keys(data.info.elements).length > 0}
 		<ListFilterMenu {data} />
 	{/if}
 </div>

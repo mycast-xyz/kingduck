@@ -163,7 +163,7 @@
 
 			{#if isMain}
 				<div
-					class="absolute -top-1 -left-1 z-10 rounded-br-xl rounded-tl-lg bg-yellow-500 font-black text-white shadow-xl border-b-2 border-r-2 border-white/30
+					class="absolute -top-1 -left-1 z-10 rounded-br-xl rounded-tl-lg bg-orange-500 font-black text-white shadow-xl border-b-2 border-r-2 border-white/30
                         px-2 py-0.5 text-[10px]
                         sm:px-6 sm:py-2 sm:text-xl sm:tracking-wider"
 				>

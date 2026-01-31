@@ -10,6 +10,8 @@ export class HsrStatsViewModel {
 	constructor(listData: any, gameId: string) {
 		this.listData = listData;
 		this.gameId = gameId;
+		// HSR은 기본적으로 80레벨
+		this.currentLevel = 80;
 	}
 
 	ascensionKey = $derived.by(() => {
