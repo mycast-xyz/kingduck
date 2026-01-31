@@ -3,9 +3,13 @@ export class WwStatsViewModel {
 	currentLevel = $state(90);
 	isAscended = $state(true); // 해당 레벨에서 돌파 여부
 	levels = Array.from({ length: 90 }, (_, i) => i + 1); // 1-90
+	currentUrl: string;
+	gameId: string;
 
-	constructor(listData: any[]) {
+	constructor(listData: any[], gameId: string, currentUrl: string) {
 		this.listData = listData || [];
+		this.gameId = gameId;
+		this.currentUrl = currentUrl;
 	}
 
 	// 레벨별 인덱스 매핑 (명조는 1-90 레벨 + 돌파 단계 포함 96개 항목)
@@ -101,21 +105,39 @@ export class WwStatsViewModel {
 
 	private getStatIcon(name: string): string {
 		const n = name.toLowerCase();
-		if (n.includes('hp')) return 'icon/hp.webp';
-		if (n.includes('attack') || n.includes('공격력')) return 'icon/attack.webp';
-		if (n.includes('defense') || n.includes('방어력')) return 'icon/defense.webp';
+		if (n.includes('hp'))
+			return (
+				this.currentUrl +
+				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertygreenlife_UI.webp'
+			);
+		if (n.includes('attack') || n.includes('공격력'))
+			return (
+				this.currentUrl +
+				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertyredattack_UI.webp'
+			);
+		if (n.includes('defense') || n.includes('방어력'))
+			return (
+				this.currentUrl +
+				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertygreendefense_UI.webp'
+			);
 		if (
 			(n.includes('crit') && (n.includes('rate') || n === 'crit')) ||
 			(name.includes('치명타') && name.includes('확률')) ||
 			name === '크리티컬'
 		)
-			return 'icon/crit_rate.webp';
+			return (
+				this.currentUrl +
+				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertygreendefense_UI.webp'
+			);
 		if (
 			(n.includes('crit') && (n.includes('dmg') || n.includes('damage'))) ||
 			(name.includes('치명타') && name.includes('피해')) ||
 			(name.includes('크리티컬') && name.includes('피해'))
 		)
-			return 'icon/crit_dmg.webp';
+			return (
+				this.currentUrl +
+				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertyredcrit_UI.webp'
+			);
 		if (
 			n.includes('energy') ||
 			n.includes('regen') ||

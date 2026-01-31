@@ -87,11 +87,11 @@
 				>
 					<div class="flex items-center mb-3">
 						<div
-							class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mr-3 overflow-hidden"
+							class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center mr-3 overflow-hidden"
 						>
 							{#if getFormattedImage(trace)}
 								<img
-									src="https://api.hakush.in/hsr/UI/skilltree/{getFormattedImage(trace)}.webp"
+									src="{currentUrl}/{getFormattedImage(trace)}"
 									alt={getFormattedName(trace)}
 									class="w-8 h-8"
 								/>

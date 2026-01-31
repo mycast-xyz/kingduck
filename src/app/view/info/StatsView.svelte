@@ -30,7 +30,7 @@
 			return new HsrStatsViewModel(listData, String(gId));
 		}
 		if (isWw && Array.isArray(listData)) {
-			return new WwStatsViewModel(listData);
+			return new WwStatsViewModel(listData, String(gId), currentUrl);
 		}
 		return null;
 	});
@@ -89,11 +89,11 @@
 					class="flex items-center p-3 bg-gray-50 dark:bg-[#1d1e2e] rounded-lg border border-gray-100 dark:border-gray-700/50"
 				>
 					<div
-						class="flex items-center justify-center w-10 h-10 bg-gray-200 dark:bg-gray-700/50 rounded-full mr-3 shrink-0"
+						class="flex items-center justify-center w-10 h-10 bg-gray-400 dark:bg-gray-700/50 rounded-full mr-3 shrink-0"
 					>
 						{#if stat.icon}
 							<img
-								src="/{stat.icon}"
+								src={stat.icon}
 								alt={stat.name}
 								class="w-6 h-6 object-contain opacity-70"
 								onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
