@@ -71,10 +71,6 @@
 
 		slideIndex = nextIndex ?? 0;
 	};
-
-	$effect(() => {
-		console.log(rarityService?.rarityType(infoData.rarity));
-	});
 </script>
 
 <!-- 캐릭터 이미지 표기 처리 -->

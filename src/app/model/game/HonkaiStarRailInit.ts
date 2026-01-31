@@ -162,7 +162,8 @@ export class HonkaiStarRailInit {
 			},
 			layout: [
 				{ component: 'MainItemView', dataKey: 'lightcones' },
-				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
+				{ component: 'BuildRecommendationView', dataKey: 'relics' },
+				{ component: 'TeamRecommendationView', dataKey: 'teams' },
 				{ component: 'StatsView', dataKey: 'stats' },
 				{
 					component: 'SkillTreeView',

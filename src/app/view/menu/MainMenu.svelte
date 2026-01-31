@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { mainMenuActive, navActive } from "$lib/stores/mainMenuStore";
+	import { mainMenuActive, navActive } from '$lib/stores/mainMenuStore';
 
 	const toggleNav = () => {
-		navActive.update(navActive => !navActive);
+		navActive.update((navActive) => !navActive);
 		if ($navActive === false) {
 			mainMenuActive.set(80);
-			console.log($mainMenuActive);
 		} else {
 			mainMenuActive.set(240);
-			console.log($mainMenuActive);
 		}
 	};
 

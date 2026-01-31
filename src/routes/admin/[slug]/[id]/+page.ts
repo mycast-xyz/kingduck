@@ -23,7 +23,7 @@ export const load: PageLoad = async ({ params, url }) => {
 	}
 
 	return {
-		url: client.defaults.baseURL,
+		url: `${url.protocol}//${url.hostname}:3000`,
 		slug: params.slug,
 		id: params.id,
 		info: infoData

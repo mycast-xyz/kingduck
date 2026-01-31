@@ -8,7 +8,7 @@
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
-	
+
 	// API Services
 	import { hsrItemService } from '../../service/game/starrail/HsrItemService';
 	import { page } from '$app/stores';
@@ -19,8 +19,6 @@
 		isMobile: boolean;
 	}>();
 
-  console.log(itemData);
-  
 	let gameInit = $state<any>(null);
 	let rarityService: CharacterRarityService;
 	let fetchedItems = $state<any[]>([]);
@@ -29,7 +27,7 @@
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
-			
+
 			// HSR 전용 데이터 로드
 			if (gameInit.gameId === 'HonkaiStarRail' || $page.params.gameEnName === 'HonkaiStarRail') {
 				loadHsrItems();
@@ -39,28 +37,26 @@
 
 	async function loadHsrItems() {
 		try {
-            // itemData is an array of IDs [23049, 21052, ...]. Fetch details for each.
-            if (Array.isArray(itemData) && itemData.length > 0) {
-                const promises = itemData.map(async (id: string | number) => {
-                     try {
-                        const res = await hsrItemService.getItemList(String(id));
-                        return res.data; 
-                     } catch (err) {
-                        console.error(`Failed to fetch item ${id}`, err);
-                        return null;
-                     }
-                });
+			// itemData is an array of IDs [23049, 21052, ...]. Fetch details for each.
+			if (Array.isArray(itemData) && itemData.length > 0) {
+				const promises = itemData.map(async (id: string | number) => {
+					try {
+						const res = await hsrItemService.getItemList(String(id));
+						return res.data;
+					} catch (err) {
+						console.error(`Failed to fetch item ${id}`, err);
+						return null;
+					}
+				});
 
-                const results = await Promise.all(promises);
-                // Filter out nulls and flatten if the API returned arrays
-                fetchedItems = results.filter(r => r).flat();
-                console.log('Fetched HSR Items:', fetchedItems);
-            }
+				const results = await Promise.all(promises);
+				// Filter out nulls and flatten if the API returned arrays
+				fetchedItems = results.filter((r) => r).flat();
+			}
 		} catch (e) {
 			console.error('HSR Item Fetch Error', e);
 		}
 	}
-
 
 	// Swiper 설정
 	register();
@@ -74,39 +70,36 @@
 		}
 	}
 
-    // itemData 안전하게 처리 및 정규화 (Normalization)
-    let cards = $derived.by(() => {
+	// itemData 안전하게 처리 및 정규화 (Normalization)
+	let cards = $derived.by(() => {
 		// API로 가져온 데이터가 있으면 우선 사용, 없으면 props로 받은 itemData 사용
 		const sourceData = fetchedItems.length > 0 ? fetchedItems : itemData;
-        const rawList = Array.isArray(sourceData) ? sourceData : (sourceData ? [sourceData] : []);
-        
-        return rawList.map((item: any) => {
-            // 이름 정규화
-            let name = item.name;
-            if (item.name?.kr) name = item.name.kr;
-            else if (typeof item.name === 'object' && item.name?.kr) name = item.name.kr;
-            else if (typeof item.name === 'string') name = item.name;
+		const rawList = Array.isArray(sourceData) ? sourceData : sourceData ? [sourceData] : [];
 
-            console.log(item.metadata);
-            
+		return rawList.map((item: any) => {
+			// 이름 정규화
+			let name = item.name;
+			if (item.name?.kr) name = item.name.kr;
+			else if (typeof item.name === 'object' && item.name?.kr) name = item.name.kr;
+			else if (typeof item.name === 'string') name = item.name;
 
-            // 이미지 정규화
-            let image = '';
-            if(item.metadata?.cardImageUrl){
-              image = item.metadata.cardImageUrl;
-            } else if (item.imageUrl) {
-                image = item.imageUrl;
-            } else if (item.id) {
-                image = `${item.id}`; 
-            }
+			// 이미지 정규화
+			let image = '';
+			if (item.metadata?.cardImageUrl) {
+				image = item.metadata.cardImageUrl;
+			} else if (item.imageUrl) {
+				image = item.imageUrl;
+			} else if (item.id) {
+				image = `${item.id}`;
+			}
 
-            return {
-                ...item,
-                _formattedName: name || 'Unknown',
-                _formattedImage: image || ''
-            };
-        });
-    });
+			return {
+				...item,
+				_formattedName: name || 'Unknown',
+				_formattedImage: image || ''
+			};
+		});
+	});
 </script>
 
 <Layer title="추천 {gameInit.content.info.mainItem.name}">
@@ -128,7 +121,7 @@
 						<img
 							class="h-auto min-w-36 max-w-52"
 							src="{currentUrl}/{card._formattedImage}"
-              height="110%"
+							height="110%"
 							alt=""
 						/>
 						<div class="rating-info flex w-auto justify-center p-2 pb-0">

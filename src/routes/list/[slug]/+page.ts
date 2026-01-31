@@ -91,7 +91,7 @@ export const load: PageLoad = async ({ params, url }) => {
 
 	return {
 		params: params.slug,
-		url: client.defaults.baseURL,
+		url: `${url.protocol}//${url.hostname}:3000`,
 		isMobile: !!isMobile,
 		info: gameInfo,
 		list: characterListData,

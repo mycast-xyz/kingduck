@@ -31,12 +31,7 @@
 </script>
 
 {#if $ModalView}
-	<MobileLayer
-		title={ModalTitle}
-		onresetclick={() => {
-			console.log('aa');
-		}}
-	>
+	<MobileLayer title={ModalTitle} onresetclick={() => {}}>
 		<div slot="body">
 			<ModalComponent {data} />
 		</div>

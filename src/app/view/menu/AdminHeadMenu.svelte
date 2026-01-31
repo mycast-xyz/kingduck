@@ -23,8 +23,6 @@
 	}
 
 	const toggleUserNav = () => {
-		console.log('aa');
-
 		userNavActive.update((userNavActive) => !userNavActive);
 	};
 

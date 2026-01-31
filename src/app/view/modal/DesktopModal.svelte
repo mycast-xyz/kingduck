@@ -24,13 +24,8 @@
 	});
 
 	// svelte-ignore state_referenced_locally
-	console.log(ModalTitle);
 
-	console.log($ModalView);
-
-	$effect(() => {
-		console.log('모달 상태:', $ModalView);
-	});
+	$effect(() => {});
 
 	$effect(() => {
 		if ($ModalView) {

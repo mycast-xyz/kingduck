@@ -13,6 +13,15 @@
 	import MainItemView from '../../info/MainItemView.svelte';
 	import EquipmentItemView from '../../info/EquipmentItemView.svelte';
 	import CarouselListView from '../../info/CarouselListView.svelte';
+	import SkillTreeView from '../../info/SkillTreeView.svelte';
+	import RankListView from '../../info/RankListView.svelte';
+	import TraceListView from '../../info/TraceListView.svelte';
+	import BuildRecommendationView from '../../info/BuildRecommendationView.svelte';
+	import StatsView from '../../info/StatsView.svelte';
+	import CostumeView from '../../info/CostumeView.svelte';
+	import CalculatorView from '../../info/CalculatorView.svelte';
+	import TeamRecommendationView from '../../info/TeamRecommendationView.svelte';
+	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 및 모달 초기화
 	const { data, gameInit } = $props<{ data: any; gameInit?: any }>();
@@ -34,26 +43,27 @@
 
 	let itemData = $derived(meta.itemData || {});
 	let propertyBase = $derived(meta.propertyBase || {});
+	let gameId = $derived(infoData.gameId || 0);
 	let gachaData = $derived(meta.ranks ? Object.values(meta.ranks) : []);
 	let skillData = $derived(meta.skill || []);
 
 	// 캐릭터 정보 배경색 계산 함수
 	let contentColor = '#ffffff';
-    $effect(() => {
-        if (infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor) {
-            const bg = infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor;
-            contentColor = ContentBackgroundSet.calculateInfoContentColor(bg);
-        } else if (infoData?.type?.element?.image?.backgroundColor) {
-            contentColor = ContentBackgroundSet.calculateInfoContentColor(
-                infoData?.type?.element?.image?.backgroundColor
-            );
-        }
-    });
+	$effect(() => {
+		if (infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor) {
+			const bg = infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor;
+			contentColor = ContentBackgroundSet.calculateInfoContentColor(bg);
+		} else if (infoData?.type?.element?.image?.backgroundColor) {
+			contentColor = ContentBackgroundSet.calculateInfoContentColor(
+				infoData?.type?.element?.image?.backgroundColor
+			);
+		}
+	});
 
 	// 게임 정보 처리
-    // Use prop if available, otherwise derived from store (but relying on prop now)
+	// Use prop if available, otherwise derived from store (but relying on prop now)
 	let skillInit = $derived(gameInit?.content?.info?.skill?.main);
-    let gachaInit = $derived(gameInit?.content?.info?.gacha);
+	let gachaInit = $derived(gameInit?.content?.info?.gacha);
 
 	// 스킬 정보 상태 관리
 	let selectedSkill = $state(null);
@@ -69,6 +79,17 @@
 		if (swiperInstance?.swiper) {
 			activeTab = swiperInstance.swiper.activeIndex;
 		}
+	}
+
+	function getInitData(section: any) {
+		const specificInit =
+			(section.initDataKey && gameInit?.content?.info?.[section.initDataKey]) || {};
+		return {
+			...specificInit,
+			gameId: gameInit?.gameId,
+			rarity: gameInit?.rarity,
+			rarityColors: gameInit?.list?.card?.rarityColors
+		};
 	}
 </script>
 
@@ -138,37 +159,112 @@
 			<swiper-slide>
 				<div id="info-content" class="mb-16 mt-14 h-full w-full overflow-y-auto">
 					<div class="w-full px-4 pb-16 pt-4">
-						{#if gameInit.gameId === 'HonkaiStarRail'}
-							<!-- 메인 아이템 - MainItemView -->
-							<MainItemView itemData={itemData.card || []} {currentUrl} {isMobile} />
-							<!-- 장착용 아이템 - EquipmentItemView -->
-							<EquipmentItemView {itemData} {propertyBase} {currentUrl} {isMobile} {contentColor} />
-							<!-- 스킬 처리 -CarouselListView -->
-							<CarouselListView listData={skillData} {currentUrl} {isMobile} initData={skillInit} />
-							<!-- 가챠 처리 -CarouselListView -->
-							<CarouselListView listData={gachaData} {currentUrl} {isMobile} initData={gachaInit} />
-						{:else if gameInit.gameId === 'GirlsFrontline2Exilium'}
-							<!-- 메인 아이템 - MainItemView -->
-							<MainItemView itemData={itemData.weapon || []} {currentUrl} {isMobile} />
-							<!-- 스킬 처리 -CarouselListView -->
-							<CarouselListView listData={skillData} {currentUrl} {isMobile} initData={skillInit} />
-							<!-- 뉴럴 헬릭스 처리 -CarouselListView -->
-							<CarouselListView
-								listData={meta.stats?.helix || []}
-								{currentUrl}
-								{isMobile}
-								initData={gameInit?.content?.info?.helix}
-							/>
-							<!-- 뉴럴 헬릭스 처리 -CarouselListView -->
-							<CarouselListView
-								listData={meta.ranks || []}
-								{currentUrl}
-								{isMobile}
-								initData={gameInit?.content?.info?.gacha}
-							/>
-						{:else if gameInit.gameId === 'nikke'}
-							<!-- 스킬 처리 -CarouselListView -->
-							<CarouselListView listData={skillData} {currentUrl} {isMobile} initData={skillInit} />
+						{#if gameInit?.layout}
+							{#each gameInit.layout as section}
+								{#if section.component === 'MainItemView'}
+									<MainItemView
+										itemData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										{...section.props}
+									/>
+								{:else if section.component === 'EquipmentItemView'}
+									<EquipmentItemView
+										itemData={meta[section.dataKey] || {}}
+										{propertyBase}
+										{currentUrl}
+										{isMobile}
+										{contentColor}
+										{gameId}
+										{...section.props}
+									/>
+								{:else if section.component === 'CarouselListView'}
+									<CarouselListView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'SkillTreeView'}
+									<SkillTreeView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										extraData={section.props?.extraDataKey
+											? meta[section.props.extraDataKey]
+											: undefined}
+										{...section.props}
+									/>
+								{:else if section.component === 'RankListView'}
+									<RankListView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'TraceListView'}
+									<TraceListView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'BuildRecommendationView'}
+									<BuildRecommendationView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'StatsView'}
+									<StatsView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'CostumeView'}
+									<CostumeView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'CalculatorView'}
+									<CalculatorView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'TeamRecommendationView'}
+									<TeamRecommendationView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{/if}
+							{/each}
 						{/if}
 					</div>
 				</div>

@@ -23,7 +23,7 @@ export const load: PageLoad = async ({ url }) => {
 		});
 
 	return {
-		url: client.defaults.baseURL,
+		url: `${url.protocol}//${url.hostname}:3000`,
 		isMobile: isMobile,
 		info: data
 	};

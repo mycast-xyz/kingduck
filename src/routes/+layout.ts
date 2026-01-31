@@ -35,7 +35,7 @@ export const load: LayoutLoad = async ({ params, url }) => {
 		params: params.slug,
 		isNotLayoutPage: isNotLayoutPage,
 		isMobile: isMobile,
-		url: client.defaults.baseURL,
+		url: `${url.protocol}//${url.hostname}:3000`,
 		info: Array.isArray(data) ? data : []
 	};
 };

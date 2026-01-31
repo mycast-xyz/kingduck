@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
-    import { getCardBgStyle as getGradientStyle } from '../../util/StyleUtils';
+	import { getCardBgStyle as getGradientStyle } from '../../util/StyleUtils';
 
 	const { data, list } = $props<{ data: any; list: any }>();
 	const currentUrl = data.url;
@@ -45,30 +45,17 @@
 	// 등급별 색상 가져오기 (반응형)
 	const getRarityColor = (rarity: any) => {
 		if (!gameInit?.list?.card?.rarityColors || !rarityService) {
-			console.log('getRarityColor: missing gameInit or rarityService', {
-				hasGameInit: !!gameInit,
-				hasRarityColors: !!gameInit?.list?.card?.rarityColors,
-				hasRarityService: !!rarityService,
-				rarity
-			});
 			return null;
 		}
 
 		const rarityData = rarityService.rarityData(rarity);
-		console.log('getRarityColor: rarityData', { rarity, rarityData, rarityType: typeof rarity });
 
 		if (rarityData === undefined || rarityData === null || rarityData === 0) {
-			console.log('getRarityColor: invalid rarityData', { rarityData });
 			return null;
 		}
 
 		const colorKey = rarityData.toString();
 		const colors = gameInit.list.card.rarityColors[colorKey];
-		console.log('getRarityColor: result', {
-			colorKey,
-			colors,
-			availableKeys: Object.keys(gameInit.list.card.rarityColors)
-		});
 		return colors || null;
 	};
 
@@ -89,7 +76,7 @@
 	const getCardBgStyle = (rarity: any) => {
 		const colors = getRarityColor(rarity);
 		if (!colors) return '';
-        return getGradientStyle(colors.background);
+		return getGradientStyle(colors.background);
 	};
 </script>
 

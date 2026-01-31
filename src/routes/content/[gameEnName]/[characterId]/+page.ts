@@ -10,6 +10,7 @@ import { nikkeInit } from '../../../../app/model/game/nikkeInit';
 import { Reverse1999Init } from '../../../../app/model/game/Reverse1999Init';
 import { WutheringWavesInit } from '../../../../app/model/game/WutheringWavesInit';
 import { hsrItemService } from '../../../../app/service/game/starrail/HsrItemService';
+// import { CharacterListService } from '../../../../app/service/character/CharacterListService';
 import type { CharacterType, GameType, ResultCodeType } from '../../../../app/model/api/api';
 
 export const load: PageLoad = async ({ params, url }) => {
@@ -18,6 +19,10 @@ export const load: PageLoad = async ({ params, url }) => {
 	if (browser) {
 		isMobile = MobileUtils.isMobile();
 	}
+
+	// 캐릭터 리스트 데이터 로드 (팀 추천 등에서 ID 참조를 위해 필요)
+	// CharacterListService.clearCharacterConfig(); // 필요한 경우 초기화
+	// await CharacterListService.getCharacterList(params.gameEnName);
 
 	// 추후에 init를 들고 오면 처리 구현이 틀려짐
 	let gameInitConfig;
@@ -93,8 +98,9 @@ export const load: PageLoad = async ({ params, url }) => {
 		});
 
 	return {
+		gameSlug: params.gameEnName,
 		isMobile: isMobile,
-		url: client.defaults.baseURL,
+		url: `${url.protocol}//${url.hostname}:3000`,
 		info: data,
 		title: `${data?.name} - ${gameInfo?.name}`,
 		meta: {

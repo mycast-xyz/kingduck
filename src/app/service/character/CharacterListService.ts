@@ -52,6 +52,12 @@ class CharacterListServiceInit {
 		}
 	}
 
+	public getCharacterById(id: number | string): CharacterType | undefined {
+		return this._allCharacters.find(
+			(char) => char.id == Number(id) || char.originalId == String(id)
+		);
+	}
+
 	private applyFilter() {
 		let currentType = '';
 		let currentRarity = '';

@@ -94,7 +94,7 @@
 		<div class="px-4">
 			<!-- 승급 재료 표시 -->
 			{#if vm && vm.costList.length > 0}
-				<div class="pt-2">
+				<div class="py-2">
 					<h4 class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 ml-1">승급 재료</h4>
 					<div class="flex flex-wrap gap-3">
 						{#await vm.costPromise}
@@ -102,11 +102,11 @@
 						{:then items}
 							{#each items as item}
 								<div
-									class="flex flex-col items-center min-w-[50px]"
+									class="flex flex-col items-center min-w-[40px]"
 									title={item.info?.name || 'Unknown'}
 								>
 									<div
-										class="relative w-16 h-16 rounded-full flex items-center justify-center mb-1 bg-gray-200 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700"
+										class="relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-1 bg-gray-200 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700"
 									>
 										{#if item.info?.imageUrl}
 											<img
