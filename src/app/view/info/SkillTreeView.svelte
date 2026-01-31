@@ -135,7 +135,7 @@
 	};
 </script>
 
-<Layer title={initData?.name || '스킬 트리'}>
+<Layer title={initData?.name || '스킬'}>
     <!-- 탭 버튼 (탭이 2개 이상일 때만 표시) -->
     {#if initData?.hasTabs}
         <div class="flex border-b border-gray-200 dark:border-gray-700 mb-4">
@@ -156,7 +156,7 @@
         </div>
     {/if}
 
-    <div class="flex flex-col md:flex-row gap-4 p-4">
+    <div class="flex flex-col md:flex-row gap-4 p-4 max-h-64 overflow-y-auto">
         <!-- 스킬 리스트 (왼쪽/상단) -->
         <div class="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:w-1/4 md:border-r border-gray-200 dark:border-gray-700 pr-2">
             {#each currentList as item}
@@ -187,7 +187,7 @@
         </div>
 
         <!-- 스킬 상세 (오른쪽/하단) -->
-        <div class="flex-1 min-h-[300px]">
+        <div class="flex-1 max-h-64 overflow-y-auto">
             {#if selectedList}
                 <div class="flex flex-col h-full">
                     <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">

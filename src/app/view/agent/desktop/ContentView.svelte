@@ -27,11 +27,13 @@
 
 	// 캐릭터 정보 데이터 초기화
 	let infoData = $derived(data.info);
+  
 	// API Refactor: Use metadata for game specific info
 	let meta = $derived(infoData?.metadata || {});
 
 	let itemData = $derived(meta.itemData || {});
 	let propertyBase = $derived(meta.propertyBase || {});
+  let gameId = $derived(infoData.gameId || 0);
 	let gachaData = $derived(meta.ranks ? Object.values(meta.ranks) : []);
 	let skillData = $derived(meta.skill || []);
 
@@ -62,6 +64,15 @@
     let skillInit = $derived(gameInit?.content?.info?.skill?.main);
     let gachaInit = $derived(gameInit?.content?.info?.gacha);
   
+    // Helper to merge specific init data with gameId
+    function getInitData(section: any) {
+        const specificInit = (section.initDataKey && gameInit?.content?.info?.[section.initDataKey]) || {};
+        return {
+            ...specificInit,
+            gameId: gameInit?.gameId,
+            rarityColors: gameInit?.list?.card?.rarityColors
+        };
+    }
 </script>
 
 <div
@@ -84,6 +95,7 @@
 								itemData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
+								{gameId}
 								{...section.props}
 							/>
 						{:else if section.component === 'EquipmentItemView'}
@@ -93,6 +105,7 @@
 								{currentUrl}
 								{isMobile}
 								{contentColor}
+								{gameId}
 								{...section.props}
 							/>
 						{:else if section.component === 'CarouselListView'}
@@ -100,9 +113,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{:else if section.component === 'SkillTreeView'}
@@ -110,9 +122,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								extraData={section.props?.extraDataKey
 									? meta[section.props.extraDataKey]
 									: undefined}
@@ -123,9 +134,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{:else if section.component === 'TraceListView'}
@@ -133,9 +143,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{:else if section.component === 'BuildRecommendationView'}
@@ -143,9 +152,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{:else if section.component === 'StatsView'}
@@ -153,9 +161,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{:else if section.component === 'CostumeView'}
@@ -163,9 +170,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{:else if section.component === 'CalculatorView'}
@@ -173,9 +179,8 @@
 								listData={meta[section.dataKey] || []}
 								{currentUrl}
 								{isMobile}
-								initData={section.initDataKey
-									? gameInit?.content?.info?.[section.initDataKey]
-									: undefined}
+								{gameId}
+								initData={getInitData(section)}
 								{...section.props}
 							/>
 						{/if}

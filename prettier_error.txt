@@ -1,0 +1,9 @@
+[error] src/app/view/info/StatsView.svelte: TypeError: getVisitorKeys is not a function or its return value is not iterable
+[error]     at recurse (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/index.mjs:16501:24)
+[error]     at printEmbeddedLanguages (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/index.mjs:16471:3)
+[error]     at printAstToDoc (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/index.mjs:16580:9)
+[error]     at async coreFormat (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/index.mjs:16959:14)
+[error]     at async formatWithCursor (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/index.mjs:17172:14)
+[error]     at async formatFiles (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/internal/legacy-cli.mjs:5831:18)
+[error]     at async main (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/internal/legacy-cli.mjs:6220:5)
+[error]     at async Module.run (file:///Users/w2story/Documents/GitHub/kingduck/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/internal/legacy-cli.mjs:6163:5)

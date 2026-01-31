@@ -7,7 +7,7 @@ export class HonkaiStarRailInit {
 			copyright: {
 				title: 'KingDuck는 붕괴: 스타레일 플레이어를 위한 비공식 정보 웹사이트 입니다.',
 				description:
-					'해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 HoYoverse에 있습니다. 참조 사이트 ',
+					'해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 HoYoverse에 있습니다. 참조 사이트 : https://hakush.in/',
 				author: 'KingDuck',
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'
@@ -95,6 +95,16 @@ export class HonkaiStarRailInit {
 								to: '#4175bb',
 								stop: '53%'
 							}
+						},
+						'2': {
+							border: '#4b6c67',
+							background: '#4b6c67',
+							text: '#4b6c67',
+							gradient: {
+								from: '#4b6c67',
+								to: '#519072',
+								stop: '53%'
+							}
 						}
 					}
 				}
@@ -152,6 +162,7 @@ export class HonkaiStarRailInit {
 			},
 			layout: [
 				{ component: 'MainItemView', dataKey: 'lightcones' },
+				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
 				{ component: 'StatsView', dataKey: 'stats' },
 				{
 					component: 'SkillTreeView',
@@ -159,7 +170,6 @@ export class HonkaiStarRailInit {
 				},
 				{ component: 'TraceListView', dataKey: 'skill_tree' },
 				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' },
-				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
 				{ component: 'CostumeView', dataKey: 'costumes' },
 				{ component: 'CalculatorView', dataKey: 'calculator' }
 			]
