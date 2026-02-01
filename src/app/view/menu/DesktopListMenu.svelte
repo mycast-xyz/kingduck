@@ -3,6 +3,8 @@
 	import RarityFilterMenu from './filter/RarityFilterMenu.svelte';
 	import ListFilterMenu from './filter/ListFilterMenu.svelte';
 
+	import { page } from '$app/stores';
+
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 </script>
@@ -55,7 +57,7 @@
 				<a
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
-					href="#top"
+					href={`/list/${$page.params.slug}`}
 				>
 					<i class="ri-user-line h-8 w-8 text-2xl"></i>
 					<span class="ml-2 text-base font-medium transition-all delay-300 duration-200 ease-in-out"
@@ -65,7 +67,7 @@
 				<a
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300"
-					href="#top"
+					href={`/tier-list/${$page.params.slug}`}
 				>
 					<i class="ri-vip-crown-2-line h-8 w-8 text-2xl"></i>
 					<span class="ml-2 text-base font-medium transition-all delay-300 duration-200 ease-in-out"

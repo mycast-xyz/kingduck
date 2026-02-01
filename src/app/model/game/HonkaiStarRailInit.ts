@@ -189,7 +189,10 @@ export class HonkaiStarRailInit {
 				{ component: 'StatsView', dataKey: 'stats' },
 				{
 					component: 'SkillTreeView',
-					dataKey: 'skills'
+					dataKey: 'skills',
+					props: {
+						title: '캐릭터 스킬'
+					}
 				},
 				{ component: 'RankListView', dataKey: 'ranks_raw', initDataKey: 'gacha' },
 				{ component: 'TraceListView', dataKey: 'skill_tree' },

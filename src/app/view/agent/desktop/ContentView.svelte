@@ -39,7 +39,7 @@
 	let skillData = $derived(meta.skill || []);
 
 	// 캐릭터 정보 배경색 계산 함수
-	let contentColor = '#ffffff';
+	let contentColor = $state('#ffffff');
 	// Update path if needed, safeguarding for now
 	// This calculation should ideally be reactive too or in an effect if data changes
 	$effect(() => {
@@ -76,6 +76,57 @@
 			rarityColors: gameInit?.list?.card?.rarityColors
 		};
 	}
+
+	// Navigation & ScrollSpy Logic
+	let activeSection = $state('');
+	const sectionLabels: Record<string, string> = {
+		MainItemView: '기본 정보',
+		EquipmentItemView: '장비',
+		CarouselListView: '목록',
+		SkillTreeView: '스킬',
+		RankListView: '돌파',
+		TraceListView: '행적',
+		BuildRecommendationView: '추천 세팅',
+		StatsView: '기초 속성',
+		CostumeView: '스킨',
+		CalculatorView: '계산기',
+		TeamRecommendationView: '추천 조합'
+	};
+
+	const scrollToSection = (id: string) => {
+		const element = document.getElementById(id);
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth' });
+		}
+	};
+
+	// ScrollSpy implementation using IntersectionObserver
+	$effect(() => {
+		if (!gameInit?.layout) return;
+
+		const observerOptions = {
+			root: document.getElementById('info-content'),
+			threshold: 0.1, // Trigger when 10% of the section is visible
+			rootMargin: '-5% 0px -50% 0px' // Offset to trigger closer to top
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					activeSection = entry.target.id;
+				}
+			});
+		}, observerOptions);
+
+		gameInit.layout.forEach((section: any, index: number) => {
+			const element = document.getElementById(`section-${index}`);
+			if (element) observer.observe(element);
+		});
+
+		return () => {
+			observer.disconnect();
+		};
+	});
 </script>
 
 <div
@@ -89,114 +140,118 @@
 		<!-- 캐릭터 이미지 - InfoMainImageView -->
 		<InfoMainImageView {data} />
 		<!-- 스크롤 처리 -->
-		<div id="info-content" class="flex h-full w-[inherit] flex-col overflow-y-auto">
+		<div id="info-content" class="flex h-full w-[inherit] flex-col overflow-y-auto pr-[20px]">
 			<div class="w-full px-5 pt-5">
 				{#if gameInit?.layout}
-					{#each gameInit.layout as section}
-						{#if section.component === 'MainItemView'}
-							<MainItemView
-								itemData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								{...section.props}
-							/>
-						{:else if section.component === 'EquipmentItemView'}
-							<EquipmentItemView
-								itemData={meta[section.dataKey] || {}}
-								{propertyBase}
-								{currentUrl}
-								{isMobile}
-								{contentColor}
-								{gameId}
-								{...section.props}
-							/>
-						{:else if section.component === 'CarouselListView'}
-							<CarouselListView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'SkillTreeView'}
-							<SkillTreeView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								extraData={section.props?.extraDataKey
-									? meta[section.props.extraDataKey]
-									: undefined}
-								{...section.props}
-							/>
-						{:else if section.component === 'RankListView'}
-							<RankListView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								gameSlug={data.gameSlug}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'TraceListView'}
-							<TraceListView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'BuildRecommendationView'}
-							<BuildRecommendationView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'StatsView'}
-							<StatsView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'CostumeView'}
-							<CostumeView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'CalculatorView'}
-							<CalculatorView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{:else if section.component === 'TeamRecommendationView'}
-							<TeamRecommendationView
-								listData={meta[section.dataKey] || []}
-								{currentUrl}
-								{isMobile}
-								{gameId}
-								initData={getInitData(section)}
-								{...section.props}
-							/>
-						{/if}
+					{#each gameInit.layout as section, index}
+						<!-- Section Wrapper for Navigation -->
+						<div id="section-{index}" class="scroll-mt-4 mb-8">
+							{#if section.component === 'MainItemView'}
+								<MainItemView
+									itemData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									{...section.props}
+								/>
+							{:else if section.component === 'EquipmentItemView'}
+								<EquipmentItemView
+									itemData={meta[section.dataKey] || {}}
+									{propertyBase}
+									{currentUrl}
+									{isMobile}
+									{contentColor}
+									{gameId}
+									{...section.props}
+								/>
+							{:else if section.component === 'CarouselListView'}
+								<CarouselListView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'SkillTreeView'}
+								<SkillTreeView
+									listData={section.dataKey === 'metadata' ? meta : meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									gameSlug={data.gameSlug}
+									initData={getInitData(section)}
+									extraData={section.props?.extraDataKey
+										? meta[section.props.extraDataKey]
+										: undefined}
+									{...section.props}
+								/>
+							{:else if section.component === 'RankListView'}
+								<RankListView
+									listData={section.dataKey === 'metadata' ? meta : meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									gameSlug={data.gameSlug}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'TraceListView'}
+								<TraceListView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'BuildRecommendationView'}
+								<BuildRecommendationView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'StatsView'}
+								<StatsView
+									listData={section.dataKey === 'metadata' ? meta : meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'CostumeView'}
+								<CostumeView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'CalculatorView'}
+								<CalculatorView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'TeamRecommendationView'}
+								<TeamRecommendationView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{/if}
+						</div>
 					{/each}
 				{/if}
 				<!-- 속성정보 - 기본틀 -->
@@ -205,6 +260,33 @@
 			<FooterView />
 		</div>
 	</article>
+
+	<!-- Side Navigation (Waifu2x Style) -->
+	<nav class="fixed right-6 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-3">
+		{#if gameInit?.layout}
+			{#each gameInit.layout as section, index}
+				{@const label = sectionLabels[section.component] || section.component}
+				<div class="group relative flex items-center justify-end">
+					<!-- Tooltip (Left side) -->
+					<span
+						class="pointer-events-none absolute right-6 mr-2 whitespace-nowrap rounded bg-gray-900/80 px-2 text-sm text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 dark:bg-white/90 dark:text-gray-900 shadow-sm"
+					>
+						{label}
+					</span>
+
+					<!-- Dot Button -->
+					<button
+						aria-label={label}
+						class="h-3 w-3 rounded-full transition-all duration-300 {activeSection ===
+						`section-${index}`
+							? 'scale-125 bg-orange-500 ring-2 ring-orange-300 dark:bg-orange-400 dark:ring-orange-500/50'
+							: 'bg-gray-400 hover:scale-110 hover:bg-gray-600 dark:bg-gray-500 dark:hover:bg-gray-300'}"
+						onclick={() => scrollToSection(`section-${index}`)}
+					></button>
+				</div>
+			{/each}
+		{/if}
+	</nav>
 </div>
 
 <style>

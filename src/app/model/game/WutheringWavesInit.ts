@@ -148,10 +148,17 @@ export class WutheringWavesInit {
 				}
 			},
 			layout: [
-				{ component: 'SkillTreeView', dataKey: 'Skills', initDataKey: 'skill' },
-				{ component: 'StatsView', dataKey: 'Properties' },
+				{ component: 'StatsView', dataKey: 'metadata' },
 				{ component: 'TraceListView', dataKey: 'SkillTree' },
 				{ component: 'RankListView', dataKey: 'ResonantChain', initDataKey: 'gacha' },
+				{
+					component: 'SkillTreeView',
+					dataKey: 'Skills',
+					initDataKey: 'skill',
+					props: {
+						title: '스킬'
+					}
+				},
 				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
 				{ component: 'CostumeView', dataKey: 'Skins' }
 			]

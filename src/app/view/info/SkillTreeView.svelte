@@ -1,186 +1,82 @@
 <script lang="ts">
-	import { register } from 'swiper/element/bundle';
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
-	import { hsrSkillService } from '../../service/game/starrail/HsrSkillService';
-	import { wwSkillService } from '../../service/game/wutheringwaves/WwSkillService';
+	import { HsrSkillTreeViewModel } from '../../service/game/starrail/HsrSkillTreeViewModel.svelte';
+	import { WwSkillTreeViewModel } from '../../service/game/wutheringwaves/WwSkillTreeViewModel.svelte';
+	import { EndfieldSkillViewModel } from '../../service/game/endfield/EndfieldSkillViewModel.svelte';
+	import { EndfieldPassiveViewModel } from '../../service/game/endfield/EndfieldPassiveViewModel.svelte';
 
-	const { listData, currentUrl, isMobile, initData, extraData, gameId } = $props<{
+	const { listData, currentUrl, initData, extraData, gameId, gameSlug, title, vmType } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
 		initData: any;
 		extraData?: any;
-		gameId?: string;
+		gameId?: any;
+		gameSlug?: string;
+		title?: string;
+		vmType?: string;
 	}>();
 
-	// 스킬 관련 상태 관리
 	let activeTab = $state(0);
-	// 탭 레이블 (기본값: '캐릭터')
 	let tabLabels = $derived(initData?.tabLabels || ['캐릭터']);
-	// 추가 데이터 키 (예: 소환수 스킬) - 이제 prop으로 받으므로 여기서 키는 안써도 되지만 display용으로 남겨둠
-	let extraDataKey = $derived(initData?.extraDataKey);
 
-	// 현재 표시할 리스트 데이터 계산
-	let currentList = $derived.by(() => {
-		let data: any = listData;
-		if (activeTab === 0) data = listData;
-		else if (activeTab === 1) {
-			// extraData prop 사용
-			data = extraData || [];
+	let vm = $derived.by(() => {
+		let data = activeTab === 0 ? listData : extraData;
+		if (!data) return null;
+
+		const targetGameId = gameId || initData?.gameId;
+		const targetGameSlug = gameSlug || initData?.gameSlug;
+
+		if (targetGameId === 'HonkaiStarRail' || targetGameId === 2 || targetGameSlug === 'starrail') {
+			return new HsrSkillTreeViewModel(data, currentUrl, { initData });
+		} else if (
+			targetGameId === 'WutheringWaves' ||
+			targetGameId === 3 ||
+			targetGameSlug === 'wutheringwaves'
+		) {
+			return new WwSkillTreeViewModel(data, currentUrl, { initData });
+		} else if (targetGameId === 'endfield' || targetGameId === 13) {
+			if (vmType === 'passive') {
+				return new EndfieldPassiveViewModel(data, currentUrl, { initData, extraData });
+			}
+			return new EndfieldSkillViewModel(data, currentUrl, { initData, extraData });
 		}
-
-		return Array.isArray(data) ? data : Object.values(data || {});
+		return null;
 	});
 
+	let items = $derived(vm?.items || []);
 	let selectedList = $state<any>(null);
 	let selectedLevel = $state(1);
 
-	// 탭 변경 시 또는 초기 로드 시 선택 자동 설정
 	$effect(() => {
-		// currentList가 변경되면 첫 번째 항목을 선택
-		if (currentList && currentList.length > 0) {
-			selectedList = currentList[0];
+		if (items.length > 0) {
+			selectedList = items[0];
 			selectedLevel = 1;
 		} else {
 			selectedList = null;
 		}
 	});
 
-	// 이름 포맷팅
-	const getFormattedName = (item: any) => {
-		if (item.name?.kr) return item.name.kr.replace(/<[^>]*>/g, '');
-		if (item.name?.Name) return item.name.Name;
-		if (item.SkillName) return item.SkillName; // WW
-		if (item.title) return item.title;
-		if (typeof item.name === 'string') return item.name;
-		return '';
-	};
-
-	// 타입 포맷팅
-	const getFormattedType = (item: any) => {
-		if (item.type) return item.type;
-		if (item.SkillType) return item.SkillType; // WW
-		return null;
-	};
-
-	// 이미지 포맷팅
-	const getFormattedImage = (item: any) => {
-		// HSR 스킬 형식
-		if (item.iconUrl) return item.iconUrl;
-		// WW 형식
-		if (item.Icon) return item.Icon;
-		// 기존 형식
-		return item.image?.url ? item.image.url : item.image;
-	};
-
-	// 설명 포맷팅 (HSR/WW 우선, 기존 로직 fallback)
-	const getFormattedDescription = (item: any, selectedLevel: number) => {
-		// WW 스킬 형식 감지
-		if (gameId === 'WutheringWaves' || item.SkillDescribe) {
-			let description = wwSkillService.cleanDescription(item.SkillDescribe || '');
-
-			// 계수 정보 추가 (표 형식이 좋겠지만 일단 텍스트로)
-			if (item.SkillAttributes && item.SkillAttributes.length > 0) {
-				const attrs = wwSkillService.formatAttributes(item.SkillAttributes, selectedLevel);
-				let attrText =
-					'<div class="mt-4 space-y-1 pt-2 border-t border-gray-200 dark:border-gray-700">';
-				attrs.forEach((attr) => {
-					attrText += `<div class="flex justify-between text-xs"><span class="text-gray-500">${attr.name}</span><span class="font-medium text-indigo-500">${attr.value}</span></div>`;
-				});
-				attrText += '</div>';
-				description += attrText;
-			}
-			return description || '설명이 없습니다.';
-		}
-
-		// HSR 스킬 형식 감지 (desc + params 필드 존재)
-		if (item?.desc && item?.params !== undefined) {
-			try {
-				const processed = hsrSkillService.processSkill(item);
-				// processedDesc를 사용하되, HTML 태그로 변환
-				let description = processed.processedDesc
-					.replace(/<color=#[^>]+>/g, '<span style="color: #f29e38;">')
-					.replace(/<\/color>/g, '</span>')
-					.replace(/<unbreak>/g, '')
-					.replace(/<\/unbreak>/g, '')
-					.replace(/<u>/g, '<span style="text-decoration: underline;">')
-					.replace(/<\/u>/g, '</span>');
-
-				return description || '설명이 없습니다.';
-			} catch (error) {
-				console.error('HSR skill processing error:', error);
-				return item.desc || '설명이 없습니다.';
-			}
-		}
-
-		// 기존 형식들 (다른 게임)
-		if (item?.info) {
-			let description = item.info;
-			if (item.levelData && item.levelData[selectedLevel - 1]?.params) {
-				const params = item.levelData[selectedLevel - 1].params;
-				description = description
-					.replace(/#(\d+)\[(i|f\d)]/g, (match: string) => {
-						const num = match.match(/\d+/)?.[0];
-						if (!num) return match;
-						const index = parseInt(num) - 1;
-						let value = params[index] || 0;
-						if (params[index] < 10) {
-							value = params[index] * 100 || 0;
-						}
-						return value.toFixed(1);
-					})
-					.replace(/color:#FFFFFF/g, '');
-			}
-			if (description.includes('&2&')) {
-				description = description.replace(/&2&/g, '<br/>');
-				if (description.includes('&10&')) {
-					description = description.replace(/&10&/g, '<hr style="margin: 10px 0" />');
-				}
-			}
-			return description || '설명이 없습니다.';
-		} else if (item?.Desc) {
-			let description = item.Desc;
-			if (item.ParamList) {
-				description = description.replace(/#(\d)\[(i|f\d)]/g, (match: string) => {
-					const num = match.match(/\d/)?.[0];
-					if (!num) return match;
-					const index = parseInt(num) - 1;
-					const value = item.ParamList[index] ?? 0;
-					return (value * 100).toFixed(1);
-				});
-			}
-			return description || '설명이 없습니다.';
-		} else if (item.params && item.description) {
-			let description = item.description;
-			if (item.params) {
-				description = description.replace(/#(\d+)\[(i|f\d)\]/g, (match: string) => {
-					const num = match.match(/\d+/)?.[0];
-					if (!num) return match;
-					const index = parseInt(num) - 1;
-					const value = item.params[index] || 0;
-					return (value * 100).toFixed(1);
-				});
-			}
-			return description || '설명이 없습니다.';
-		} else if (item?.description) {
-			return item?.description?.replace(/#(\d)\[(i|f\d)]/g, '') || '설명이 없습니다.';
-		} else {
-			return '설명이 없습니다.';
-		}
-	};
+	let isWW = $derived(
+		initData?.gameId === 'WutheringWaves' ||
+			gameId === 3 ||
+			gameSlug === 'wutheringwaves' ||
+			initData?.gameSlug === 'wutheringwaves'
+	);
 </script>
 
-<Layer title={initData?.name || '스킬'}>
-	<!-- 탭 버튼 (탭이 2개 이상일 때만 표시) -->
+<Layer title={title || initData?.name || '스킬'}>
 	{#if initData?.hasTabs}
-		<div class="flex border-b border-gray-200 dark:border-gray-700 mb-4">
+		<div class="flex border-b border-gray-200 dark:border-gray-700 mb-4 px-4">
 			{#each tabLabels as label, index}
 				<button
 					class="px-4 py-2 font-medium text-sm transition-colors relative
                         {activeTab === index
 						? 'text-indigo-600 dark:text-indigo-400'
 						: 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}"
-					onclick={() => (activeTab = index)}
+					onclick={() => {
+						activeTab = index;
+					}}
 				>
 					{label}
 					{#if activeTab === index}
@@ -193,15 +89,19 @@
 		</div>
 	{/if}
 
-	<div class="flex flex-col md:flex-row gap-4 p-4 max-h-64 overflow-y-auto">
-		<!-- 스킬 리스트 (왼쪽/상단) -->
+	<div
+		class="flex flex-col md:flex-row gap-4 p-4 {isWW
+			? 'min-h-[400px] max-h-[800px]'
+			: 'max-h-96'} overflow-hidden"
+	>
+		<!-- 스킬 리스트 -->
 		<div
-			class="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:w-1/4 md:border-r border-gray-200 dark:border-gray-700 pr-2"
+			class="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:w-1/4 md:border-r border-gray-200 dark:border-gray-700 pr-2 scrollbar-hide"
 		>
-			{#each currentList as item}
+			{#each items as item}
 				<button
-					class="flex items-center gap-3 p-2 rounded-lg transition-colors text-left
-                        {selectedList === item
+					class="flex items-center gap-3 p-2 rounded-lg transition-colors text-left flex-shrink-0 md:flex-shrink
+                        {selectedList?.id === item.id
 						? 'bg-gray-200 dark:bg-gray-700'
 						: 'hover:bg-gray-100 dark:hover:bg-gray-800'}"
 					onclick={() => {
@@ -212,75 +112,97 @@
 					<div
 						class="w-10 h-10 flex-shrink-0 bg-gray-300 dark:bg-gray-600 rounded-full p-1 overflow-hidden"
 					>
-						{#if getFormattedImage(item)}
+						{#if item.image}
 							<img
 								class="w-full h-full object-contain"
-								src="{currentUrl}/{getFormattedImage(item)}"
-								alt={getFormattedName(item)}
+								src="{currentUrl}{item.image}"
+								alt={item.name}
 							/>
 						{/if}
 					</div>
-					<span class="font-medium text-sm text-gray-900 dark:text-gray-100 hidden md:block">
-						{getFormattedName(item)}
+					<span
+						class="font-medium text-sm text-gray-900 dark:text-gray-100 hidden md:block truncate"
+					>
+						{item.name}
 					</span>
 				</button>
 			{/each}
 		</div>
 
-		<!-- 스킬 상세 (오른쪽/하단) -->
-		<div class="flex-1 max-h-64 overflow-y-auto">
-			{#if selectedList}
+		<!-- 스킬 상세 -->
+		<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+			{#if selectedList && vm}
 				<div class="flex flex-col h-full">
 					<div
 						class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700 pb-2"
 					>
 						<div class="flex items-center gap-3">
 							<div class="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-lg p-1">
-								{#if getFormattedImage(selectedList)}
+								{#if selectedList.image}
 									<img
 										class="w-full h-full object-contain"
-										src="{currentUrl}/{getFormattedImage(selectedList)}"
-										alt={getFormattedName(selectedList)}
+										src="{currentUrl}{selectedList.image}"
+										alt={selectedList.name}
 									/>
 								{/if}
 							</div>
 							<div>
 								<h3 class="text-xl font-bold text-gray-900 dark:text-white">
-									{getFormattedName(selectedList)}
+									{selectedList.name}
 								</h3>
-								{#if getFormattedType(selectedList)}
+								{#if selectedList.type}
 									<span class="text-sm text-gray-500 dark:text-gray-400">
-										[{getFormattedType(selectedList)}]
+										[{selectedList.type}]
 									</span>
 								{/if}
 							</div>
 						</div>
 
-						{#if selectedList?.levelData || selectedList?.SkillAttributes}
+						{#if vm.getMaxLevel(selectedList) > 1}
 							<div class="flex items-center gap-2">
-								<span class="text-sm font-medium">Lv. {selectedLevel}</span>
+								<span class="text-sm font-medium whitespace-nowrap">Lv. {selectedLevel}</span>
 								<input
 									type="range"
-									class="w-32 accent-indigo-600"
+									class="w-24 md:w-32 accent-indigo-600"
 									min="1"
-									max={selectedList.levelData
-										? selectedList.levelData.length
-										: selectedList.SkillAttributes?.[0]?.values?.length || 10}
+									max={vm.getMaxLevel(selectedList)}
 									bind:value={selectedLevel}
 								/>
 							</div>
 						{/if}
 					</div>
 
-					<div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-						{@html getFormattedDescription(selectedList, selectedLevel)}
+					<div
+						class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 text-sm leading-relaxed"
+					>
+						{@html vm.getFormattedDescription(selectedList, selectedLevel)}
 					</div>
 				</div>
 			{:else}
-				<div class="flex items-center justify-center h-full text-gray-500">
+				<div class="flex items-center justify-center h-full text-gray-500 py-20">
 					스킬을 선택해주세요.
 				</div>
 			{/if}
 		</div>
 	</div>
 </Layer>
+
+<style>
+	.custom-scrollbar::-webkit-scrollbar {
+		width: 4px;
+	}
+	.custom-scrollbar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	.custom-scrollbar::-webkit-scrollbar-thumb {
+		background: #8888;
+		border-radius: 4px;
+	}
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+</style>

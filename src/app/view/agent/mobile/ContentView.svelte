@@ -48,7 +48,7 @@
 	let skillData = $derived(meta.skill || []);
 
 	// 캐릭터 정보 배경색 계산 함수
-	let contentColor = '#ffffff';
+	let contentColor = $state('#ffffff');
 	$effect(() => {
 		if (infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor) {
 			const bg = infoData?.element?.metadata?.backgroundColor || meta?.backgroundColor;
@@ -190,10 +190,11 @@
 									/>
 								{:else if section.component === 'SkillTreeView'}
 									<SkillTreeView
-										listData={meta[section.dataKey] || []}
+										listData={section.dataKey === 'metadata' ? meta : meta[section.dataKey] || []}
 										{currentUrl}
 										{isMobile}
 										{gameId}
+										gameSlug={data.gameSlug}
 										initData={getInitData(section)}
 										extraData={section.props?.extraDataKey
 											? meta[section.props.extraDataKey]
@@ -229,7 +230,7 @@
 									/>
 								{:else if section.component === 'StatsView'}
 									<StatsView
-										listData={meta[section.dataKey] || []}
+										listData={section.dataKey === 'metadata' ? meta : meta[section.dataKey] || []}
 										{currentUrl}
 										{isMobile}
 										{gameId}

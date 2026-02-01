@@ -9,6 +9,7 @@ import { GameSettingInitService } from '../../../../app/service/game/GameSetting
 import { nikkeInit } from '../../../../app/model/game/nikkeInit';
 import { Reverse1999Init } from '../../../../app/model/game/Reverse1999Init';
 import { WutheringWavesInit } from '../../../../app/model/game/WutheringWavesInit';
+import { EndfieldInit } from '../../../../app/model/game/EndfieldInit';
 import { hsrItemService } from '../../../../app/service/game/starrail/HsrItemService';
 // import { CharacterListService } from '../../../../app/service/character/CharacterListService';
 import type { CharacterType, GameType, ResultCodeType } from '../../../../app/model/api/api';
@@ -43,6 +44,9 @@ export const load: PageLoad = async ({ params, url }) => {
 		case 'wutheringwaves':
 		case 'WutheringWaves':
 			gameInitConfig = new WutheringWavesInit().setInit();
+			break;
+		case 'endfield':
+			gameInitConfig = new EndfieldInit().setInit();
 			break;
 		default:
 			break;

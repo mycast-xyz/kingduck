@@ -15,6 +15,7 @@ export interface GameInitConfig {
 			apiPoint: string;
 			apiType: string;
 			isMenuOpen: boolean;
+			cols?: number; // 필터 목록의 열 개수 (기본값: 자동 또는 CSS 지정값)
 			list?: Record<string, string>;
 		};
 	};
@@ -61,6 +62,7 @@ export interface GameInitConfig {
 					};
 				}
 			>;
+			rarityIcon?: string;
 		};
 	};
 	content: {

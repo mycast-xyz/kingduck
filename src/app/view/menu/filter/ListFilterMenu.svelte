@@ -129,9 +129,11 @@
 			</div>
 			{#if $TypeOption[key]?.isMenuOpen}
 				<div
-					style={gameInit?.type[key]?.isTwoRow
-						? 'grid-template-columns: repeat(2, minmax(0, 1fr));'
-						: 'grid-template-columns: repeat(3, minmax(0, 1fr));'}
+					style={gameInit?.type[key]?.cols
+						? `grid-template-columns: repeat(${gameInit.type[key].cols}, minmax(0, 1fr));`
+						: gameInit?.type[key]?.isTwoRow
+							? 'grid-template-columns: repeat(2, minmax(0, 1fr));'
+							: 'grid-template-columns: repeat(3, minmax(0, 1fr));'}
 					class="grid w-full grid-cols-3 gap-2 p-4 pt-2"
 				>
 					<button

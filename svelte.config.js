@@ -15,9 +15,6 @@ const config = {
 		},
 		prerender: {
 			entries: []
-		},
-		alias: {
-			$service: 'src/service'
 		}
 	}
 };

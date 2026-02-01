@@ -1,15 +1,19 @@
+import { hsrItemService } from '../starrail/HsrItemService';
+
 export class WwStatsViewModel {
-	listData: any[]; // Properties array from metadata
+	listData: any; // Full metadata object
 	currentLevel = $state(90);
 	isAscended = $state(true); // 해당 레벨에서 돌파 여부
-	levels = Array.from({ length: 90 }, (_, i) => i + 1); // 1-90
+	levels = [1, 20, 40, 50, 60, 70, 80, 90];
+	itemCache = $state<Record<string, any>>({});
 	currentUrl: string;
 	gameId: string;
 
-	constructor(listData: any[], gameId: string, currentUrl: string) {
-		this.listData = listData || [];
+	constructor(listData: any, gameId: string, currentUrl: string) {
+		this.listData = listData || {};
 		this.gameId = gameId;
 		this.currentUrl = currentUrl;
+		this.currentLevel = 90;
 	}
 
 	// 레벨별 인덱스 매핑 (명조는 1-90 레벨 + 돌파 단계 포함 96개 항목)
@@ -33,11 +37,14 @@ export class WwStatsViewModel {
 	}
 
 	stats = $derived.by(() => {
-		if (!this.listData || this.listData.length === 0) return [];
+		const props = this.listData?.Properties;
+		if (!props || props.length === 0) return [];
 
-		const idx = this.getEntryIndex(this.currentLevel, this.isAscended);
+		// 슬라이더에서 선택한 레벨이 1이 아니면 기본적으로 돌파 후 상태로 표시
+		const ascended = this.currentLevel === 1 ? false : this.isAscended;
+		const idx = this.getEntryIndex(this.currentLevel, ascended);
 
-		return this.listData.map((prop) => {
+		return props.map((prop: any) => {
 			const growth = prop.GrowthValues?.[idx] || prop.GrowthValues?.[prop.GrowthValues.length - 1];
 			let value = growth ? growth.value : (prop.BaseValue ?? 0);
 
@@ -76,6 +83,67 @@ export class WwStatsViewModel {
 			};
 		});
 	});
+
+	costList = $derived.by(() => {
+		if (!this.listData?.Breaches) return [];
+
+		const transitionLevels = [20, 40, 50, 60, 70, 80];
+		let spentBreachCount = 0;
+		// 슬라이더에서 특정 레벨을 선택했을 때, 해당 레벨까지의 총 비용을 계산
+		for (const tLevel of transitionLevels) {
+			if (this.currentLevel > tLevel || (this.currentLevel === tLevel && this.isAscended)) {
+				spentBreachCount++;
+			} else {
+				break;
+			}
+		}
+
+		const aggregatedCosts: Record<string, any> = {};
+		for (let i = 0; i < spentBreachCount; i++) {
+			const breach = this.listData.Breaches[i];
+			if (breach?.Items) {
+				breach.Items.forEach((item: any) => {
+					const id = String(item.Key);
+					if (aggregatedCosts[id]) {
+						aggregatedCosts[id].Value += item.Value;
+					} else {
+						aggregatedCosts[id] = { ...item };
+					}
+				});
+			}
+		}
+		return Object.values(aggregatedCosts);
+	});
+
+	costPromise = $derived.by(() => this.loadCostItems(this.costList));
+
+	async loadCostItems(costs: any[]) {
+		if (!costs || costs.length === 0) return [];
+
+		const promises = costs.map(async (item) => {
+			const id = String(item.Key);
+			if (this.itemCache[id]) {
+				return { ...item, info: this.itemCache[id] };
+			}
+			try {
+				const res = await hsrItemService.getItem(id, this.gameId);
+				let info = res.data || res;
+				if (Array.isArray(info)) {
+					info = info[0];
+				} else if (info && Array.isArray(info.data)) {
+					info = info.data[0];
+				}
+
+				this.itemCache[id] = info;
+				return { ...item, info };
+			} catch (e) {
+				console.error(`Failed to load item ${id}`, e);
+				return { ...item, info: null };
+			}
+		});
+
+		return Promise.all(promises);
+	}
 
 	private translateStatName(name: string): string {
 		const n = (name || '').toLowerCase();
@@ -127,7 +195,7 @@ export class WwStatsViewModel {
 		)
 			return (
 				this.currentUrl +
-				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertygreendefense_UI.webp'
+				'/assets/resource/wutheringwaves/Data/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_Iconpropertyredcrit_UI.webp'
 			);
 		if (
 			(n.includes('crit') && (n.includes('dmg') || n.includes('damage'))) ||

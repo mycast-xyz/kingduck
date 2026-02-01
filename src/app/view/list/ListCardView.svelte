@@ -91,8 +91,21 @@
 						class="shadow-m relative m-2 block h-[190px] overflow-hidden rounded-lg border border-gray-100 pb-6 text-white"
 						style={cardStyle || undefined}
 					>
-						<div class="rounded-t-lg" style={cardStyle || undefined}>
-							<img src="{currentUrl}/{item.imageUrl}" alt={item.name} width="100%" />
+						<div
+							class="rounded-t-lg {data.params === 'endfield'
+								? 'flex h-[166px] justify-center overflow-hidden'
+								: ''}"
+							style={cardStyle || undefined}
+						>
+							{#if data.params === 'endfield'}
+								<img
+									src="{currentUrl}/{item.imageUrl}"
+									alt={item.name}
+									class="h-full w-auto object-cover"
+								/>
+							{:else}
+								<img src="{currentUrl}/{item.imageUrl}" alt={item.name} width="100%" />
+							{/if}
 						</div>
 						<div
 							class="image-info absolute inset-x-0 bottom-0 px-2 py-2"
@@ -107,25 +120,29 @@
 									{#if rarityService?.rarityType(item.rarity) === 'number'}
 										{#each { length: item.rarity } as i}
 											<div class="icon h-5 w-3 py-1">
-												<svg
-													id="_레이어_1"
-													data-name="레이어_1"
-													xmlns="http://www.w3.org/2000/svg"
-													version="1.1"
-													viewBox="0 0 50 50"
-												>
-													<defs>
-														<style>
-															.st0 {
-																fill: #fff;
-															}
-														</style>
-													</defs>
-													<path
-														class="st0"
-														d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
-													/>
-												</svg>
+												{#if gameInit?.list?.card?.rarityIcon}
+													{@html gameInit.list.card.rarityIcon}
+												{:else}
+													<svg
+														id="_레이어_1"
+														data-name="레이어_1"
+														xmlns="http://www.w3.org/2000/svg"
+														version="1.1"
+														viewBox="0 0 50 50"
+													>
+														<defs>
+															<style>
+																.st0 {
+																	fill: #fff;
+																}
+															</style>
+														</defs>
+														<path
+															class="st0"
+															d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+														/>
+													</svg>
+												{/if}
 											</div>
 										{/each}
 									{:else}
@@ -151,8 +168,21 @@
 					href="/content/{data.params}/{item.id}"
 					style={cardStyle || undefined}
 				>
-					<div class="relative rounded-t-lg" style={cardStyle || undefined}>
-						<img src="{currentUrl}/{item.imageUrl}" alt={item.name} width="100%" />
+					<div
+						class="relative rounded-t-lg {data.params === 'endfield'
+							? 'flex h-[334px] justify-center overflow-hidden'
+							: ''}"
+						style={cardStyle || undefined}
+					>
+						{#if data.params === 'endfield'}
+							<img
+								src="{currentUrl}/{item.imageUrl}"
+								alt={item.name}
+								class="h-full w-auto object-cover"
+							/>
+						{:else}
+							<img src="{currentUrl}/{item.imageUrl}" alt={item.name} width="100%" />
+						{/if}
 
 						<div
 							class="image-info absolute inset-x-0 bottom-0 h-16 px-4 py-2"
@@ -171,25 +201,58 @@
 								{#if rarityService?.rarityType(item.rarity) === 'number'}
 									{#each { length: item.rarity } as i}
 										<div class="icon h-8 w-5 py-1">
-											<svg
-												id="_레이어_1"
-												data-name="레이어_1"
-												xmlns="http://www.w3.org/2000/svg"
-												version="1.1"
-												viewBox="0 0 50 50"
-											>
-												<defs>
-													<style>
-														.st0 {
-															fill: #fff;
-														}
-													</style>
-												</defs>
-												<path
-													class="st0"
-													d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
-												/>
-											</svg>
+											{#if gameInit?.list?.card?.rarityIcon}
+												{@html gameInit.list.card.rarityIcon}
+											{:else if data.params === 'endfield'}
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													class="OperatorEditCard__Rank-ilQzgD dcsdby"
+												>
+													<g fill-rule="evenodd" clip-path="url(#rank_svg__a)" clip-rule="evenodd">
+														<path
+															fill="#525252"
+															d="m5.845 17.424 6.369-3.667L9.605 9.25.87 14.28zm17.249.69-6.37-3.678-2.608 4.519 8.736 5.043zM20.417 0 15.2 2.686v7.07h5.217z"
+															opacity="0.6"
+														></path>
+														<path
+															fill="#363636"
+															d="m8.298 16.03 3.765-2.174-2.609-4.518-1.957 1.13s2.051 4.325.8 5.562m12.343.668-3.765-2.174-2.61 4.518 1.959 1.13s2.72-3.939 4.416-3.474m-.224-9.202S15.49 7.266 15.2 5.41v4.348h5.217z"
+															opacity="0.502"
+														></path>
+														<path
+															fill="#3F3F3F"
+															d="m13.922 9.77-.136-6.147L9.42 6.145l.008 6.622c.29 2.125-1.28 3.35-1.28 3.35l4.519-2.61c1.53-1.238 1.256-3.737 1.256-3.737m3.887 3.639 5.391 2.957v-5.044l-5.74-3.304c-2.141-.655-2.26-2.783-2.26-2.783v5.217c.15 2.103 2.609 2.957 2.609 2.957m-5.4 1.547-5.257 3.191 4.368 2.522 5.731-3.318c1.695-1.314 3.54-.567 3.54-.567l-4.518-2.608c-1.839-.707-3.865.78-3.865.78"
+														></path>
+													</g>
+													<defs>
+														<clipPath id="rank_svg__a">
+															<path fill="#fff" d="M0 0h24v24H0z"></path>
+														</clipPath>
+													</defs>
+												</svg>
+											{:else}
+												<svg
+													id="_레이어_1"
+													data-name="레이어_1"
+													xmlns="http://www.w3.org/2000/svg"
+													version="1.1"
+													viewBox="0 0 50 50"
+												>
+													<defs>
+														<style>
+															.st0 {
+																fill: #fff;
+															}
+														</style>
+													</defs>
+													<path
+														class="st0"
+														d="M45.99,23.97c-11.02,0-19.96-8.94-19.96-19.96V0h-2.06v4.01c0,11.02-8.94,19.96-19.96,19.96H0v2.06h4.01c11.02,0,19.96,8.94,19.96,19.96v4.01h2.06v-4.01c0-11.02,8.94-19.96,19.96-19.96h4.01v-2.06h-4.01Z"
+													/>
+												</svg>
+											{/if}
 										</div>
 									{/each}
 								{:else}
