@@ -375,8 +375,8 @@
 		<DesktopListMenu {data} />
 
 		<!-- Main Content Area -->
-		<div class="list h-auto w-[calc(100%-320px)] w-[inherit] overflow-y-auto pr-2 pt-16">
-			<div class="container mx-auto p-4 min-h-screen">
+		<div class="list h-auto w-[calc(100%-100px)] w-[inherit] overflow-y-auto pr-2 pt-16">
+			<div class="container mx-auto w-full p-4 min-h-screen">
 				<div class="flex justify-between items-center mb-6">
 					<h1 class="text-3xl font-bold uppercase text-gray-800 dark:text-white">
 						{data.info?.name} Tier List
