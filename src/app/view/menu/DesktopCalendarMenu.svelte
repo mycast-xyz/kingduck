@@ -28,17 +28,11 @@
 	>
 		<div class="gmae-title my-2 h-auto w-full p-4">
 			<div class="gmae-logo-img">
-				{#if data?.info?.iconUrl && data.info.iconUrl.length > 0}
-					<img
-						src={data.url + '/' + data.info.iconUrl}
-						class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
-						alt={data.params}
-					/>
-				{:else}
-					<div
-						class="-mt-20 h-28 w-28 rounded-full border border-gray-100 bg-gray-200 shadow-md"
-					></div>
-				{/if}
+				<img
+					src="/assets/logo/weather-500.webp"
+					class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
+					alt="가챠 예보"
+				/>
 			</div>
 			<h3 class="pb-3 pt-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
 				가챠 예보

@@ -71,7 +71,7 @@
 				>
 					<img
 						class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200"
-						src="/assets/logo/500.png"
+						src="/assets/logo/weather-500.webp"
 						alt="HonkaiStarRail"
 					/>
 				</a>
