@@ -38,7 +38,7 @@
 
 	// tooltip 표시 상태를 위한 상태 변수
 	let showTooltip = $state(null);
-	
+
 	// data.info가 배열인지 확인하고 안전하게 처리
 	const gameList = $derived(Array.isArray(data?.info) ? data.info : []);
 </script>
@@ -59,6 +59,35 @@
 	<div class="w-full px-2">
 		<!-- 반복 area -->
 		<div class="mt-3 flex w-full flex-col items-center border-t border-gray-300">
+			<div class="relative border-b border-gray-300 pb-2">
+				<a
+					data-sveltekit-preload-data="false"
+					id="menu-item"
+					class:active={data.params === 'calendar'}
+					class="mt-2 flex h-12 w-full items-center rounded px-3"
+					href="/calendar"
+					onmouseenter={() => (showTooltip = 'calendar')}
+					onmouseleave={() => (showTooltip = null)}
+				>
+					<img
+						class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200"
+						src="/assets/logo/500.png"
+						alt="HonkaiStarRail"
+					/>
+				</a>
+
+				{#if showTooltip === 'calendar'}
+					<div
+						class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300"
+						role="tooltip"
+					>
+						<p class="block whitespace-nowrap text-sm font-medium">가챠예보</p>
+						<div class="tooltip-arrow" data-popper-arrow>
+							<div class="absolute -left-1 top-3 h-4 w-4 rotate-45 bg-orange-400"></div>
+						</div>
+					</div>
+				{/if}
+			</div>
 			{#each gameList as gameItem}
 				<div class="relative">
 					<a

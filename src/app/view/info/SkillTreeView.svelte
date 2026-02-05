@@ -115,7 +115,7 @@
 						{#if item.image}
 							<img
 								class="w-full h-full object-contain"
-								src="{currentUrl}{item.image}"
+								src="{currentUrl}/{item.image}"
 								alt={item.name}
 							/>
 						{/if}
