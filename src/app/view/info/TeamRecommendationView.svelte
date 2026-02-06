@@ -3,6 +3,7 @@
 	import { register } from 'swiper/element/bundle';
 	import ContentLayer from '../../view-framework/content/ContentLayer.svelte';
 	import TeamMember from './TeamMember.svelte';
+	import { Reverse1999TeamViewModel } from '../../service/game/reverse1999/Reverse1999TeamViewModel.svelte';
 
 	// Props
 	interface TeamData {
@@ -15,13 +16,14 @@
 		BackupList3: number[];
 	}
 
-	const { listData, currentUrl, isMobile, gameId, initData, gameSlug } = $props<{
+	const { listData, currentUrl, isMobile, gameId, initData, gameSlug, title } = $props<{
 		listData?: TeamData[];
 		currentUrl?: string;
 		isMobile?: boolean;
 		gameId?: number;
 		initData?: any;
 		gameSlug?: string; // Passed from parent
+		title?: string;
 	}>();
 
 	// Swiper 등록
@@ -29,8 +31,21 @@
 		register();
 	});
 
+	let vm = $derived.by(() => {
+		if (
+			gameId === 'Reverse1999' ||
+			gameSlug === 'reverse1999' ||
+			initData?.gameId === 'Reverse1999'
+		) {
+			console.log(listData);
+
+			return new Reverse1999TeamViewModel(listData);
+		}
+		return null;
+	});
+
 	// 팀 구성 데이터 처리
-	let teams = $derived(Array.isArray(listData) ? listData : []);
+	let teams = $derived(vm ? vm.teams : Array.isArray(listData) ? listData : []);
 
 	// 백업 슬롯 상태 관리 (어떤 팀의 몇 번째 슬롯이 활성화되었는지)
 	// format: `${teamIdx}-${slotIdx}`
@@ -46,17 +61,20 @@
 	}
 
 	// 팀 슬롯 생성 헬퍼
-	function getTeamSlots(team: TeamData) {
+	function getTeamSlots(team: any) {
+		if (team.slots) return team.slots; // New VM format handling
+
+		const members = team.MemberList || [];
 		return [
 			{ main: team.AvatarID, backups: [] },
-			{ main: team.MemberList[0], backups: team.BackupList1 },
-			{ main: team.MemberList[1], backups: team.BackupList2 },
-			{ main: team.MemberList[2], backups: team.BackupList3 }
+			{ main: members[0], backups: team.BackupList1 || [] },
+			{ main: members[1], backups: team.BackupList2 || [] },
+			{ main: members[2], backups: team.BackupList3 || [] }
 		];
 	}
 </script>
 
-<ContentLayer title={initData?.title || '추천 팀 구성'}>
+<ContentLayer title={title || initData?.title || '추천 팀 구성'}>
 	<div class="space-y-8 md:p-4">
 		{#if teams.length === 0}
 			<div
@@ -80,7 +98,7 @@
 							{idx + 1}
 						</span>
 						<h3 class="text-base font-bold text-gray-900 dark:text-gray-100">
-							추천 조합 #{idx + 1}
+							{team.name || `추천 조합 #${idx + 1}`}
 						</h3>
 					</div>
 				</div>

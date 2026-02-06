@@ -4,8 +4,9 @@
 	import { WwRankListViewModel } from '../../service/game/wutheringwaves/WwRankListViewModel.svelte';
 	import { EndfieldRankListViewModel } from '../../service/game/endfield/EndfieldRankListViewModel.svelte';
 	import { EndfieldPotentialViewModel } from '../../service/game/endfield/EndfieldPotentialViewModel.svelte';
+	import { Reverse1999RankListViewModel } from '../../service/game/reverse1999/Reverse1999RankListViewModel.svelte';
 
-	const { listData, currentUrl, gameId, gameSlug, initData, vmType } = $props<{
+	const { listData, currentUrl, gameId, gameSlug, initData, vmType, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
@@ -13,6 +14,7 @@
 		gameId?: string;
 		gameSlug: string;
 		vmType?: string;
+		title?: string;
 	}>();
 
 	let vm = $derived.by(() => {
@@ -25,6 +27,8 @@
 				return new EndfieldPotentialViewModel(listData, gameSlug, currentUrl);
 			}
 			return new EndfieldRankListViewModel(listData, gameSlug, currentUrl, initData);
+		} else if (gameId === 'Reverse1999' || gameSlug === 'reverse1999') {
+			return new Reverse1999RankListViewModel(listData, gameSlug, currentUrl);
 		}
 		return null;
 	});
@@ -32,9 +36,13 @@
 	let items = $derived(vm?.items || []);
 </script>
 
-<Layer title={initData?.name || '성흔'}>
+<Layer title={title || initData?.name || '성흔'}>
 	<div class="p-4">
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+		<div
+			class="grid gap-x-6 gap-y-8 {title === '형상효율'
+				? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+				: 'grid-cols-1 md:grid-cols-2'}"
+		>
 			{#each items as item}
 				<div class="flex flex-col group">
 					<div class="flex items-start gap-4">

@@ -148,9 +148,14 @@ export class WutheringWavesInit {
 				}
 			},
 			layout: [
-				{ component: 'StatsView', dataKey: 'metadata' },
-				{ component: 'TraceListView', dataKey: 'SkillTree' },
-				{ component: 'RankListView', dataKey: 'ResonantChain', initDataKey: 'gacha' },
+				{ component: 'StatsView', dataKey: 'metadata', props: { title: '기초 속성' } },
+				{ component: 'TraceListView', dataKey: 'SkillTree', props: { title: '공명 회로' } },
+				{
+					component: 'RankListView',
+					dataKey: 'ResonantChain',
+					initDataKey: 'gacha',
+					props: { title: '공명 사슬' }
+				},
 				{
 					component: 'SkillTreeView',
 					dataKey: 'Skills',
@@ -159,8 +164,12 @@ export class WutheringWavesInit {
 						title: '스킬'
 					}
 				},
-				{ component: 'BuildRecommendationView', dataKey: 'recommendation' },
-				{ component: 'CostumeView', dataKey: 'Skins' }
+				{
+					component: 'BuildRecommendationView',
+					dataKey: 'recommendation',
+					props: { title: '추천 세팅' }
+				},
+				{ component: 'CostumeView', dataKey: 'Skins', props: { title: '코스튬' } }
 			]
 		};
 	}

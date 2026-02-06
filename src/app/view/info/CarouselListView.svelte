@@ -9,11 +9,12 @@
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 
-	const { listData, currentUrl, isMobile, initData } = $props<{
+	const { listData, currentUrl, isMobile, initData, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
 		initData: any;
+		title?: string;
 	}>();
 
 	let gameInit: any;
@@ -129,7 +130,7 @@
 	};
 </script>
 
-<Layer title={initData?.name || '스킬'}>
+<Layer title={title || initData?.name || '스킬'}>
 	{#if !isMobile}
 		<!-- 기본 형태 | 강조 박스형 -->
 

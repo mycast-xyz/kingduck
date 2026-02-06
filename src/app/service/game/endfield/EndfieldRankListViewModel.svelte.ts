@@ -1,7 +1,7 @@
 export class EndfieldRankListViewModel {
 	items: any[] = [];
 
-	constructor(listData: any, gameSlug: string, currentUrl: string) {
+	constructor(listData: any, gameSlug: string, currentUrl: string, initData?: any) {
 		// listData corresponds to metadata.talentNodeMap (or similar)
 		// We filter for nodes that correspond to "Potentials" / "Talents"
 		// In the JSON, these seem to be `PassiveSkill` nodes ?

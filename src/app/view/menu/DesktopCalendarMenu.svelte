@@ -26,7 +26,7 @@
 	<div
 		class="mt-12 w-80 flex-col items-center rounded border border-gray-100 bg-white text-gray-700 shadow-md"
 	>
-		<div class="gmae-title my-2 h-auto w-full p-4">
+		<div class="gmae-title my-2 h-auto w-full p-4 mb-0 border-b border-gray-100">
 			<div class="gmae-logo-img">
 				<img
 					src="/assets/logo/weather-500.webp"
@@ -47,8 +47,8 @@
 		>
 			<!-- 페이지 기능 -->
 			<!-- 페이지 기능 -->
-			<div class=" my-4 mt-1 flex w-full flex-col items-center p-4 pb-2">
-				<h3 class="w-full py-3 pb-1 pl-1 text-lg font-bold text-gray-700">필터</h3>
+			<div class=" my-4 mt-1 flex w-full flex-col items-center p-4 pb-2 pt-0">
+				<h3 class="w-full py-3 pb-4 pl-1 text-lg font-bold text-gray-700">게임리스트</h3>
 
 				<div class="flex flex-col w-full gap-2">
 					{#each games as game}

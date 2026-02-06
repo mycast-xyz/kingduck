@@ -16,6 +16,7 @@ export class Reverse1999Init {
 				elementType: {
 					name: '속성',
 					apiPoint: 'elementId',
+					apiType: 'element',
 					isWhite: false,
 					isTwoRow: false,
 					isMenuOpen: false
@@ -23,6 +24,7 @@ export class Reverse1999Init {
 				positionType: {
 					name: '포지션',
 					apiPoint: 'positionId',
+					apiType: 'position',
 					isWhite: true,
 					isTwoRow: false,
 					isMenuOpen: false
@@ -157,10 +159,49 @@ export class Reverse1999Init {
 				}
 			},
 			layout: [
-				{ component: 'MainItemView', dataKey: 'psychube' },
-				{ component: 'SkillTreeView', dataKey: 'skill', initDataKey: 'skill' },
-				{ component: 'CarouselListView', dataKey: 'insight', initDataKey: 'insight' },
-				{ component: 'RankListView', dataKey: 'ranks', initDataKey: 'gacha' }
+				{
+					component: 'RankListView',
+					dataKey: 'metadata',
+					initDataKey: 'gacha',
+					props: { title: '형상효율' }
+				},
+				{
+					component: 'StatsView',
+					dataKey: 'metadata',
+					initDataKey: 'stats',
+					props: { title: '광상 정보' }
+				},
+				{
+					component: 'TraceListView',
+					dataKey: 'builds',
+					initDataKey: 'builds',
+					props: { title: '공명변조' }
+				},
+				{
+					component: 'EquipmentItemView',
+					dataKey: 'builds',
+					initDataKey: 'psychube',
+					props: { title: '의지추천' }
+				},
+				{
+					component: 'TeamRecommendationView',
+					dataKey: 'teams',
+					initDataKey: 'teams',
+					props: { title: '사용 조합' }
+				},
+				/*
+				{
+					component: 'BuildRecommendationView',
+					dataKey: 'resonance_recommendation',
+					initDataKey: 'resonance_recommendation',
+					props: { title: '공명추천' }
+				},*/
+				{
+					component: 'CostumeView',
+					dataKey: 'costume',
+					initDataKey: 'costume',
+					props: { title: '스킨정보' }
+				}
 			]
 		};
 	}

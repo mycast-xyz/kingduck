@@ -2,20 +2,23 @@
 	// 커스텀 서비스 임포트
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
+	import { Reverse1999EquipmentViewModel } from '../../service/game/reverse1999/Reverse1999EquipmentViewModel.svelte';
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 
-	const { itemData, propertyBase, currentUrl, isMobile, contentColor } = $props<{
+	const { itemData, propertyBase, currentUrl, isMobile, contentColor, title, initData } = $props<{
 		itemData: any;
 		propertyBase: any;
 		currentUrl: string;
 		isMobile: boolean;
 		contentColor: string;
+		title?: string;
+		initData?: any;
 	}>();
 
-	let gameInit: any;
-	let rarityService: CharacterRarityService;
+	let gameInit = $state<any>(null);
+	let rarityService = $state<CharacterRarityService>();
 
 	GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
@@ -24,7 +27,41 @@
 		}
 	});
 
-	// 장비 착용 부분에 대한 안내 표시
+	let vm = $derived.by(() => {
+		const gId = initData?.gameId || gameInit?.gameId;
+		if (gId === 'Reverse1999' || gId === 6 || gId === '6') {
+			return new Reverse1999EquipmentViewModel(itemData);
+		}
+		return null;
+	});
+
+	// Unified items list: VM items or legacy nested list
+	let displayItems = $derived.by(() => {
+		if (vm) {
+			return [
+				{
+					title: title || '심상', // Default title
+					list: vm.items
+				}
+			];
+		}
+
+		// Legacy Config-driven logic
+		if (gameInit?.content?.info?.item?.list && itemData) {
+			return Object.entries(gameInit.content.info.item.list)
+				.map(([key, value]: any) => {
+					if (value?.view && itemData?.[key]) {
+						return {
+							title: value.name,
+							list: itemData[key]
+						};
+					}
+					return null;
+				})
+				.filter(Boolean);
+		}
+		return [];
+	});
 	const getFormattedType = (relicType: any, gameId: string) => {
 		let type = '';
 		if (gameId == 'HonkaiStarRail') {
@@ -190,71 +227,81 @@
 	};
 </script>
 
-<Layer title="추천 {gameInit?.content?.info?.item?.name || '아이템'}">
+<Layer title={title || initData?.name || gameInit?.content?.info?.item?.name || '아이템'}>
 	<!-- 기본 형태 | 강조 박스형 -->
 	<div class="flex w-full flex-col p-3 md:flex-row">
-		{#if gameInit?.content?.info?.item?.list && itemData}
-			{#each Object.entries(gameInit?.content?.info?.item?.list ?? {}) as [key, value]}
-				{#if value?.view && itemData?.[key]}
-					<div class="w-auto py-3 pt-0">
-						<h5
-							class="pb-0 pl-0 font-bold tracking-tight text-gray-700 dark:text-white md:pb-3 md:pl-3 md:text-lg"
-						>
-							{value.name}
-						</h5>
-						<div class="flex w-full justify-start overflow-x-auto py-3 pb-0">
-							{#each itemData[key] as item}
-								{#if !isMobile}
-									<button
-										type="button"
-										onclick={() => (selectedList = item)}
-										style:background={contentColor}
-										class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+		{#each displayItems as group}
+			<div class="w-auto py-3 pt-0">
+				<h5
+					class="pb-0 pl-0 font-bold tracking-tight text-gray-700 dark:text-white md:pb-3 md:pl-3 md:text-lg"
+				>
+					{group.title}
+				</h5>
+				<div class="flex w-full justify-start overflow-x-auto py-3 pb-0">
+					{#each group.list as item}
+						{#if !isMobile}
+							<button
+								type="button"
+								onclick={() => (selectedList = item)}
+								style:background={contentColor}
+								class="mx-4 max-w-sm basis-1/6 rounded-lg border border-gray-200 bg-gray-500 shadow dark:border-gray-700"
+							>
+								<div class="relative h-auto w-full object-scale-down">
+									{#if item?.itemReferences?.image?.src}
+										<img
+											class="m-auto min-w-36 max-w-40 items-center p-4"
+											src="{currentUrl}/{item?.itemReferences?.image?.src ?? ''}.webp"
+											alt={getFormattedName(item)}
+										/>
+									{:else}
+										<div class="flex h-36 w-full items-center justify-center p-4 text-white">
+											{getFormattedName(item)[0]}
+										</div>
+									{/if}
+								</div>
+								<div class="p-2">
+									<h5
+										class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
 									>
-										<div class="relative h-auto w-full object-scale-down">
-											<img
-												class="m-auto min-w-36 max-w-40 items-center p-4"
-												src="{currentUrl}/{item?.itemReferences?.image?.src ?? ''}.webp"
-												alt={item?.name?.kr ?? ''}
-											/>
+										{getFormattedName(item)}
+									</h5>
+								</div>
+							</button>
+						{:else}
+							<button
+								type="button"
+								onclick={() => (selectedList = item)}
+								style:background={contentColor}
+								class="mx-2 min-w-24 max-w-24 rounded-lg border border-gray-200 bg-gray-500 shadow first:ml-0 dark:border-gray-700"
+							>
+								<div class=" relative h-auto w-full object-scale-down">
+									{#if item?.itemReferences?.image?.src}
+										<img
+											class="m-auto min-w-24 max-w-24 items-center p-4"
+											src="{currentUrl}/{item?.itemReferences?.image?.src ?? ''}.webp"
+											alt={getFormattedName(item)}
+										/>
+									{:else}
+										<div
+											class="flex h-24 w-full items-center justify-center p-4 text-white font-bold"
+										>
+											{getFormattedName(item)[0]}
 										</div>
-										<div class="p-2">
-											<h5
-												class="mb-2 break-keep text-center text-xl font-bold tracking-tight text-white"
-											>
-												{item?.name?.kr ?? ''}
-											</h5>
-										</div>
-									</button>
-								{:else}
-									<button
-										type="button"
-										onclick={() => (selectedList = item)}
-										style:background={contentColor}
-										class="mx-2 min-w-24 max-w-24 rounded-lg border border-gray-200 bg-gray-500 shadow first:ml-0 dark:border-gray-700"
+									{/if}
+								</div>
+								<div class="-p-1">
+									<h5
+										class="mb-2 break-keep text-center text-xs font-bold tracking-tight text-white"
 									>
-										<div class=" relative h-auto w-full object-scale-down">
-											<img
-												class="m-auto min-w-24 max-w-24 items-center p-4"
-												src="{currentUrl}/{item?.itemReferences?.image?.src ?? ''}.webp"
-												alt={item?.name?.kr ?? ''}
-											/>
-										</div>
-										<div class="-p-1">
-											<h5
-												class="mb-2 break-keep text-center text-xs font-bold tracking-tight text-white"
-											>
-												{item?.name?.kr ?? ''}
-											</h5>
-										</div>
-									</button>
-								{/if}
-							{/each}
-						</div>
-					</div>
-				{/if}
-			{/each}
-		{/if}
+										{getFormattedName(item)}
+									</h5>
+								</div>
+							</button>
+						{/if}
+					{/each}
+				</div>
+			</div>
+		{/each}
 	</div>
 	{#if selectedList}
 		<div class="w-full border-t border-gray-200 p-3">

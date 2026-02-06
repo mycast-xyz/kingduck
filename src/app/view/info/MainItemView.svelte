@@ -13,10 +13,11 @@
 	import { hsrItemService } from '../../service/game/starrail/HsrItemService';
 	import { page } from '$app/stores';
 
-	const { itemData, currentUrl, isMobile } = $props<{
+	const { itemData, currentUrl, isMobile, title } = $props<{
 		itemData: any;
 		currentUrl: string;
 		isMobile: boolean;
+		title?: string;
 	}>();
 
 	let gameInit = $state<any>(null);
@@ -102,7 +103,7 @@
 	});
 </script>
 
-<Layer title="추천 {gameInit.content.info.mainItem.name}">
+<Layer title={title || gameInit?.content?.info?.mainItem?.name || '추천'}>
 	{#if !isMobile}
 		<swiper-container
 			bind:this={swiperInstance}

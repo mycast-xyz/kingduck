@@ -22,11 +22,15 @@
 		vmType?: string;
 	}>();
 
+	import { Reverse1999TraceViewModel } from '../../service/game/reverse1999/Reverse1999TraceViewModel.svelte';
+
 	// VM Integration
 	let vm = $derived.by(() => {
 		const targetGameId = gameId || initData?.gameId;
 		if ((targetGameId === 'endfield' || targetGameId === 13) && vmType === 'factory') {
 			return new EndfieldFactoryViewModel(listData, currentUrl);
+		} else if (targetGameId === 'Reverse1999' || targetGameId === 6) {
+			return new Reverse1999TraceViewModel(listData);
 		}
 		return null;
 	});

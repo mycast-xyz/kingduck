@@ -183,10 +183,10 @@ export class HonkaiStarRailInit {
 				}
 			},
 			layout: [
-				{ component: 'MainItemView', dataKey: 'lightcones' },
-				{ component: 'BuildRecommendationView', dataKey: 'relics' },
-				{ component: 'TeamRecommendationView', dataKey: 'teams' },
-				{ component: 'StatsView', dataKey: 'stats' },
+				{ component: 'MainItemView', dataKey: 'lightcones', props: { title: '광추' } },
+				{ component: 'BuildRecommendationView', dataKey: 'relics', props: { title: '유물' } },
+				{ component: 'TeamRecommendationView', dataKey: 'teams', props: { title: '추천 파티' } },
+				{ component: 'StatsView', dataKey: 'stats', props: { title: '기초 속성' } },
 				{
 					component: 'SkillTreeView',
 					dataKey: 'skills',
@@ -194,10 +194,15 @@ export class HonkaiStarRailInit {
 						title: '캐릭터 스킬'
 					}
 				},
-				{ component: 'RankListView', dataKey: 'ranks_raw', initDataKey: 'gacha' },
-				{ component: 'TraceListView', dataKey: 'skill_tree' },
-				{ component: 'CostumeView', dataKey: 'costumes' },
-				{ component: 'CalculatorView', dataKey: 'calculator' }
+				{
+					component: 'RankListView',
+					dataKey: 'ranks_raw',
+					initDataKey: 'gacha',
+					props: { title: '성혼' }
+				},
+				{ component: 'TraceListView', dataKey: 'skill_tree', props: { title: '행적' } },
+				{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } },
+				{ component: 'CalculatorView', dataKey: 'calculator', props: { title: '재화 계산기' } }
 			]
 		};
 	}

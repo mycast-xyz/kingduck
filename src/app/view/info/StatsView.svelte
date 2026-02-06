@@ -3,14 +3,16 @@
 	import { HsrStatsViewModel } from '../../service/game/starrail/HsrStatsViewModel.svelte';
 	import { WwStatsViewModel } from '../../service/game/wutheringwaves/WwStatsViewModel.svelte';
 	import { EndfieldStatsViewModel } from '../../service/game/endfield/EndfieldStatsViewModel.svelte';
+	import { Reverse1999StatsViewModel } from '../../service/game/reverse1999/Reverse1999StatsViewModel.svelte';
 	import { getCardBgStyle } from '../../util/StyleUtils';
 
-	const { listData, currentUrl, isMobile, initData, gameId } = $props<{
+	const { listData, currentUrl, isMobile, initData, gameId, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
 		initData: any;
 		gameId: string;
+		title?: string;
 	}>();
 	// 데이터 판별
 	// ViewModel 타입 정의 (간략화)
@@ -27,6 +29,7 @@
 		const isHsr = gId === 'HonkaiStarRail' || gId === 2 || gId === '2';
 		const isWw = gId === 'WutheringWaves' || gId === '8' || gId === 8;
 		const isEndfield = gId === 'endfield' || gId === 3 || gId === '13'; // 13 from API
+		const isReverse1999 = gId === 'Reverse1999' || gId === '6' || gId === 6;
 
 		if (isHsr && listData && (listData['0'] || listData[0])) {
 			return new HsrStatsViewModel(listData, String(gId));
@@ -36,6 +39,9 @@
 		}
 		if (isEndfield && listData) {
 			return new EndfieldStatsViewModel(listData, String(gId), currentUrl);
+		}
+		if (isReverse1999 && listData) {
+			return new Reverse1999StatsViewModel(listData, String(gId), currentUrl);
 		}
 		return null;
 	});
@@ -86,7 +92,7 @@
 	});
 </script>
 
-<Layer title={initData?.name || '기초 속성'}>
+<Layer title={title || initData?.name || '기초 속성'}>
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 		<div class="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 md:col-span-2">
 			{#each displayStats as stat}

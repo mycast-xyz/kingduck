@@ -2,12 +2,13 @@
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { hsrItemService } from '../../service/game/starrail/HsrItemService';
 
-	const { listData, currentUrl, isMobile, gameId, initData } = $props<{
+	const { listData, currentUrl, isMobile, gameId, initData, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
 		gameId?: number;
 		initData: any;
+		title?: string;
 	}>();
 
 	const propertyMap: Record<string, string> = {
@@ -191,7 +192,7 @@
 	}
 </script>
 
-<Layer title={initData?.name || '추천 세팅'}>
+<Layer title={title || initData?.name || '추천 세팅'}>
 	<div class="p-4 space-y-6">
 		<!-- 유물 추천 -->
 		{#if relics.length > 0}
@@ -203,6 +204,8 @@
 				</h4>
 				<div class="grid grid-cols-2 md:grid-cols-3 gap-2">
 					{#each relics as set}
+						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+						<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 						<div
 							class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded cursor-help transition-colors hover:bg-gray-100 dark:hover:bg-gray-600"
 							onmouseenter={(e) => handleMouseEnter(e, set)}

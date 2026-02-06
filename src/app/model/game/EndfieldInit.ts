@@ -175,7 +175,7 @@ export class EndfieldInit {
 				}
 			},
 			layout: [
-				{ component: 'StatsView', dataKey: 'metadata' },
+				{ component: 'StatsView', dataKey: 'metadata', props: { title: '기초 속성' } },
 				{
 					component: 'SkillTreeView',
 					dataKey: 'metadata',
@@ -210,8 +210,12 @@ export class EndfieldInit {
 					}
 				},
 				// Note: Recommendations might be empty if data isn't available
-				{ component: 'BuildRecommendationView', dataKey: 'recommendations' },
-				{ component: 'CalculatorView', dataKey: 'talentNodeMap' } // XP/Ascension Calc
+				{
+					component: 'BuildRecommendationView',
+					dataKey: 'recommendations',
+					props: { title: '추천 세팅' }
+				},
+				{ component: 'CalculatorView', dataKey: 'talentNodeMap', props: { title: '성장 계산기' } } // XP/Ascension Calc
 			]
 		};
 	}

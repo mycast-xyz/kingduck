@@ -124,7 +124,7 @@
 </script>
 
 <div class="group relative flex flex-col items-center">
-	<div class="relative w-full" style="aspect-ratio: {isMobile ? '3/4' : '1/1'};">
+	<div class="relative w-full" style="aspect-ratio: {isMobile ? '1/1' : '1/1'};">
 		{#if loading}
 			<div
 				class="flex h-full w-full animate-pulse items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700"
@@ -133,7 +133,7 @@
 			</div>
 		{:else if character}
 			<div
-				class="h-full w-full overflow-hidden rounded-lg shadow-md ring-1 ring-black/5 transition-all duration-300 group-hover:shadow-lg dark:ring-white/10"
+				class="max-h-[400px] max-w-[400px] overflow-hidden rounded-lg shadow-md ring-1 ring-black/5 transition-all duration-300 group-hover:shadow-lg dark:ring-white/10"
 				style={getCardStyle(character.rarity)}
 			>
 				{#if character.imageUrl}
@@ -141,7 +141,7 @@
 						src={`${currentUrl}/${character.imageUrl}`}
 						alt={character.name}
 						loading="lazy"
-						class="w-full object-cover transition-transform duration-500 group-hover:scale-110"
+						class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
 						onerror={(e) => {
 							// @ts-ignore
 							e.target.src = '/assets/logo/error_icon.png';

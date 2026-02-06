@@ -4,6 +4,7 @@
 	import { WwSkillTreeViewModel } from '../../service/game/wutheringwaves/WwSkillTreeViewModel.svelte';
 	import { EndfieldSkillViewModel } from '../../service/game/endfield/EndfieldSkillViewModel.svelte';
 	import { EndfieldPassiveViewModel } from '../../service/game/endfield/EndfieldPassiveViewModel.svelte';
+	import { Reverse1999SkillViewModel } from '../../service/game/reverse1999/Reverse1999SkillViewModel.svelte';
 
 	const { listData, currentUrl, initData, extraData, gameId, gameSlug, title, vmType } = $props<{
 		listData: any;
@@ -40,6 +41,8 @@
 				return new EndfieldPassiveViewModel(data, currentUrl, { initData, extraData });
 			}
 			return new EndfieldSkillViewModel(data, currentUrl, { initData, extraData });
+		} else if (targetGameId === 'Reverse1999' || targetGameSlug === 'reverse1999') {
+			return new Reverse1999SkillViewModel(data, currentUrl, { initData });
 		}
 		return null;
 	});
