@@ -16,7 +16,7 @@
 <Layer title={title || initData?.name || '재화 계산기'}>
 	<div class="p-6 text-center">
 		<div
-			class="mb-4 inline-block rounded-full bg-indigo-100 p-4 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
+			class="mb-4 inline-block rounded-full bg-orange-100 p-4 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@
 			(현재 준비중입니다)
 		</p>
 		<button
-			class="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+			class="mt-4 rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 disabled:opacity-50"
 			disabled
 		>
 			계산기 열기

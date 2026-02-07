@@ -4,7 +4,7 @@
 
 <!-- 기본 틀 -->
 <div
-	class="mb-4 w-full rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800 md:mb-6"
+	class="mb-4 w-full rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-600 dark:bg-gray-700 md:mb-6"
 >
 	<div>
 		<!-- 타이틀 -->

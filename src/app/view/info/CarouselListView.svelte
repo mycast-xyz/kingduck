@@ -144,7 +144,7 @@
 				<swiper-slide
 					style="height: unset;"
 					style:background-color={initData?.color}
-					class="mx-4 max-w-36 cursor-pointer rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-gray-600 dark:border-gray-700"
+					class="mx-4 max-w-36 cursor-pointer rounded-lg border border-gray-200 bg-gray-500 shadow transition-colors hover:bg-gray-600 dark:border-gray-600 dark:bg-gray-700"
 				>
 					<button
 						type="button"

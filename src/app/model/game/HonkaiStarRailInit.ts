@@ -203,7 +203,10 @@ export class HonkaiStarRailInit {
 				{ component: 'TraceListView', dataKey: 'skill_tree', props: { title: '행적' } },
 				{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } },
 				{ component: 'CalculatorView', dataKey: 'calculator', props: { title: '재화 계산기' } }
-			]
+			],
+			coupon: {
+				name: '리딤코드'
+			}
 		};
 	}
 

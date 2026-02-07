@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { mainMenuActive, navActive } from '$lib/stores/mainMenuStore';
+	import ThemeToggle from '../common/ThemeToggle.svelte';
 
 	const toggleNav = () => {
 		navActive.update((navActive) => !navActive);
@@ -115,6 +116,9 @@
 				</a>
 			{/each}
 		</div>
+	</div>
+	<div class="mb-4 mt-auto w-full px-2">
+		<ThemeToggle />
 	</div>
 	<!--
 	<a

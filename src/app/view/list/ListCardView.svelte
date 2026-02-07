@@ -88,7 +88,7 @@
 			{#if data.isMobile}
 				<a class="flex-box basis-1/3" href="/content/{data.params}/{item.id}">
 					<div
-						class="shadow-m relative m-2 block h-[190px] overflow-hidden rounded-lg border border-gray-100 pb-6 text-white"
+						class="shadow-m relative m-2 block h-[190px] overflow-hidden rounded-lg border border-gray-100 pb-6 text-white dark:border-gray-600"
 						style={cardStyle || undefined}
 					>
 						<div
@@ -164,7 +164,7 @@
 				</a>
 			{:else}
 				<a
-					class="shadow-m relative m-2 block h-[390px] w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white"
+					class="shadow-m relative m-2 block h-[390px] w-60 overflow-hidden rounded-lg border border-gray-100 pb-14 text-white dark:border-gray-600"
 					href="/content/{data.params}/{item.id}"
 					style={cardStyle || undefined}
 				>

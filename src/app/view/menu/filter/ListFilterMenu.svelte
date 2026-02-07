@@ -117,11 +117,11 @@
 {#each typeKeys as key}
 	{@const typeList = getTypeList(key)}
 	{#if typeList.length > 0}
-		<div class="flex w-full flex-col items-center border-t border-gray-300">
+		<div class="flex w-full flex-col items-center border-t border-gray-300 dark:border-gray-600">
 			<div class="w-full">
 				<button
 					onclick={() => toggleMenuType(key)}
-					class="flex w-full items-center justify-between rounded-lg p-4 py-3 text-lg font-bold text-gray-700 hover:bg-gray-100"
+					class="flex w-full items-center justify-between rounded-lg p-4 py-3 text-lg font-bold text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
 				>
 					<span class="">{$TypeOption[key]?.name || key} 필터</span>
 					<i class="ri-arrow-down-s-line pr-2"></i>
@@ -139,7 +139,7 @@
 					<button
 						onclick={() => toggleMenuTypeButton(key, '')}
 						class:active={$selectedTypeOption[key] === ''}
-						class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100"
+						class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600"
 					>
 						<i class="ri-color-filter-fill mr-1 text-xl text-[#f9822c]"></i>
 						<span class="text-sm font-medium">전체</span>
@@ -148,7 +148,7 @@
 						<button
 							onclick={() => toggleMenuTypeButton(key, item.id)}
 							class:active={$selectedTypeOption[key] === item.id}
-							class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100"
+							class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600"
 						>
 							<img
 								class="mr-1 h-6 w-6 object-contain"

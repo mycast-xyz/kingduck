@@ -140,7 +140,7 @@
 									title={item.info?.name || 'Unknown'}
 								>
 									<div
-										class="relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-1 bg-gray-200 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700"
+										class="relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-1 bg-gray-200 dark:bg-gray-600 overflow-hidden border border-gray-200 dark:border-gray-700"
 									>
 										{#if item.info?.imageUrl}
 											<img
@@ -168,10 +168,10 @@
 
 	<!-- 하단 컨트롤 영역 (레벨 슬라이더 등) -->
 	{#if vm && vm.levels}
-		<div class="px-4 pt-5 pb-2 border-t border-gray-200 dark:border-gray-700/50">
+		<div class="px-4 pt-5 pb-2 border-t border-gray-200 dark:border-gray-600/50">
 			<!-- 기본/HSR/WW 공통 스타일 슬라이더 (Discrete steps) -->
 			<div class="relative w-full h-8 flex items-center mb-6">
-				<div class="absolute w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+				<div class="absolute w-full h-1 bg-gray-200 dark:bg-gray-600 rounded-full"></div>
 				<input
 					type="range"
 					min="0"

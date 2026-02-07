@@ -3,6 +3,7 @@
 	import { authTokenService } from '../../../service/auth/AuthTokenService';
 	import { userNavActive } from '../../../../app/service/MainMenuService';
 	import type { PageData } from '../../../../routes/$types';
+	import ThemeToggle from '../../common/ThemeToggle.svelte';
 
 	const { data } = $props<{ data: PageData }>();
 
@@ -44,7 +45,7 @@
 </script>
 
 <header
-	class=" w-80px] fixed inset-y-0 left-0 z-50 flex h-full flex-col items-center rounded border-r border-r-gray-100 bg-white text-gray-700 shadow-md transition-all duration-75 ease-in-out dark:border-r-gray-800 dark:bg-gray-950"
+	class=" w-80px] fixed inset-y-0 left-0 z-50 flex h-full flex-col items-center rounded border-r border-r-gray-100 bg-white text-gray-700 shadow-md transition-all duration-75 ease-in-out dark:border-r-gray-800 dark:bg-gray-950 dark:text-gray-200"
 >
 	<!-- Logo area -->
 	<a href="/" id="menu-item" class="mt-3 flex w-full items-center px-4 pl-5">
@@ -58,7 +59,9 @@
 	<!-- Favorites area -->
 	<div class="w-full px-2">
 		<!-- 반복 area -->
-		<div class="mt-3 flex w-full flex-col items-center border-t border-gray-300">
+		<div
+			class="mt-3 flex w-full flex-col items-center border-t border-gray-300 dark:border-gray-600"
+		>
 			<div class="relative border-b border-gray-300 pb-2">
 				<a
 					data-sveltekit-preload-data="false"
@@ -70,7 +73,7 @@
 					onmouseleave={() => (showTooltip = null)}
 				>
 					<img
-						class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200"
+						class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200 dark:outline-gray-600"
 						src="/assets/logo/weather-500.webp"
 						alt="HonkaiStarRail"
 					/>
@@ -78,7 +81,7 @@
 
 				{#if showTooltip === 'calendar'}
 					<div
-						class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300"
+						class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300 dark:bg-orange-600"
 						role="tooltip"
 					>
 						<p class="block whitespace-nowrap text-sm font-medium">가챠예보</p>
@@ -100,7 +103,7 @@
 						onmouseleave={() => (showTooltip = null)}
 					>
 						<img
-							class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200"
+							class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200 dark:outline-gray-600"
 							src={data.url + '/' + gameItem.iconUrl}
 							alt="HonkaiStarRail"
 						/>
@@ -108,14 +111,16 @@
 
 					{#if showTooltip === gameItem.slug}
 						<div
-							class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300"
+							class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300 dark:bg-orange-600"
 							role="tooltip"
 						>
 							<p class="block whitespace-nowrap text-sm font-medium">
 								{gameItem.name}
 							</p>
 							<div class="tooltip-arrow" data-popper-arrow>
-								<div class="absolute -left-1 top-3 h-4 w-4 rotate-45 bg-orange-400"></div>
+								<div
+									class="absolute -left-1 top-3 h-4 w-4 rotate-45 bg-orange-400 dark:bg-orange-600"
+								></div>
 							</div>
 						</div>
 					{/if}
@@ -140,13 +145,17 @@
 			{/each}
 		</div>-->
 	</div>
+	<!-- 테마 토글 -->
+	<div class="mb-4 mt-auto w-full px-2">
+		<ThemeToggle />
+	</div>
 	<!-- 사용자 메뉴 -->
 	{#if isTokenValid}
 		<div class="relative mt-auto h-16 w-full">
 			<button
 				type="button"
 				aria-label="사용자 메뉴"
-				class="mt-auto flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-gray-300"
+				class="mt-auto flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
 				onclick={toggleUserNav}
 			>
 				<i class="ri-user-line h-6 w-6 text-lg"></i>
@@ -198,7 +207,7 @@
 		<a
 			href="/login"
 			aria-label="로그인"
-			class="mt-auto flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-orange-500 hover:text-white"
+			class="mt-auto flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-orange-500 hover:text-white dark:bg-gray-800 dark:hover:bg-orange-600 dark:hover:text-white"
 		>
 			<i class="ri-user-line h-6 w-6 text-lg"></i>
 		</a>

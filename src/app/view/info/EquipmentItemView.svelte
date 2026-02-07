@@ -327,7 +327,7 @@
 							{getFormattedName(selectedList)}
 						</h5>
 					</div>
-					<span class=" text-lg font-normal text-gray-500 dark:text-gray-400">
+					<span class=" text-lg font-normal text-gray-500 dark:text-white">
 						{#if selectedList?.itemReferences?.set}
 							{#each Object.entries(selectedList?.itemReferences?.set ?? {}) as [key, value]}
 								<p>{key}세트 : {@html getFormattedDescription(value)}</p>

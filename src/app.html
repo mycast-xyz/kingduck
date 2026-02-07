@@ -10,11 +10,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!-- Check & apply theme here to avoid FOUC -->
 		<script>
-			/* 최종 검토때 할것
-			localStorage.theme === 'dark' ||
-			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-				? document.documentElement.classList.add('dark')
-				: document.documentElement.classList.remove('dark');*/
+			if (
+				localStorage.theme === 'dark' ||
+				(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+			) {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
 		</script>
 		%sveltekit.head%
 	</head>

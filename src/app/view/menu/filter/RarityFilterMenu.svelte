@@ -44,11 +44,11 @@
 	};
 </script>
 
-<div class="flex w-full flex-col items-center border-t border-gray-300">
+<div class="flex w-full flex-col items-center border-t border-gray-300 dark:border-gray-600">
 	<div class="w-full">
 		<button
 			onclick={toggleMenuRarity}
-			class="flex w-full items-center justify-between rounded-lg p-4 py-3 text-lg font-bold text-gray-700 hover:bg-gray-100"
+			class="flex w-full items-center justify-between rounded-lg p-4 py-3 text-lg font-bold text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
 		>
 			<span class="">등급 필터</span>
 			<i class="ri-arrow-down-s-line pr-2"></i>
@@ -59,7 +59,7 @@
 			<button
 				onclick={() => toggleMenuRarityButton('')}
 				class:active={$selectedRarity === ''}
-				class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100"
+				class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600"
 			>
 				<i class="ri-star-fill mr-1 text-[#f9822c]"></i>
 				<span class="text-sm font-medium">전체</span>
@@ -68,7 +68,7 @@
 				<button
 					onclick={() => toggleMenuRarityButton(key)}
 					class:active={$selectedRarity === name}
-					class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100"
+					class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600"
 				>
 					<i class="ri-star-fill mr-1 text-Rating-{key}"></i>
 					<span class="text-sm font-medium">{name}</span>

@@ -376,7 +376,7 @@
 
 		<!-- Main Content Area -->
 		<div class="list h-auto w-[calc(100%-100px)] w-[inherit] overflow-y-auto pr-2 pt-16">
-			<div class="container mx-auto w-full p-4 min-h-screen">
+			<div class="mx-auto w-full p-4 min-h-screen">
 				<div class="flex justify-between items-center mb-6">
 					<h1 class="text-3xl font-bold uppercase text-gray-800 dark:text-white">
 						{data.info?.name} Tier List
@@ -461,18 +461,6 @@
 						캐릭터 리스트
 					</h2>
 
-					<!-- Search Input -->
-					<div class="mb-4">
-						<div class="relative">
-							<input
-								type="text"
-								bind:value={searchQuery}
-								placeholder="캐릭터 이름 검색..."
-								class="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-							/>
-							<i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-						</div>
-					</div>
 					<div class="flex flex-wrap gap-2" bind:this={poolRef}>
 						{#each pool as char (char.id)}
 							{@const charBgStyle = getCharBgStyle(char.rarity)}

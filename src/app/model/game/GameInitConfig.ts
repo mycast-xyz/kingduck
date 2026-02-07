@@ -85,6 +85,9 @@ export interface GameInitConfig {
 			}
 		>;
 	};
+	coupon?: {
+		name: string;
+	};
 	layout?: ComponentLayout[];
 }
 

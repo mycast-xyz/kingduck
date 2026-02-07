@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	// props에서 데이터 가져오기
 	let {
 		data,
@@ -19,18 +21,20 @@
 		}
 	}
 
-	console.log('calendar info:', data.info);
+	console.log('calendar info:', games);
 </script>
 
 <div class="list-menu flex h-full p-4 pr-2">
 	<div
-		class="mt-12 w-80 flex-col items-center rounded border border-gray-100 bg-white text-gray-700 shadow-md"
+		class="mt-12 w-80 flex-col items-center rounded border border-gray-100 bg-white text-gray-700 shadow-md dark:border-gray-700 dark:bg-gray-900 dark:text-white"
 	>
-		<div class="gmae-title my-2 h-auto w-full p-4 mb-0 border-b border-gray-100">
+		<div
+			class="gmae-title my-2 h-auto w-full p-4 mb-0 border-b border-gray-100 dark:border-gray-700"
+		>
 			<div class="gmae-logo-img">
 				<img
 					src="/assets/logo/weather-500.webp"
-					class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md"
+					class="-mt-20 w-28 rounded-full border border-gray-100 shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					alt="가챠 예보"
 				/>
 			</div>
@@ -48,7 +52,9 @@
 			<!-- 페이지 기능 -->
 			<!-- 페이지 기능 -->
 			<div class=" my-4 mt-1 flex w-full flex-col items-center p-4 pb-2 pt-0">
-				<h3 class="w-full py-3 pb-4 pl-1 text-lg font-bold text-gray-700">게임리스트</h3>
+				<h3 class="w-full py-3 pb-4 pl-1 text-lg font-bold text-gray-700 dark:text-white">
+					게임리스트
+				</h3>
 
 				<div class="flex flex-col w-full gap-2">
 					{#each games as game}
@@ -68,9 +74,29 @@
 							</div>
 							<h3 class="text-sm font-bold">{game.name}</h3>
 
-							{#if selectedGames.includes(game.id)}
-								<i class="ml-auto ri-check-line"></i>
-							{/if}
+							<div class="ml-auto">
+								{#if selectedGames.includes(game.id)}
+									<i class="ml-auto ri-check-line"></i>
+								{/if}
+								<span
+									role="button"
+									tabindex="0"
+									aria-label="{game.name} 이벤트 및 가챠 정보"
+									onclick={(e) => {
+										e.stopPropagation();
+										goto(`/calendar/${game.id}`);
+									}}
+									onkeydown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.stopPropagation();
+											goto(`/calendar/${game.id}`);
+										}
+									}}
+									class="border-l pl-3 cursor-pointer"
+								>
+									<i class="ri-external-link-line"></i>
+								</span>
+							</div>
 						</button>
 					{/each}
 				</div>

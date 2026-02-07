@@ -49,17 +49,17 @@
 						<!-- Icon Container -->
 						<div class="relative flex-shrink-0">
 							<div
-								class="relative w-24 h-24 overflow-hidden mask-hex-irregular group-hover:border-hsr-cyan/50 transition-colors"
+								class="relative w-24 h-24 overflow-hidden mask-hex-irregular group-hover:border-cyan/50 transition-colors"
 							>
 								{#if item.image}
 									<img
-										class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300 bg-gray-500"
+										class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300 bg-gray-500 dark:bg-gray-300"
 										src="{currentUrl}{item.image}"
 										alt={item.name}
 									/>
 								{:else}
 									<div
-										class="w-full h-full flex items-center justify-center text-3xl font-bold text-white/20"
+										class="w-full h-full flex items-center justify-center text-3xl font-bold text-white/20 dark:text-white"
 									>
 										{item.index}
 									</div>

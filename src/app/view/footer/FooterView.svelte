@@ -8,10 +8,10 @@
 	});
 </script>
 
-<footer class="mt-auto w-full bg-gray-100">
-	<hr class="mb-2 mt-4 border-gray-200 dark:border-gray-700" />
+<footer class="mt-auto w-full bg-gray-100 dark:bg-gray-800">
+	<hr class="mb-2 mt-4 border-gray-200 dark:border-gray-700 dark:bg-gray-700" />
 	<div class="flex justify-center px-6 pb-6">
-		<span class="text-sm font-light text-gray-500">
+		<span class="text-sm font-light text-gray-500 dark:text-gray-400">
 			<p class="text-base font-bold">
 				<a href="https://flowbite.com/" class="text-[#f9822c] hover:underline">KingDuck</a>
 			</p>

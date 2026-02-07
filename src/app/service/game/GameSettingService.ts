@@ -19,6 +19,14 @@ export class GameSettingService {
 	removeGameInit() {
 		this._defaultGameList.set({});
 	}
+
+	getGameInit(): any {
+		let data = {};
+		this._defaultGameList.subscribe((value) => {
+			data = value;
+		});
+		return data;
+	}
 }
 
 export const GameSettingInitService = new GameSettingService();

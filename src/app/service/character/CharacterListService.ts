@@ -12,10 +12,12 @@ class CharacterListServiceInit {
 
 	private _characterRarity = writable('');
 	private _characterType = writable('');
+	private _searchQuery = writable('');
 
 	public clearCharacterConfig() {
 		this._characterRarity.set('');
 		this._characterType.set('');
+		this._searchQuery.set('');
 		this._allCharacters = [];
 	}
 
@@ -29,6 +31,11 @@ class CharacterListServiceInit {
 		}
 
 		// Apply client-side filter
+		this.applyFilter();
+	}
+
+	public setSearchQuery(query: string) {
+		this._searchQuery.set(query);
 		this.applyFilter();
 	}
 
@@ -100,6 +107,17 @@ class CharacterListServiceInit {
 		// Filter by Rarity
 		if (currentRarity) {
 			filtered = filtered.filter((char) => char.rarity == Number(currentRarity));
+		}
+
+		// Filter by Search Query
+		let currentSearchQuery = '';
+		const unsubscribeSearch = this._searchQuery.subscribe((v) => (currentSearchQuery = v));
+		unsubscribeSearch();
+
+		if (currentSearchQuery.trim()) {
+			filtered = filtered.filter((char) =>
+				char.name.toLowerCase().includes(currentSearchQuery.toLowerCase())
+			);
 		}
 
 		characterList.set(filtered);
