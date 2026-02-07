@@ -29,15 +29,16 @@
 
 <div
 	class="{alert.color.bg} {alert.color
-		.border} border-2 rounded-2xl p-8 shadow-xl transition-all duration-300"
+		.border} border-2 rounded-2xl p-8 shadow-xl transition-all duration-300 flex mb-8"
 >
-	<!-- Main Weather Display -->
-	<div class="text-center mb-8">
+	<div
+		class="text-center border-r-2 border-gray-200 dark:border-gray-600 pr-8 flex flex-col items-center justify-center"
+	>
 		<!-- Large weather icon -->
-		<i class="{alert.icon} text-8xl {alert.color.text} mb-4 block"></i>
+		<i class="{alert.icon} text-6xl {alert.color.text} mb-4 block"></i>
 
 		<!-- Alert level title -->
-		<h1 class="text-5xl font-bold {alert.color.text} mb-2">
+		<h1 class="text-3xl font-bold {alert.color.text} mb-2">
 			{alert.level === 'SAFE'
 				? '평온'
 				: alert.level === 'ADVISORY'
@@ -48,43 +49,43 @@
 							? '재난'
 							: '복구'}
 		</h1>
-
-		<!-- Alert description -->
-		<p class="text-xl text-gray-700 dark:text-gray-300 mb-4">
-			{alert.description}
-		</p>
 	</div>
-
-	<!-- Key Metrics Grid -->
-	<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-		<!-- Active Pickups -->
-		<div class="bg-white dark:bg-gray-700 rounded-lg p-4 text-center">
-			<div class="text-3xl mb-2">🔥</div>
-			<div class="text-sm text-gray-600 dark:text-gray-400">진행중</div>
-			<div class="text-2xl font-bold {alert.color.text}">{meta.activePickups}개</div>
-		</div>
-
-		<!-- D-day -->
-		{#if meta.upcomingInDays < 999}
-			<div class="bg-white dark:bg-gray-700 rounded-lg p-4 text-center">
-				<div class="text-3xl mb-2">⏰</div>
-				<div class="text-sm text-gray-600 dark:text-gray-400">다음 픽업</div>
-				<div class="text-2xl font-bold {alert.color.text}">D-{meta.upcomingInDays}</div>
+	<div class="p-4 ml-4">
+		<!-- Main Weather Display -->
+		<di>
+			<!-- Alert description -->
+			<p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+				{alert.description}
+			</p>
+		</di>
+		<!-- Key Metrics Grid -->
+		<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+			<!-- Active Pickups -->
+			<div class="bg-white/60 dark:bg-gray-700/40 rounded-lg p-4 text-center flex">
+				<span class="text-3xl mb-2 mr-4">🔥</span>
+				<span class="flex flex-col">
+					<div class="text-sm text-gray-600 dark:text-gray-400">진행중</div>
+					<div class="text-xl font-bold {alert.color.text}">{meta.activePickups}개</div>
+				</span>
 			</div>
-		{/if}
 
-		<!-- Wallet Humidity -->
-		<div class="bg-white dark:bg-gray-700 rounded-lg p-4 text-center">
-			<div class="text-3xl mb-2">💧</div>
-			<div class="text-sm text-gray-600 dark:text-gray-400">잔고 습도</div>
-			<div class="text-2xl font-bold {alert.color.text}">{walletHumidity}</div>
-		</div>
+			<!-- Wallet Humidity -->
+			<div class="bg-white/60 dark:bg-gray-700/40 rounded-lg p-4 text-center flex">
+				<div class="text-3xl mb-2 mr-4">💧</div>
+				<div>
+					<div class="text-sm text-gray-600 dark:text-gray-400">잔고 습도</div>
+					<div class="text-xl font-bold {alert.color.text}">{walletHumidity}</div>
+				</div>
+			</div>
 
-		<!-- Gacha Wind Speed -->
-		<div class="bg-white dark:bg-gray-700 rounded-lg p-4 text-center">
-			<div class="text-3xl mb-2">🌪️</div>
-			<div class="text-sm text-gray-600 dark:text-gray-400">가챠 풍속</div>
-			<div class="text-2xl font-bold {alert.color.text}">{gachaWindSpeed}</div>
+			<!-- Gacha Wind Speed -->
+			<div class="bg-white/60 dark:bg-gray-700/40 rounded-lg p-4 text-center flex">
+				<div class="text-3xl mb-2 mr-4">🌪️</div>
+				<div>
+					<div class="text-sm text-gray-600 dark:text-gray-400">가챠 풍속</div>
+					<div class="text-xl font-bold {alert.color.text}">{gachaWindSpeed}</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
