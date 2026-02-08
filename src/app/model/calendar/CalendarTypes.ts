@@ -9,6 +9,8 @@ export interface CalendarEvent {
 	endDate: Date;
 	image?: string;
 	characterName?: string;
+	metadata?: any;
+	officialLink?: string;
 }
 
 export type LayoutEvent = CalendarEvent & { row: number };

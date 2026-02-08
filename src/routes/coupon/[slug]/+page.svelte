@@ -52,11 +52,11 @@
 					{:else}
 						{#each data.coupons as group}
 							<div
-								class="flex flex-wrap w-full bg-white divide-x border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-8 last:mb-0"
+								class="flex flex-wrap w-full bg-white divide-x border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-8 last:mb-0 dark:bg-gray-800"
 							>
 								<!-- Info Section -->
 								<div
-									class="w-full md:w-1/4 p-6 bg-gray-50 dark:bg-gray-800 flex flex-col justify-center border-r border-gray-200 dark:border-gray-700"
+									class="w-full md:w-1/4 p-6 bg-gray-50 dark:bg-gray-800 flex flex-col justify-center border-r border-gray-200 dark:border-gray-700 dark:bg-gray-800"
 								>
 									<span class="text-xl font-light text-gray-500 dark:text-gray-400">
 										{#if group.endTime}
@@ -70,8 +70,8 @@
 											<span
 												class={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
 													status === 'urgent'
-														? 'animate-pulse bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20'
-														: 'bg-blue-50 text-blue-700 ring-blue-700/10 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/20'
+														? 'animate-pulse bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20 dark:bg-gray-800'
+														: 'bg-blue-50 text-blue-700 ring-blue-700/10 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/20 dark:bg-gray-800'
 												}`}
 											>
 												{formatRemainingTime(group.endTime)}
@@ -99,7 +99,7 @@
 										<a
 											href={`https://hsr.hoyoverse.com/gift?code=${code.code}`}
 											target="_blank"
-											class="flex px-6 py-4 cursor-pointer text-gray-900 items-center hover:bg-orange-500 hover:text-white transition-colors border-b border-r border-gray-100 last:border-b-0"
+											class="flex px-6 py-4 cursor-pointer text-gray-900 items-center hover:bg-orange-500 hover:text-white transition-colors border-b border-r border-gray-100 last:border-b-0 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
 										>
 											<i class="ri-coupon-line mr-3 text-4xl"></i>
 											<div class="ml-2 overflow-hidden">

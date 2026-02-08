@@ -6,18 +6,40 @@
 	// 현재 시간
 	const now = new Date();
 
-	// 가챠 이벤트만 필터링 및 정렬 (종료일 기준)
+	// 이벤트 우선순위 및 정렬 로직
+	function getPriority(event: CalendarEvent): number {
+		// 예정된 이벤트 -> 2순위
+		if (event.startDate > now) return 2;
+
+		// 진행중인 이벤트: 남은 기간에 따라 1순위(급함) vs 3순위(여유)
+		const daysRemaining = (event.endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+		if (daysRemaining <= 42) return 1; // 6주(42일) 이내 종료 -> 1순위
+		return 3; // 6주 이상 남음 -> 3순위
+	}
+
+	function sortEvents(a: CalendarEvent, b: CalendarEvent): number {
+		const priorityA = getPriority(a);
+		const priorityB = getPriority(b);
+
+		if (priorityA !== priorityB) return priorityA - priorityB;
+
+		// 같은 우선순위 내 정렬
+		if (priorityA === 2) {
+			// 예정: 시작일 오름차순 (먼저 시작하는 순)
+			return a.startDate.getTime() - b.startDate.getTime();
+		}
+		// 진행중: 종료일 오름차순 (먼저 끝나는 순)
+		return a.endDate.getTime() - b.endDate.getTime();
+	}
+
+	// 가챠 이벤트 필터링 및 정렬
 	const gachaEvents = $derived(
-		events
-			.filter((e) => e.type === 'GACHA')
-			.sort((a, b) => a.endDate.getTime() - b.endDate.getTime())
+		events.filter((e) => e.type === 'GACHA' && e.endDate >= now).sort(sortEvents)
 	);
 
-	// 일반 이벤트만 필터링 및 정렬 (종료일 기준)
+	// 일반 이벤트 필터링 및 정렬
 	const gameEvents = $derived(
-		events
-			.filter((e) => e.type === 'EVENT')
-			.sort((a, b) => a.endDate.getTime() - b.endDate.getTime())
+		events.filter((e) => e.type === 'EVENT' && e.endDate >= now).sort(sortEvents)
 	);
 
 	// 남은 시간 계산
@@ -66,8 +88,9 @@
 					{@const active = isActive(event)}
 					{@const upcoming = isUpcoming(event)}
 					{@const ended = isEnded(event)}
-					<div
-						class="flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-md
+					<a
+						href={`/calendar/${event.gameId}/${event.id}`}
+						class="flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-md cursor-pointer
 							{active ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800' : ''}
 							{upcoming ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : ''}
 							{ended ? 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-700 opacity-60' : ''}
@@ -121,7 +144,7 @@
 								</span>
 							{/if}
 						</div>
-					</div>
+					</a>
 				{/each}
 			</div>
 		</div>
@@ -143,8 +166,9 @@
 					{@const active = isActive(event)}
 					{@const upcoming = isUpcoming(event)}
 					{@const ended = isEnded(event)}
-					<div
-						class="flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-md
+					<a
+						href={`/calendar/${event.gameId}/${event.id}`}
+						class="flex items-center justify-between p-4 rounded-lg border transition-all hover:shadow-md cursor-pointer
 							{active ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : ''}
 							{upcoming ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : ''}
 							{ended ? 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-700 opacity-60' : ''}
@@ -198,7 +222,7 @@
 								</span>
 							{/if}
 						</div>
-					</div>
+					</a>
 				{/each}
 			</div>
 		</div>

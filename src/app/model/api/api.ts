@@ -76,3 +76,39 @@ export interface NikkeCharacterMetaType {
 	burstType: string;
 	// ...
 }
+// Output truncated for brevity, adding Crawler types
+
+export interface CrawlerStatusType {
+	gameId: number;
+	gameSlug: string; // "honkai-star-rail"
+	gameName: string; // "Honkai: Star Rail"
+	type: string; // "CHARACTER" | "EVENT"
+	status: 'IDLE' | 'RUNNING' | 'SUCCESS' | 'FAILED' | 'PARTIAL';
+	lastRunAt?: string;
+	lastSuccessAt?: string;
+	nextRunAt?: string;
+	message?: string;
+	metrics?: {
+		totalRuns: number;
+		successCount: number;
+		failCount: number;
+	};
+}
+
+export interface CrawlerLogType {
+	id: number;
+	gameId: number;
+	gameName?: string;
+	crawlerType: string;
+	status: 'RUNNING' | 'SUCCESS' | 'FAILED' | 'PARTIAL';
+	itemsCollected: number;
+	startedAt: string;
+	endedAt?: string;
+	duration?: number;
+	message?: string;
+}
+
+export interface CrawlerRunRequest {
+	gameSlug: string;
+	crawlerType: string;
+}

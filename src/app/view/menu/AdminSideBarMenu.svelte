@@ -52,13 +52,13 @@
 					<img src="/assets/logo/500.png" alt="Logo" class="h-8 w-8 rounded-full" />
 					<span class="collapsed-hidden text-lg font-bold">KingDuck Admin</span>
 				</div>
-				<button
+				<!--<button
 					class="collapsed-hidden text-gray-400 hover:text-gray-600"
 					onclick={toggleSidebar}
 					aria-label="메뉴 슬림화"
 				>
 					<i class="text-lg {$isSidebarCollapsed.icon}"></i>
-				</button>
+				</button>-->
 			</div>
 		</div>
 
@@ -107,7 +107,7 @@
 						캐릭터
 					</a>
 					<a
-						href="/admin/layouts/collapsed"
+						href="/admin/item"
 						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
 					>
 						<i class="ri-circle-line mr-2 text-sm"></i>
@@ -121,7 +121,14 @@
 						게임
 					</a>
 					<a
-						href="/admin/layouts/collapsed"
+						href="/admin/event"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-circle-line mr-2 text-sm"></i>
+						이벤트/캘린더
+					</a>
+					<a
+						href="/admin/type"
 						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
 					>
 						<i class="ri-circle-line mr-2 text-sm"></i>
@@ -129,6 +136,22 @@
 					</a>
 				</div>
 			</div>
+			<!-- 크롤러/파서 관리 -->
+			<a
+				href="/admin/crawler"
+				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
+			>
+				<i class="ri-robot-line"></i>
+				<span class="collapsed-hidden">크롤러/파서</span>
+			</a>
+			<!-- 통계 및 분석 -->
+			<a
+				href="/admin/stats"
+				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
+			>
+				<i class="ri-bar-chart-2-line"></i>
+				<span class="collapsed-hidden">통계 분석</span>
+			</a>
 			<div class="dropdownMenu relative" class:active={dropdownStates.menu2}>
 				<button
 					onclick={() => toggleDropdown('menu2')}

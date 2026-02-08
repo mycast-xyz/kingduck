@@ -1,116 +1,156 @@
 <script lang="ts">
-	// 차트 데이터
-	let salesData = {
-		daily: [28450, 29800, 27900, 31200, 32800, 31900, 28450],
-		labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-	};
+	import { onMount } from 'svelte';
+	import AdminContentCompleteness from './AdminContentCompleteness.svelte';
+	import AdminVisitorChart from './AdminVisitorChart.svelte';
+	import AdminSearchAnalysis from './AdminSearchAnalysis.svelte';
 
-	// 통계 데이터
-	let stats = [
-		{ label: 'Sessions', value: '28%', subValue: '3.1k Page Views' },
-		{ label: 'Leads', value: '12%', subValue: 'Conversions' },
-		{ label: 'Revenue', value: '$545.69', growth: '+12.5%' },
-		{ label: 'Profit', value: '$256.34', growth: '+8.2%' }
-	];
-
-	// 프로젝트 목록
-	let projects = [
+	// 상위 요약 데이터
+	let summaryStats = [
 		{
-			name: 'Website SEO',
-			leader: 'Eileen',
-			team: ['user1.jpg', 'user2.jpg', 'user3.jpg'],
-			progress: 38,
-			dueDate: '15 May 2023'
+			label: '오늘의 방문자',
+			value: '1,284',
+			growth: '+12.5%',
+			icon: 'ri-user-follow-line',
+			color: 'text-blue-600',
+			bg: 'bg-blue-50'
 		},
 		{
-			name: 'Social Banners',
-			leader: 'Owen',
-			team: ['user2.jpg', 'user4.jpg', 'user5.jpg'],
-			progress: 45,
-			dueDate: '20 Jan 2023'
+			label: '전체 캐릭터',
+			value: '248',
+			growth: '+3',
+			icon: 'ri-group-line',
+			color: 'text-purple-600',
+			bg: 'bg-purple-50'
+		},
+		{
+			label: '활성 이벤트',
+			value: '12',
+			growth: '-2',
+			icon: 'ri-calendar-event-line',
+			color: 'text-orange-600',
+			bg: 'bg-orange-50'
+		},
+		{
+			label: '데이터 완료율',
+			value: '84.2%',
+			growth: '+1.4%',
+			icon: 'ri-checkbox-circle-line',
+			color: 'text-green-600',
+			bg: 'bg-green-50'
 		}
+	];
+
+	// 최근 활동 로그 (예시)
+	let recentLogs = [
+		{ user: 'Admin', action: '스타레일 신규 캐릭터 "반디" 추가', time: '10분 전' },
+		{ user: 'System', action: '역전 1999 크롤링 완료', time: '1시간 전' },
+		{ user: 'Editor_K', action: '명조 이벤트 일정 수정', time: '3시간 전' }
 	];
 </script>
 
-<article>
-	<!-- 상단 통계 카드 -->
-	<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-		{#each stats as stat}
-			<div class="rounded-lg bg-white p-6 shadow-sm">
-				<h3 class="text-sm font-medium text-gray-500">{stat.label}</h3>
-				<div class="mt-2 flex items-baseline">
-					<p class="text-2xl font-semibold text-gray-900">{stat.value}</p>
-					{#if stat.growth}
-						<span class="ml-2 text-sm text-green-600">{stat.growth}</span>
-					{/if}
+<article class="space-y-8 pb-12">
+	<!-- 헤더 섹션 -->
+	<header class="flex items-center justify-between">
+		<div>
+			<h2 class="text-2xl font-bold text-gray-900">대시보드 개요</h2>
+			<p class="text-sm text-gray-500">플랫폼의 현재 상태와 실시간 통계를 확인하세요.</p>
+		</div>
+		<div class="flex gap-2">
+			<button
+				class="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+			>
+				<i class="ri-download-2-line"></i> 보고서 다운로드
+			</button>
+		</div>
+	</header>
+
+	<!-- 상단 요약 카드 -->
+	<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+		{#each summaryStats as stat}
+			<div
+				class="flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-md"
+			>
+				<div class="flex h-12 w-12 items-center justify-center rounded-lg {stat.bg} {stat.color}">
+					<i class="{stat.icon} text-xl"></i>
 				</div>
-				{#if stat.subValue}
-					<p class="mt-1 text-sm text-gray-600">{stat.subValue}</p>
-				{/if}
+				<div>
+					<p class="text-xs font-medium text-gray-500">{stat.label}</p>
+					<div class="mt-1 flex items-baseline gap-2">
+						<span class="text-xl font-bold text-gray-900">{stat.value}</span>
+						<span
+							class="text-xs font-bold {stat.growth.startsWith('+')
+								? 'text-green-500'
+								: 'text-red-500'}"
+						>
+							{stat.growth}
+						</span>
+					</div>
+				</div>
 			</div>
 		{/each}
 	</div>
 
-	<!-- 차트 섹션 -->
-	<div class="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-		<div class="rounded-lg bg-white p-6 shadow-sm">
-			<h3 class="mb-4 text-lg font-medium">Daily Sales</h3>
-			<div class="h-64">
-				<!-- 차트 컴포넌트 추가 예정 -->
-			</div>
+	<!-- 중간 섹션: 방문자 추이 & 컨텐츠 완성도 -->
+	<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+		<div class="lg:col-span-2">
+			<AdminVisitorChart />
 		</div>
-
-		<div class="rounded-lg bg-white p-6 shadow-sm">
-			<h3 class="mb-4 text-lg font-medium">Revenue Analytics</h3>
-			<div class="h-64">
-				<!-- 차트 컴포넌트 추가 예정 -->
-			</div>
+		<div>
+			<AdminContentCompleteness />
 		</div>
 	</div>
 
-	<!-- 프로젝트 목록 -->
-	<div class="rounded-lg bg-white p-6 shadow-sm">
-		<h3 class="mb-4 text-lg font-medium">Active Projects</h3>
-		<div class="overflow-x-auto">
-			<table class="w-full">
-				<thead>
-					<tr class="border-b text-left">
-						<th class="pb-3">Project</th>
-						<th class="pb-3">Leader</th>
-						<th class="pb-3">Team</th>
-						<th class="pb-3">Progress</th>
-						<th class="pb-3">Due Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each projects as project}
-						<tr class="border-b">
-							<td class="py-4">{project.name}</td>
-							<td>{project.leader}</td>
-							<td>
-								<div class="flex -space-x-2">
-									{#each project.team as member}
-										<img
-											src={member}
-											alt="Team member"
-											class="h-8 w-8 rounded-full border-2 border-white"
-										/>
-									{/each}
+	<!-- 하단 섹션: 검색 분석 & 최근 활동 -->
+	<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+		<div>
+			<AdminSearchAnalysis />
+		</div>
+		<div class="lg:col-span-2">
+			<div class="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+				<h3 class="mb-6 text-lg font-bold text-gray-800">최근 시스템 활동</h3>
+				<div class="space-y-4">
+					{#each recentLogs as log}
+						<div
+							class="flex items-center justify-between border-b border-gray-50 pb-4 last:border-0 last:pb-0"
+						>
+							<div class="flex items-center gap-3">
+								<div
+									class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-600"
+								>
+									{log.user[0]}
 								</div>
-							</td>
-							<td>
-								<div class="w-full rounded-full bg-gray-200">
-									<div
-										class="rounded-full bg-indigo-600 p-1"
-										style="width: {project.progress}%"
-									></div>
+								<div>
+									<p class="text-sm font-medium text-gray-800">{log.action}</p>
+									<p class="text-xs text-gray-400">{log.user}</p>
 								</div>
-							</td>
-							<td>{project.dueDate}</td>
-						</tr>
+							</div>
+							<span class="text-xs text-gray-400">{log.time}</span>
+						</div>
 					{/each}
-				</tbody>
-			</table>
+				</div>
+				<button
+					class="mt-6 w-full rounded-lg bg-gray-50 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100"
+				>
+					활동 로그 전체 보기
+				</button>
+			</div>
 		</div>
 	</div>
 </article>
+
+<style>
+	:global(article) {
+		animation: fadeIn 0.5s ease-out;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+</style>

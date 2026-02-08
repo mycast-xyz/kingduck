@@ -409,10 +409,12 @@
 				</div>
 
 				<!-- Tier List Area -->
-				<div class="flex flex-col gap-2 mb-8 bg-w p-4 rounded-lg shadow-lg bg-white">
+				<div
+					class="flex flex-col gap-2 mb-8 bg-w p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700"
+				>
 					{#each tiers as tier, index}
 						<div
-							class="flex min-h-[120px] bg-gray-200 rounded overflow-hidden border border-gray-300"
+							class="flex min-h-[120px] bg-gray-200 rounded overflow-hidden border border-gray-300 dark:border-gray-600 dark:bg-gray-900"
 						>
 							<!-- Label -->
 							<div
@@ -431,7 +433,7 @@
 								{#each tier.items as char (char.id)}
 									{@const charBgStyle = getCharBgStyle(char.rarity)}
 									<div
-										class="w-28 h-28 bg-gray-300 rounded-lg overflow-hidden cursor-move relative shrink-0 group hover:ring-2 ring-gray-100"
+										class="w-28 h-28 bg-gray-300 rounded-lg overflow-hidden cursor-move relative shrink-0 group hover:ring-2 ring-gray-100 dark:ring-gray-700"
 										style={getCardStyle(char.rarity) || 'background: rgba(0, 0, 0, 0.7);'}
 										data-id={char.id}
 									>
