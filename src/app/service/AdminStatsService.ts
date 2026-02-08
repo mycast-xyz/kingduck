@@ -9,11 +9,76 @@ export interface GameCompleteness {
 	completeness: number;
 }
 
+export interface SystemSummary {
+	os: {
+		platform: string;
+		distro: string;
+		release: string;
+		hostname: string;
+		arch: string;
+	};
+	cpu: {
+		manufacturer: string;
+		brand: string;
+		cores: number;
+		speed: number;
+	};
+	memory: {
+		total: number;
+		swaptotal: number;
+	};
+	time: {
+		current: number;
+		uptime: number;
+		timezone: string;
+	};
+}
+
+export interface SystemStats {
+	timestamp: number;
+	cpuLoad: {
+		currentLoad: number;
+		currentLoadUser: number;
+		currentLoadSystem: number;
+	};
+	memory: {
+		active: number;
+		total: number;
+		free: number;
+		usePercentage: number;
+	};
+	network: {
+		iface: string;
+		rx_sec: number;
+		tx_sec: number;
+	};
+	process: {
+		memory: {
+			rss: number;
+			heapTotal: number;
+			heapUsed: number;
+			external: number;
+			arrayBuffers: number;
+		};
+		uptime: number;
+	};
+}
+
 export class AdminStatsService {
 	private _completeness = writable<GameCompleteness[]>([]);
+	private _systemSummary = writable<SystemSummary | null>(null);
+	private _systemStats = writable<SystemStats | null>(null);
 
 	get completeness() {
 		return this._completeness;
+	}
+
+	get systemSummary() {
+		return this._systemSummary;
+	}
+
+	get systemStats() {
+		return this._systemStats;
 	}
 
 	async fetchCompleteness() {
@@ -57,6 +122,87 @@ export class AdminStatsService {
 			this._completeness.set(mockData);
 		} catch (error) {
 			console.error('Failed to fetch completeness stats:', error);
+		}
+	}
+
+	async fetchSystemSummary() {
+		try {
+			const response = await client.get('/api/v0/admin/system/summary');
+			if (response.status === 200 && response.data) {
+				this._systemSummary.set(response.data);
+			}
+		} catch (error) {
+			console.error('Failed to fetch system summary:', error);
+			// Fallback with mock data for development
+			this._systemSummary.set({
+				os: {
+					platform: 'Windows',
+					distro: 'Microsoft Windows 11 Home',
+					release: '10.0.26220',
+					hostname: 'leegunhee',
+					arch: 'x64'
+				},
+				cpu: {
+					manufacturer: 'AMD',
+					brand: 'Ryzen 9 7950X 16-Core Processor',
+					cores: 32,
+					speed: 4.5
+				},
+				memory: {
+					total: 68444491776,
+					swaptotal: 20401094656
+				},
+				time: {
+					current: 1770561007829,
+					uptime: 12486.781,
+					timezone: 'GMT+0900'
+				}
+			});
+		}
+	}
+
+	async fetchSystemStats() {
+		try {
+			const response = await client.get('/api/v0/admin/system/stats');
+			if (response.status === 200 && response.data) {
+				this._systemStats.set(response.data);
+			}
+		} catch (error) {
+			// console.error('Failed to fetch system stats:', error);
+			// Fallback with mock data for development
+			// Simulate varying load
+			const time = Date.now();
+			const load = 30 + Math.sin(time / 10000) * 20 + Math.random() * 10;
+
+			this._systemStats.set({
+				timestamp: time,
+				cpuLoad: {
+					currentLoad: load,
+					currentLoadUser: load * 0.6,
+					currentLoadSystem: load * 0.4
+				},
+				memory: {
+					active: 8589934592 + Math.random() * 1024 * 1024 * 100,
+					usePercentage: 25 + Math.random() * 5,
+					total: 34359738368,
+					free: 17179869184
+				},
+				network: {
+					iface: 'eth0',
+					rx_sec: Math.random() * 1024 * 1024 * 5,
+					tx_sec: Math.random() * 1024 * 1024 * 1
+				},
+				process: {
+					memory: {
+						rss: 1024 * 1024 * 500,
+						heapTotal: 1024 * 1024 * 300,
+						heapUsed: 1024 * 1024 * 200,
+						external: 1024 * 1024 * 10,
+						arrayBuffers: 1024 * 1024 * 1
+					},
+					uptime: 3600 + Math.random() * 100
+				}
+			});
 		}
 	}
 

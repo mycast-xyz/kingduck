@@ -85,6 +85,13 @@
 				<i class="ri-calendar-schedule-line"></i>
 				<span class="collapsed-hidden">캘린더</span>
 			</a>
+			<a
+				href="/admin/user"
+				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
+			>
+				<i class="ri-user-settings-line"></i>
+				<span class="collapsed-hidden">사용자 관리</span>
+			</a>
 			<div class="dropdownMenu relative" class:active={dropdownStates.menu1}>
 				<button
 					onclick={() => toggleDropdown('menu1')}
@@ -151,6 +158,14 @@
 			>
 				<i class="ri-bar-chart-2-line"></i>
 				<span class="collapsed-hidden">통계 분석</span>
+			</a>
+			<!-- 시스템 모니터링 -->
+			<a
+				href="/admin/monitor"
+				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
+			>
+				<i class="ri-pulse-line"></i>
+				<span class="collapsed-hidden">시스템 모니터링</span>
 			</a>
 			<div class="dropdownMenu relative" class:active={dropdownStates.menu2}>
 				<button
