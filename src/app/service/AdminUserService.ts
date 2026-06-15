@@ -150,7 +150,7 @@ export class AdminUserService {
 	// Keep status update for compatibility if needed, or remove if strictly following swagger
 	async updateUserStatus(id: string, status: 'ACTIVE' | 'BANNED') {
 		try {
-			const response = await client.patch(`/api/v0/admin/users/${id}/status`, { status });
+			const response = await client.patch(`/api/v0/admin/user/${id}/status`, { status });
 			return response.status === 200;
 		} catch (error) {
 			console.error(`Failed to update user status for ${id}:`, error);
