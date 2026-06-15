@@ -49,7 +49,11 @@
 
 > 🔎 **머지 후 런타임 수동검증 권장**: CORS preflight(화이트리스트 vs 외부 origin), MANAGER의 role 변경 403, 자기/최종ADMIN 강등 400, baseURL env 미설정 시 기존 동작 유지·설정 시 override, XSS 입력 렌더 확인.
 
-> ⚠️ **여전히 남은 보안 후속(Phase 1 잔여)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2) **로테이션 + git 히스토리 스크럽**(파괴적, 사용자 확인 필요). F-S1(어드민 children 선렌더 차단), F-S2(localStorage 토큰), B-S7(rate limit/helmet) 등은 Phase 2 이후.
+- **B-S1 / B-S2** 커밋된 시크릿: 추적 파일에서 JWT 키·DB 비번 제거, env 기반 전환(`dotenv/config` 로드), **새 JWT 시크릿 생성→gitignore된 `.env`**, `.env.example` 추가 ✅ (HEAD 정화 + 부팅 검증)
+  - ⏭️ **git 히스토리 스크럽은 보류**(사용자 결정 — 운영/테스트 서버 미운영이라 잔존 위험 낮음). 옛 시크릿은 히스토리에 남아있음.
+  - ☑️ **사용자 수동 조치(배포 시 필수)**: ① 프로덕션 env에 새 `JWT_SECRET_KEY` 주입 ② Postgres 비밀번호 변경 + `DATABASE_URL` 갱신.
+
+> ⚠️ **남은 보안 항목(Phase 2 이후)**: F-S1(어드민 children 선렌더 차단), F-S2(localStorage 토큰), B-S7(rate limit/helmet), B-S6(토큰 role DB 재확인).
 
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
