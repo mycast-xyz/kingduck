@@ -53,7 +53,11 @@
   - ⏭️ **git 히스토리 스크럽은 보류**(사용자 결정 — 운영/테스트 서버 미운영이라 잔존 위험 낮음). 옛 시크릿은 히스토리에 남아있음.
   - ☑️ **사용자 수동 조치(배포 시 필수)**: ① 프로덕션 env에 새 `JWT_SECRET_KEY` 주입 ② Postgres 비밀번호 변경 + `DATABASE_URL` 갱신.
 
-> ⚠️ **남은 보안 항목(Phase 2 이후)**: F-S1(어드민 children 선렌더 차단), F-S2(localStorage 토큰), B-S7(rate limit/helmet), B-S6(토큰 role DB 재확인).
+### 2026-06-15 · Phase 1 보안 (추가분)
+- **F-S1** 어드민 가드 강화: `routes/admin/+layout.svelte`에서 `authorized` 게이트 도입 → 인가 확인 전 사이드바·children·어드민 API 요청 차단(Toast만 게이트 밖) ✅
+- **B-S7** rate limit + 보안 헤더: `helmet`(CSP off로 swagger 보존) + `express-rate-limit`(로그인/계정생성/이메일검증 15분 20회/IP) ✅
+
+> ⚠️ **남은 보안 항목(Phase 2 이후)**: F-S2(localStorage 토큰 → HttpOnly 쿠키 검토), B-S6(토큰 role DB 재확인/무효화), B-H3(페이지네이션 클램프), B-S10(크롤러 SQLite 식별자).
 
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
