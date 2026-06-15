@@ -34,6 +34,10 @@
 - **B-C2** video 컨트롤러 크래시: Sequelize 잔재(`Character`/`CharacterImage`)를 Prisma `Video` 모델로 재작성 + try/catch + url upsert ✅
 - **B-C4** 전역 에러 미들웨어 + 404 핸들러를 `src/index.ts`에 추가 ✅
 - **(추가 발견)** `pnpm build`가 애초에 **컴파일 자체 실패**(dev는 `--transpile-only`라 은폐). 깨진 `@types/sqlite3`(미사용) 제거 + 선재 TS 에러 8건 수정(Express query `string|string[]` 강제 변환, puppeteer `headless:true`, `window` 캐스팅) ✅
+- **B-C3** 인증 핸들러 가드: `LoginController.Login` try/catch 추가, `AccountController`의 `findUnique`/`encryptPassword`를 try 안으로 이동 → 장애 시 500 응답(요청 행 방지). 토큰/PII 콘솔 로깅(B-S9) 제거 ✅
+- **B-C6** 크롤러 브라우저 누수: `apiUtils.fetchPageConfig`·`scheduler` 실행 루프를 try/finally로, `namuWikiUtils`는 browser 핸들 반환(현재 호출자 0건) ✅
+
+**Phase 0 남은 항목**: B-C5(어드민 이벤트 CRUD 엔드포인트 — POST/PUT/DELETE `/admin/event`) 구현 진행 중.
 
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 

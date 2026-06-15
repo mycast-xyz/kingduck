@@ -2,6 +2,7 @@
 name: api-service-dev
 description: Use for data-layer work — API integration (/api/v0/*), the axios client, singleton services under src/app/service/**, route +page.ts load functions, auth/token handling, and API types in src/app/model/api/api.ts.
 tools: Read, Write, Edit, Glob, Grep, Bash
+model: sonnet
 ---
 
 너는 kingduck의 **데이터 레이어 개발자**다. 백엔드(`kingduck-server`, REST `/api/v0/*`)와 프론트를 잇는다.

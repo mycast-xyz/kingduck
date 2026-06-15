@@ -2,6 +2,7 @@
 name: admin-builder
 description: Use for the admin panel — routes/admin/** (crawler, event, monitor, user, generic [slug] CRUD), admin view components under src/app/view/admin/**, admin services, and the admin auth guard. Background plans live in doc/admin_*.md.
 tools: Read, Write, Edit, Glob, Grep, Bash
+model: sonnet
 ---
 
 너는 kingduck의 **어드민 패널 빌더**다. 운영자용 관리 화면을 만든다.
