@@ -63,14 +63,6 @@
 	// Weather Alert Analysis
 	import { analyzeWeatherAlert } from '../../app/model/calendar/WeatherAlertCalculator';
 	let weatherAlert = $derived(analyzeWeatherAlert(filteredEvents, now));
-
-	// Debug: Track changes in reactive state
-	$effect(() => {
-		console.log('=== Weather Alert Update ===');
-		console.log('Selected Games:', selectedGames);
-		console.log('Filtered Events Count:', filteredEvents.length);
-		console.log('Weather Alert:', weatherAlert);
-	});
 </script>
 
 <div

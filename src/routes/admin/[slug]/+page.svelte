@@ -57,6 +57,6 @@
 	<AdminHeadMenu title={ContentTitle} infoText={ContentInfoText} />
 
 	{#if ContentComponent}
-		<svelte:component this={ContentComponent} {data} />
+		<ContentComponent {data} />
 	{/if}
 </div>

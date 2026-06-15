@@ -21,7 +21,6 @@
 		}
 	}
 
-	console.log('calendar info:', games);
 </script>
 
 <div class="list-menu flex h-full p-4 pr-2">

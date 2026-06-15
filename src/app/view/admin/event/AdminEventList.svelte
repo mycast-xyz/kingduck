@@ -204,7 +204,6 @@
 	// 이벤트 편집
 	function editEvent(eventId: string) {
 		// TODO: 모달 열기
-		console.log('Edit event:', eventId);
 	}
 
 	// 이벤트 삭제

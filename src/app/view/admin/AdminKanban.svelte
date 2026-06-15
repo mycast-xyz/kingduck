@@ -114,11 +114,6 @@
 		attachments: 0
 	});
 
-	// kanbanColumns 상태 변경 감시
-	$effect(() => {
-		console.log('칸반 컬럼 상태:', kanbanColumns);
-	});
-
 	// 태스크 상세 모달 상태
 	let showTaskDetailModal = $state(false);
 	let selectedTask = $state<KanbanTask | null>(null);
@@ -158,8 +153,6 @@
 
 	// 새 태스크 추가
 	function addNewTask(columnId: string) {
-		console.log('칸반 추가');
-
 		selectedColumn = columnId;
 		WindowService.openModal('admin-add-kanban');
 	}

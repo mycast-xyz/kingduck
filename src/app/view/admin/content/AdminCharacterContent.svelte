@@ -6,8 +6,6 @@
 
 	let character: any = data.info;
 
-	console.log(character);
-
 	function getStatus(
 		condition: boolean,
 		successColor: string,

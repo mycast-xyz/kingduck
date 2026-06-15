@@ -37,8 +37,6 @@
 			gameSlug === 'reverse1999' ||
 			initData?.gameId === 'Reverse1999'
 		) {
-			console.log(listData);
-
 			return new Reverse1999TeamViewModel(listData);
 		}
 		return null;
