@@ -6,6 +6,7 @@
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
+	import { sanitizeHtml } from '../../util/sanitize';
 
 	const { itemData, propertyBase, currentUrl, isMobile, contentColor, title, initData } = $props<{
 		itemData: any;
@@ -330,7 +331,7 @@
 					<span class=" text-lg font-normal text-gray-500 dark:text-white">
 						{#if selectedList?.itemReferences?.set}
 							{#each Object.entries(selectedList?.itemReferences?.set ?? {}) as [key, value]}
-								<p>{key}세트 : {@html getFormattedDescription(value)}</p>
+								<p>{key}세트 : {@html sanitizeHtml(getFormattedDescription(value))}</p>
 							{/each}
 						{/if}
 					</span>

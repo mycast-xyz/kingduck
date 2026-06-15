@@ -97,6 +97,7 @@
 	import { GameSettingInitService } from '../../../../app/service/game/GameSettingService';
 	import { CharacterRarityService } from '../../../../app/service/character/CharacterRarityService';
 	import { getCardBgStyle as getGradientStyle } from '../../../../app/util/StyleUtils';
+	import { sanitizeHtml } from '../../../../app/util/sanitize';
 
 	let gameInit: any;
 	let rarityService = $state<CharacterRarityService>();
@@ -602,7 +603,7 @@
 
 							{#if contentText}
 								<div class="prose dark:prose-invert max-w-none text-sm mb-6">
-									{@html formatContent(contentText)}
+									{@html sanitizeHtml(formatContent(contentText))}
 								</div>
 							{:else if event.characterName}
 								<p class="text-gray-600 dark:text-gray-300 mb-6">{event.characterName}</p>

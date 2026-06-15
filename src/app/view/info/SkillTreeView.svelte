@@ -5,6 +5,7 @@
 	import { EndfieldSkillViewModel } from '../../service/game/endfield/EndfieldSkillViewModel.svelte';
 	import { EndfieldPassiveViewModel } from '../../service/game/endfield/EndfieldPassiveViewModel.svelte';
 	import { Reverse1999SkillViewModel } from '../../service/game/reverse1999/Reverse1999SkillViewModel.svelte';
+	import { sanitizeHtml } from '../../util/sanitize';
 
 	const { listData, currentUrl, initData, extraData, gameId, gameSlug, title, vmType } = $props<{
 		listData: any;
@@ -178,7 +179,7 @@
 					<div
 						class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 text-sm leading-relaxed"
 					>
-						{@html vm.getFormattedDescription(selectedList, selectedLevel)}
+						{@html sanitizeHtml(vm.getFormattedDescription(selectedList, selectedLevel))}
 					</div>
 				</div>
 			{:else}

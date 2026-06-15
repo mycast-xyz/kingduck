@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { EndfieldFactoryViewModel } from '../../service/game/endfield/EndfieldFactoryViewModel.svelte';
+	import { sanitizeHtml } from '../../util/sanitize';
 
 	const {
 		listData,
@@ -131,7 +132,7 @@
 						</h4>
 					</div>
 					<p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-						{@html getFormattedDescription(trace)}
+						{@html sanitizeHtml(getFormattedDescription(trace))}
 					</p>
 				</div>
 			{/each}

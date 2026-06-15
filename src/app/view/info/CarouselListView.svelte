@@ -8,6 +8,7 @@
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
+	import { sanitizeHtml } from '../../util/sanitize';
 
 	const { listData, currentUrl, isMobile, initData, title } = $props<{
 		listData: any;
@@ -212,7 +213,7 @@
 							{/if}
 						</div>
 						<span class=" text-lg font-normal text-gray-500 dark:text-gray-400">
-							{@html getFormattedDescription(selectedList, selectedLevel)}
+							{@html sanitizeHtml(getFormattedDescription(selectedList, selectedLevel))}
 						</span>
 					</div>
 				</div>
@@ -300,7 +301,7 @@
 					</div>
 					<div class="pt-2">
 						<span class=" text-xs font-normal text-gray-500 dark:text-gray-400">
-							{@html getFormattedDescription(selectedList, selectedLevel)}
+							{@html sanitizeHtml(getFormattedDescription(selectedList, selectedLevel))}
 						</span>
 					</div>
 				</div>

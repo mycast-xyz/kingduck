@@ -5,6 +5,7 @@
 	import { EndfieldRankListViewModel } from '../../service/game/endfield/EndfieldRankListViewModel.svelte';
 	import { EndfieldPotentialViewModel } from '../../service/game/endfield/EndfieldPotentialViewModel.svelte';
 	import { Reverse1999RankListViewModel } from '../../service/game/reverse1999/Reverse1999RankListViewModel.svelte';
+	import { sanitizeHtml } from '../../util/sanitize';
 
 	const { listData, currentUrl, gameId, gameSlug, initData, vmType, title } = $props<{
 		listData: any;
@@ -73,7 +74,7 @@
 								{item.index}. {item.name}
 							</h4>
 							<div class="text-sm leading-relaxed font-light break-keep">
-								{@html item.description}
+								{@html sanitizeHtml(item.description)}
 							</div>
 						</div>
 					</div>

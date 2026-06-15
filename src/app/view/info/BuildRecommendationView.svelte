@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { hsrItemService } from '../../service/game/starrail/HsrItemService';
+	import { sanitizeHtml } from '../../util/sanitize';
 
 	const { listData, currentUrl, isMobile, gameId, initData, title } = $props<{
 		listData: any;
@@ -303,11 +304,11 @@
 			<div class="mb-3">
 				<span class="font-bold text-orange-500 mb-1 block text-base md:text-sm">2세트 효과</span>
 				<p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-					{@html formatDescription(
+					{@html sanitizeHtml(formatDescription(
 						hoveredRelic.data['2pc'].desc ||
 							(typeof hoveredRelic.data['2pc'] === 'string' ? hoveredRelic.data['2pc'] : ''),
 						hoveredRelic.data['2pc'].params
-					)}
+					))}
 				</p>
 			</div>
 		{/if}
@@ -315,7 +316,7 @@
 			<div>
 				<span class="font-bold text-orange-500 mb-1 block text-base md:text-sm">4세트 효과</span>
 				<p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-					{@html formatDescription(hoveredRelic.data['4pc'].desc, hoveredRelic.data['4pc'].params)}
+					{@html sanitizeHtml(formatDescription(hoveredRelic.data['4pc'].desc, hoveredRelic.data['4pc'].params))}
 				</p>
 			</div>
 		{/if}
