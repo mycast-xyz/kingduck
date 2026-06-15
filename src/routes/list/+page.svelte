@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mainMenuActive } from '$lib/stores/mainMenuStore';
+	import { mainMenuActive } from '../../app/service/MainMenuService';
 	import type { PageData } from '../$types';
 	// import MainMenu from '../../app/view/menu/MainMenu.svelte';
 

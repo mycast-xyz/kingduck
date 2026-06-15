@@ -6,8 +6,33 @@
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 
+	interface KanbanAssignee {
+		id: string;
+		avatar: string;
+		name: string;
+	}
+
+	interface KanbanTask {
+		id: number;
+		title: string;
+		description: string;
+		dueDate: string;
+		priority: string;
+		assignees: KanbanAssignee[];
+		labels: string[];
+		comments: number;
+		attachments: number;
+	}
+
+	interface KanbanColumn {
+		id: string;
+		title: string;
+		color: string;
+		tasks: KanbanTask[];
+	}
+
 	// 칸반 보드 상태 관리
-	let kanbanColumns = $state([
+	let kanbanColumns = $state<KanbanColumn[]>([
 		{
 			id: 'plan',
 			title: '계획수립',
@@ -96,7 +121,7 @@
 
 	// 태스크 상세 모달 상태
 	let showTaskDetailModal = $state(false);
-	let selectedTask = $state(null);
+	let selectedTask = $state<KanbanTask | null>(null);
 	onMount(() => {
 		// 컬럼 간 드래그 앤 드롭
 		const containers = document.querySelectorAll<HTMLElement>('.kanban-column');

@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { WindowService } from '../../../service/WindowService';
 
-	const { data } = $props<{ data: PageData }>();
+	type MainMenuData = {
+		info: Array<{ slug: string; iconUrl: string; name: string }>;
+		url: string;
+	};
+
+	const { data } = $props<{ data: MainMenuData }>();
 
 	let navActive = $state(false);
 	const toggleNav = () => {

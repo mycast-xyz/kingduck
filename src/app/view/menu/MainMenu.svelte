@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mainMenuActive, navActive } from '$lib/stores/mainMenuStore';
+	import { mainMenuActive, navActive } from '../../service/MainMenuService';
 	import ThemeToggle from '../common/ThemeToggle.svelte';
 
 	const toggleNav = () => {

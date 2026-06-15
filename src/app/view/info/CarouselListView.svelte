@@ -28,7 +28,7 @@
 	});
 
 	// 스킬 관련 상태 관리
-	let selectedList = $state(null);
+	let selectedList = $state<any>(null);
 	let selectedLevel = $state(1);
 
 	// Swiper 설정
@@ -85,7 +85,7 @@
 						const index = parseInt(num) - 1;
 						let value = params[index] ?? 0;
 						if (params[index] < 10) {
-							value = params[index] * 100 ?? 0;
+							value = (params[index] ?? 0) * 100;
 						}
 						return value.toFixed(1);
 					})

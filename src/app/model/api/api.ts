@@ -27,6 +27,7 @@ export interface ElementType {
 // Generic interface for Character to support game-specific metadata
 export interface CharacterType<T = any> {
 	id: number;
+	originalId?: string; // 원본(외부 소스) 식별자. /character/{slug}/original/{originalId} 조회용
 	gameId: number;
 	elementId?: number;
 	pathId?: number;

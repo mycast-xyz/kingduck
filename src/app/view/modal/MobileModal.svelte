@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Component } from 'svelte';
 	import { WindowService, ModalView } from '../../service/WindowService';
 	import MobileLayer from '../../view-framework/modal/MobileModal.svelte';
 	import MobileFilter from './filter/MobileFilter.svelte';
@@ -6,7 +7,7 @@
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 
-	let ModalComponent = $state();
+	let ModalComponent = $state<Component<any> | null>(null);
 	let ModalTitle = $state('');
 
 	WindowService.modal.subscribe((m) => {

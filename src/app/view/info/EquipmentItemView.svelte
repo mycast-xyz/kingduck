@@ -58,7 +58,7 @@
 					}
 					return null;
 				})
-				.filter(Boolean);
+				.filter((entry): entry is { title: any; list: any } => entry !== null);
 		}
 		return [];
 	});
@@ -89,7 +89,7 @@
 	};
 
 	// 스킬 관련 상태 관리
-	let selectedList = $state(null);
+	let selectedList = $state<any>(null);
 
 	// 장비 착용 부분에 대한 안내 표시
 	const getFormattedProperty = (property: any, gameId: string) => {
@@ -118,7 +118,7 @@
 				BreakDamageAddedRatioBase: '격파 특수효과',
 				SpeedDelta: '속도'
 			};
-			result = setProperty[property] || 'ERROR1';
+			result = setProperty[property as keyof typeof setProperty] || 'ERROR1';
 		} else {
 			result = 'ERROR2';
 		}
@@ -156,11 +156,11 @@
 		return '';
 	};
 
-	const getFormattedDescription = (item: any, selectedLevel: number) => {
+	const getFormattedDescription = (item: any, selectedLevel?: number) => {
 		if (item?.info) {
 			let description = item.info;
-			if (item.levelData && item.levelData[selectedLevel - 1]?.params) {
-				const params = item.levelData[selectedLevel - 1].params;
+			if (item.levelData && item.levelData[selectedLevel! - 1]?.params) {
+				const params = item.levelData[selectedLevel! - 1].params;
 				description = description
 					.replace(/#(\d+)\[(i|f\d)]/g, (match: string) => {
 						const num = match.match(/\d+/)?.[0];
@@ -168,7 +168,7 @@
 						const index = parseInt(num) - 1;
 						let value = params[index] ?? 0;
 						if (params[index] < 10) {
-							value = params[index] * 100 ?? 0;
+							value = (params[index] ?? 0) * 100;
 						}
 						return value.toFixed(1);
 					})
@@ -212,7 +212,7 @@
 						const index = parseInt(num) - 1;
 						let value = params[index] ?? 0;
 						if (params[index] < 1) {
-							value = params[index] * 100 ?? 0;
+							value = (params[index] ?? 0) * 100;
 						}
 						return value.toFixed(1);
 					})

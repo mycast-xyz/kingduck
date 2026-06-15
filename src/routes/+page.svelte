@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from '$types';
+	import type { PageData } from './$types';
 	import { authTokenService } from '../app/service/auth/AuthTokenService';
 
 	const isAuthenticated = authTokenService.isAuthenticated;

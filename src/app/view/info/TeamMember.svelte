@@ -103,7 +103,7 @@
 		if (cardConfig.display === 'path' && isMobile && cardConfig.mobilePath) {
 			// 모바일: 하드코딩된 경로 패턴 사용
 			return cardConfig.mobilePath
-				.replace('{gameSlug}', data.params)
+				.replace('{gameSlug}', initData?.gameSlug)
 				.replace('{elementName}', element.name || '');
 		} else if (cardConfig.display === 'iconUrl' || !isMobile) {
 			// 데스크톱 또는 iconUrl 모드: API에서 받은 iconUrl 사용

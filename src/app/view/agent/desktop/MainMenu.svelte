@@ -15,7 +15,7 @@
 
 	let isTokenValid = checkToken();
 
-	const userInfo = writable({});
+	const userInfo = writable<{ userName?: string; userId?: string }>({});
 
 	// 토큰 정보 추출
 	if (checkToken()) {
@@ -38,7 +38,7 @@
 	};
 
 	// tooltip 표시 상태를 위한 상태 변수
-	let showTooltip = $state(null);
+	let showTooltip = $state<string | null>(null);
 
 	// data.info가 배열인지 확인하고 안전하게 처리
 	const gameList = $derived(Array.isArray(data?.info) ? data.info : []);

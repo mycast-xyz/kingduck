@@ -42,7 +42,10 @@
 			if (Array.isArray(itemData) && itemData.length > 0) {
 				const promises = itemData.map(async (id: string | number) => {
 					try {
-						const res = await hsrItemService.getItemList(String(id));
+						const res = await hsrItemService.getItemList(
+							String(id),
+							gameInit?.gameId ?? $page.params.gameEnName
+						);
 						return res.data;
 					} catch (err) {
 						console.error(`Failed to fetch item ${id}`, err);

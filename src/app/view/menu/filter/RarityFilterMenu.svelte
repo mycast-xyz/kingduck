@@ -6,7 +6,9 @@
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 
-	const RarityOption = writable({ isMenuOpen: false });
+	const RarityOption = writable<{ isMenuOpen: boolean; list?: Record<string, string> }>({
+		isMenuOpen: false
+	});
 	const selectedRarity: any = writable('');
 	const rarityText = writable('');
 	let gameInit;
