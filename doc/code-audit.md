@@ -59,6 +59,21 @@
 
 > ⚠️ **남은 보안 항목(Phase 2 이후)**: F-S2(localStorage 토큰 → HttpOnly 쿠키 검토), B-S6(토큰 role DB 재확인/무효화), B-H3(페이지네이션 클램프), B-S10(크롤러 SQLite 식별자).
 
+### 2026-06-15 · Phase 2 기능
+- **B-H1** 누락/오라우팅 엔드포인트: `PATCH /admin/user/:id/status`(밴/언밴, User.status 컬럼 부재로 `permissions._status` 임시 저장), `GET /skill/list`(Skill 모델 부재로 `character.metadata.skills` 반환), `GET /character/admin/:id`(`/:gameSlug/:id`보다 먼저 등록해 오라우팅 해소) + 프론트 경로 1줄 정합 ✅
+- **B-H4a** originalId 계약: 응답에 top-level `originalId`를 `metadata.originalId`에서 채워 노출(프론트 계약 충족, DB 변경 없음) ✅
+
+#### ⏸️ B-H4b — DB 마이그레이션 (보류, 실 DB 변경이라 별도 진행)
+온전한 originalId 정규화(컬럼 저장 + 인덱스)는 아래 **순서대로** 진행해야 안전(데이터 변경 + 스키마 변경 동반):
+1. **중복 점검** (실패 예방): `(gameId, metadata->>'originalId')` 중복 행이 있으면 `@@unique`가 실패 → 먼저 정리.
+   `SELECT game_id, metadata->>'originalId' AS oid, count(*) FROM characters GROUP BY 1,2 HAVING count(*)>1;`
+2. **backfill**: `UPDATE characters SET original_id = metadata->>'originalId' WHERE original_id IS NULL;`
+3. **스키마**: Character에 `@@unique([gameId, originalId])`, Item에 `originalId String? @map("original_id")` 추가.
+4. **마이그레이션**: `pnpm prisma migrate dev --name add_original_id` (⚠️ 실 DB 변경).
+5. **코드 전환**: `DataSyncService`·`character/service`·`item/service`의 `metadata.path(['originalId'])` 조회/저장을 **컬럼 기반**(`where: { originalId }`, upsert에 `gameId_originalId`)으로 교체 — 위 backfill 후에 해야 기존 데이터가 매칭됨.
+
+> 미운영 상태라 급하지 않음. 실제 배포/크롤러 운영 전에 위 절차로 일괄 적용 권장.
+
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
 ---
