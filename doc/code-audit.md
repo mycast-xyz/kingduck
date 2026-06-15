@@ -87,6 +87,19 @@
 
 > ⏸️ **의도적 보류**: B-M1(응답 envelope 통일 — 프론트 계약 깨뜨릴 위험 큰 cross-cutting 리팩터링, 프론트와 함께 진행할 일), B-H5(N+1 — sync 로직 변경 리스크), B-M5(누락 인덱스 — 마이그레이션), B-M7/M8(Docker DB 호스트·타임존), B-S6(토큰 무효화), F-S2(localStorage 토큰).
 
+### 2026-06-15 · 프론트엔드 재점검 (회귀 검증 + 신규)
+**회귀 검증 ✅**: 이번 세션 변경(XSS sanitize·baseURL·어드민 가드 F-S1·타입 수정) 전수 확인 — 회귀 없음.
+**정리(cleanup)**: `<svelte:component>` deprecated 2곳 → Svelte5 직접 렌더, 중복 파일 `ContentView copy.svelte` 삭제, 디버그 console.log 9개 제거(순수 로깅 `$effect` 2개 포함). warnings 73→70.
+**신규 버그 수정**:
+- 🟠 어드민 **이벤트 편집 미연결**(빈 TODO): `WindowService.openModal(modal, data?)` 하위호환 확장 + `modalData` 스토어로 편집 배선, 모달 `openForEdit` 연결 ✅
+- 🟡 모달 저장 후 `window.location.reload()` → `invalidateAll()` ✅
+- 🟡 `RankListView` `gameId==='13'`(문자열 dead code) → 숫자 `13`, `TeamMember` `gameSlug` 누락(항상 undefined) → `getInitData`에 `data.gameSlug` 포함 ✅
+- 🟢 admin `[slug]/[id]/+page.ts` fetch try/catch, 미사용 import 제거, `sanitize.ts` 주석 정정 ✅
+
+> 🔎 **수동 확인 1건**: 어드민 이벤트 **편집** 흐름은 정적 수정이라, 실제 앱에서 편집 버튼→모달 프리필→저장이 동작하는지 클릭 테스트 권장.
+
+> ⏸️ **재점검에서도 보류 확인(설계성)**: F-B1(구독 누수), F-B2(싱글톤 race), F-B3(slug/gameId 3중 혼재), F-B4(Math.random key), F-T1(가짜 모니터링 데이터 폴백), F-A2(401/refresh dead code), F-A3(에러 빈배열 은폐) — 코드 변화 없음, 설계 변경 동반이라 별도 과제.
+
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
 ---
