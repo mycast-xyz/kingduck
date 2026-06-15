@@ -37,7 +37,19 @@
 - **B-C3** 인증 핸들러 가드: `LoginController.Login` try/catch 추가, `AccountController`의 `findUnique`/`encryptPassword`를 try 안으로 이동 → 장애 시 500 응답(요청 행 방지). 토큰/PII 콘솔 로깅(B-S9) 제거 ✅
 - **B-C6** 크롤러 브라우저 누수: `apiUtils.fetchPageConfig`·`scheduler` 실행 루프를 try/finally로, `namuWikiUtils`는 browser 핸들 반환(현재 호출자 0건) ✅
 
-**Phase 0 남은 항목**: B-C5(어드민 이벤트 CRUD 엔드포인트 — POST/PUT/DELETE `/admin/event`) 구현 진행 중.
+- **B-C5** 어드민 이벤트 CRUD: `POST/PUT/DELETE /admin/event` 구현(createEvent/updateEvent/deleteEvent), 프론트 payload→`CalendarEvent` 매핑, `?name=` 검색 반영 ✅
+
+**Phase 0 완료** ✅ (빌드 green + 부팅 검증).
+
+### 2026-06-15 · Phase 1 (보안) — 빌드/check green 검증 완료 ✅
+- **B-S3 / B-M6** CORS 잠금: 미일치 origin 거부(기존 `callback(null,true)` 제거), OPTIONS origin 반사 제거(화이트리스트일 때만 echo+credentials), `CORS_ORIGINS` env 지원 ✅
+- **B-S4** role 상승 차단: `PUT /user/:id/role` → `authorize(['ADMIN'])`, role enum 화이트리스트 검증, 자기 role 변경 금지, 최종 ADMIN 강등 방지 ✅
+- **F-S3** 저장형 XSS: `dompurify` 도입 + `src/app/util/sanitize.ts` 헬퍼, `{@html}` 9곳 sanitize(이벤트 상세 `full_content`, 캐릭터/스킬/장비/유물 설명). 정적 설정값(`rarityIcon`)은 제외 ✅
+- **F-A1** baseURL 일원화: `client.ts`에 `getApiBaseUrl()`(PUBLIC_API_BASE_URL 우선 → 기존 `:3000` 폴백) 도입, 하드코딩 17파일 정리, `.env.example` 문서화 ✅
+
+> 🔎 **머지 후 런타임 수동검증 권장**: CORS preflight(화이트리스트 vs 외부 origin), MANAGER의 role 변경 403, 자기/최종ADMIN 강등 400, baseURL env 미설정 시 기존 동작 유지·설정 시 override, XSS 입력 렌더 확인.
+
+> ⚠️ **여전히 남은 보안 후속(Phase 1 잔여)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2) **로테이션 + git 히스토리 스크럽**(파괴적, 사용자 확인 필요). F-S1(어드민 children 선렌더 차단), F-S2(localStorage 토큰), B-S7(rate limit/helmet) 등은 Phase 2 이후.
 
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
