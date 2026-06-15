@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import client from '../../../../app/service/api/client';
+import client, { getApiBaseUrl } from '../../../../app/service/api/client';
 import { browser } from '$app/environment';
 import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
 import { GirlsFrontline2Init } from '../../../../app/model/game/GirlsFrontline2Init';
@@ -104,7 +104,7 @@ export const load: PageLoad = async ({ params, url }) => {
 	return {
 		gameSlug: params.gameEnName,
 		isMobile: isMobile,
-		url: `${url.protocol}//${url.hostname}:3000`,
+		url: getApiBaseUrl(),
 		info: data,
 		title: `${data?.name} - ${gameInfo?.name}`,
 		meta: {

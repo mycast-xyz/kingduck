@@ -1,7 +1,7 @@
 import type { LayoutLoad } from './$types';
 import { browser } from '$app/environment';
 import { page } from '$app/stores';
-import client from '../app/service/api/client';
+import client, { getApiBaseUrl } from '../app/service/api/client';
 import { MobileUtils } from '../utils/mobile/MobileUtils';
 import { error } from '@sveltejs/kit';
 import type { GameType, ResultCodeType } from '../app/model/api/api';
@@ -35,7 +35,7 @@ export const load: LayoutLoad = async ({ params, url }) => {
 		params: params.slug,
 		isNotLayoutPage: isNotLayoutPage,
 		isMobile: isMobile,
-		url: `${url.protocol}//${url.hostname}:3000`,
+		url: getApiBaseUrl(),
 		info: Array.isArray(data) ? data : []
 	};
 };

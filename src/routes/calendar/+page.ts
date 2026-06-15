@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import client from '../../app/service/api/client';
+import client, { getApiBaseUrl } from '../../app/service/api/client';
 import { browser } from '$app/environment';
 
 // 유틸
@@ -68,7 +68,7 @@ export const load: PageLoad = async ({ url }) => {
 	}
 
 	return {
-		url: `${url.protocol}//${url.hostname}:3000`,
+		url: getApiBaseUrl(),
 		isMobile: isMobile,
 		info: games,
 		events: events

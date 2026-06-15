@@ -1,12 +1,12 @@
 import { browser } from '$app/environment';
 import type { PageLoad } from './$types';
-import client from '../app/service/api/client';
+import client, { getApiBaseUrl } from '../app/service/api/client';
 // 유틸
 import { MobileUtils } from '../utils/mobile/MobileUtils';
 import type { GameType, ResultCodeType } from '../app/model/api/api';
 
 // 캐릭터 목록 서비스
-export const load: PageLoad = async ({ url }) => {
+export const load: PageLoad = async () => {
 	let isMobile = false;
 	let data: GameType[] = [];
 
@@ -23,7 +23,7 @@ export const load: PageLoad = async ({ url }) => {
 		});
 
 	return {
-		url: `${url.protocol}//${url.hostname}:3000`,
+		url: getApiBaseUrl(),
 		isMobile: isMobile,
 		info: data
 	};

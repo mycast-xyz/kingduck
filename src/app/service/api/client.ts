@@ -2,15 +2,18 @@ import axios from 'axios';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
 import { authTokenService } from '../auth/AuthTokenService';
 
-const getBaseUrl = () => {
+export const getApiBaseUrl = (): string => {
+	if (PUBLIC_API_BASE_URL) {
+		return PUBLIC_API_BASE_URL;
+	}
 	if (typeof window !== 'undefined') {
 		return `${window.location.protocol}//${window.location.hostname}:3000`;
 	}
-	return PUBLIC_API_BASE_URL || 'http://localhost:3000';
+	return 'http://localhost:3000';
 };
 
 const client = axios.create({
-	baseURL: getBaseUrl(),
+	baseURL: getApiBaseUrl(),
 	headers: {
 		'Content-Type': 'application/json'
 	}

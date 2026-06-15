@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import client from '../../../../app/service/api/client';
+import client, { getApiBaseUrl } from '../../../../app/service/api/client';
 import { authTokenService } from '../../../../app/service/auth/AuthTokenService';
 import type { PageLoad } from './$types';
 import type { CharacterType, ResultCodeType } from '../../../../app/model/api/api';
@@ -23,7 +23,7 @@ export const load: PageLoad = async ({ params, url }) => {
 	}
 
 	return {
-		url: `${url.protocol}//${url.hostname}:3000`,
+		url: getApiBaseUrl(),
 		slug: params.slug,
 		id: params.id,
 		info: infoData
