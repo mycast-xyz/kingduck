@@ -12,7 +12,7 @@
 		currentUrl: string;
 		isMobile: boolean;
 		initData: any;
-		gameId?: string;
+		gameId?: string | number;
 		gameSlug: string;
 		vmType?: string;
 		title?: string;
@@ -23,7 +23,7 @@
 			return new HsrRankListViewModel(listData, gameSlug, currentUrl);
 		} else if (gameId === 'WutheringWaves' || gameSlug === 'wutheringwaves') {
 			return new WwRankListViewModel(listData, gameSlug, currentUrl);
-		} else if (gameId === 'endfield' || gameSlug === 'endfield' || gameId === '13') {
+		} else if (gameId === 'endfield' || gameSlug === 'endfield' || gameId === 13) {
 			if (vmType === 'potential' || initData?.props?.vmType === 'potential') {
 				return new EndfieldPotentialViewModel(listData, gameSlug, currentUrl);
 			}

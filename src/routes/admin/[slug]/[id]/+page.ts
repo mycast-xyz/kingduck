@@ -13,11 +13,15 @@ export const load: PageLoad = async ({ params, url }) => {
 
 	switch (params.slug) {
 		case 'character':
-			const response = await client.get<CharacterType>('/api/v0/character/admin/' + params.id);
-			if (response.data) {
-				infoData = response.data;
-			} else {
-				console.error('서버 응답 에러');
+			try {
+				const response = await client.get<CharacterType>('/api/v0/character/admin/' + params.id);
+				if (response.data) {
+					infoData = response.data;
+				} else {
+					console.error('서버 응답 에러');
+				}
+			} catch (e) {
+				console.error('캐릭터 데이터 조회 중 오류:', e);
 			}
 			break;
 	}

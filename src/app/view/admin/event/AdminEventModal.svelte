@@ -2,6 +2,8 @@
 	import client from '../../../service/api/client';
 	import { WindowService } from '../../../service/WindowService';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import { invalidateAll } from '$app/navigation';
 
 	let gameList: any = $state([]);
 	let isEditing = $state(false);
@@ -22,6 +24,11 @@
 
 	onMount(async () => {
 		await loadGameList();
+		// 편집 모드인 경우 WindowService.modalData에서 이벤트 데이터를 읽어 폼에 채운다
+		const editData = get(WindowService.modalData);
+		if (editData) {
+			openForEdit(editData);
+		}
 	});
 
 	async function loadGameList() {
@@ -72,7 +79,7 @@
 
 			// 모달 닫고 목록 새로고침
 			closeModal();
-			window.location.reload();
+			await invalidateAll();
 		} catch (error) {
 			console.error('이벤트 저장 중 오류 발생:', error);
 			alert('이벤트 저장에 실패했습니다.');

@@ -87,6 +87,7 @@
 		return {
 			...specificInit,
 			gameId: gameInit?.gameId,
+			gameSlug: data.gameSlug,
 			rarity: gameInit?.rarity,
 			rarityColors: gameInit?.list?.card?.rarityColors
 		};

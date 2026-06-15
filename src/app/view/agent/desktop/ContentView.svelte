@@ -72,6 +72,7 @@
 		return {
 			...specificInit,
 			gameId: gameInit?.gameId,
+			gameSlug: data.gameSlug,
 			rarity: gameInit?.rarity, // Rarity service needs this
 			rarityColors: gameInit?.list?.card?.rarityColors
 		};

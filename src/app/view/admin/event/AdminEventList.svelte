@@ -203,7 +203,9 @@
 
 	// 이벤트 편집
 	function editEvent(eventId: string) {
-		// TODO: 모달 열기
+		const event = allEventList.find((e: any) => e.id === eventId);
+		if (!event) return;
+		WindowService.openModal('admin-add-event', event);
 	}
 
 	// 이벤트 삭제
