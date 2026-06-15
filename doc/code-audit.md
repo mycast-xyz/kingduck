@@ -80,7 +80,12 @@
 - **B-H7** 크롤러 axios timeout: 스크래퍼/다운로더 37개 호출에 `timeout: 15000`(업스트림 행 방지) ✅
 - **B-H8** 크롤러 중복 실행 방지: 수동 실행(CrawlerController, 409)·스케줄러 모두 RUNNING 로그 검사로 동시 실행 차단(싱글톤 브라우저 충돌 방지) ✅
 
-> ⏸️ **보류**: B-H5(N+1 동기화/조회 — sync 로직 변경 리스크), B-M1(응답 envelope 통일), B-M3(토큰 필드 `req.user.id`→`userId`), B-M4(트랜잭션 경쟁) 등 Medium 잔여.
+### 2026-06-15 · Medium 정리
+- **B-M2** `InternalServerError` 클래스: name `'BadRequest'`→`'InternalServerError'`, code `400`→`500` ✅
+- **B-M3** 토큰 필드: approve/rejectEvent의 `req.user?.id`(undefined)→`req.user?.userId` (reviewedBy 기록 복구) ✅
+- **B-M4** 경쟁 조건: approve/reject를 조건부 `updateMany(status:PENDING)`로 원자화(이중 처리 시 409) + `findOrCreateElement` 트랜잭션(완전 방지는 `@@unique` 마이그레이션 필요) ✅
+
+> ⏸️ **의도적 보류**: B-M1(응답 envelope 통일 — 프론트 계약 깨뜨릴 위험 큰 cross-cutting 리팩터링, 프론트와 함께 진행할 일), B-H5(N+1 — sync 로직 변경 리스크), B-M5(누락 인덱스 — 마이그레이션), B-M7/M8(Docker DB 호스트·타임존), B-S6(토큰 무효화), F-S2(localStorage 토큰).
 
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
