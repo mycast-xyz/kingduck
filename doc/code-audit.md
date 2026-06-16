@@ -124,9 +124,13 @@
 - **F-B3** slug 3중 혼재 (`da41db4`): RankListView의 vm 분기가 gameId(enum명·숫자)·slug를 섞던 것(enum명 검사는
   숫자 gameId라 죽은 코드) → `gameSlug` 단일 키 switch로 정규화, 미사용 `gameId` prop 제거. content 링크는
   전부 slug라 실네비 동작 동일. ✅
+- **F-A2** 401 처리/refresh 죽은 코드 (`61633da`, 팀 에이전트): 응답 인터셉터가 `console.log`만 하던 것 →
+  401(browser)에 토큰 정리 + 토스트 + `/login` 하드 리다이렉트(이미 `/login`이면 스킵, 루프 방지),
+  `Promise.reject` 유지. refresh **교환**은 백엔드 엔드포인트 미확인이라 의도적 보류(메서드는 주석과 함께 존치). ✅
 
 > ⏭️ **남음**: **F-S2**(localStorage 토큰 → HttpOnly 쿠키)는 백엔드 쿠키 set/clear + CORS credentials 동반이라
-> 양쪽 동시 작업 필요. **F-A2**(401/refresh dead code), **F-T4**(`any` 288건)는 별도 과제.
+> 양쪽 동시 작업 필요. **refresh 토큰 교환**(F-A2 후속)도 백엔드 엔드포인트 확정 후. **F-T4**(`any` 288건)는
+> 핵심 흐름부터 점진 진행할 대규모 작업.
 
 ---
 
