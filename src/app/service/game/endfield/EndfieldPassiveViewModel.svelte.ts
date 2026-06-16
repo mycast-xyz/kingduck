@@ -61,8 +61,6 @@ export class EndfieldPassiveViewModel {
 			const firstNode = this.talentNodeMap[firstNodeKey];
 			const info = firstNode.passiveSkillNodeInfo || firstNode.attributeNodeInfo;
 
-			console.log('iconId:', info.iconId);
-
 			list.push({
 				id: `passive_skill_${n}`,
 				name: info?.name?.text || firstNode.name?.text || `Passive ${Number(n) + 1}`,
@@ -105,10 +103,6 @@ export class EndfieldPassiveViewModel {
 		if (!node) return item.description || '';
 
 		const info = node.passiveSkillNodeInfo || node.attributeNodeInfo;
-		console.log(
-			`Node ${targetKey} Info Source:`,
-			node.passiveSkillNodeInfo ? 'Passive' : node.attributeNodeInfo ? 'Attribute' : 'None'
-		);
 
 		let desc = info?.effectData?.desc?.text || node.desc?.text || '';
 

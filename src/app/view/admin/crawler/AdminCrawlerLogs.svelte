@@ -45,8 +45,6 @@
 
 			const response = await client.get('/api/v0/admin/crawler/logs', { params });
 
-			console.log('API Response:', response.data);
-
 			if (response.data.resultCode === 200) {
 				const data = response.data;
 				// 사용자가 제공한 구조: { resultCode: 200, data: { items: [] } }
@@ -74,7 +72,7 @@
 					logs = [];
 				}
 			} else {
-				console.log('로그 조회 실패:', response.data.message);
+				console.error('로그 조회 실패:', response.data.message);
 				logs = [];
 			}
 		} catch (error) {

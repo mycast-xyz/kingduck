@@ -48,10 +48,9 @@
 			if (response.data.resultCode === 200) {
 				// API 응답 구조: { resultCode: 200, data: [...] } 또는 { resultCode: 200, items: [...] }
 				const apiData = response.data.data || response.data.items || [];
-				console.log('Crawler Available API Data:', apiData);
 				groupedCrawlers = mapResponseToGroups(apiData);
 			} else {
-				console.log('크롤러 목록 조회 실패:', response.data.message);
+				console.error('크롤러 목록 조회 실패:', response.data.message);
 				groupedCrawlers = [];
 			}
 		} catch (error) {
@@ -68,7 +67,6 @@
 
 		return apiData.map((group) => {
 			const gameId = group.gameId || group.id;
-			console.log(`Mapping group: ${group.gameName} (ID: ${gameId})`, group);
 
 			return {
 				gameId: gameId,

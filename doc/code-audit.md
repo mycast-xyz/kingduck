@@ -132,6 +132,18 @@
 > 양쪽 동시 작업 필요. **refresh 토큰 교환**(F-A2 후속)도 백엔드 엔드포인트 확정 후. **F-T4**(`any` 288건)는
 > 핵심 흐름부터 점진 진행할 대규모 작업.
 
+### 2026-06-17 · 문서/잔재 정리
+
+- **F-T2** 빈 `src/service/` 잔재 폴더 삭제(git 미추적이라 빈 디렉터리만 제거), `CLAUDE.md` 주의점·
+  `ARCHITECTURE.md` 레이어 표의 "빈 디렉터리 잔재" 기술을 제거/정정. (`src/service/api/...`를 언급하는
+  `implementation_plan.md`·`walkthrough.md`·`task.md`는 당시 작업 시점을 남기는 과거 기록이라 존치.) ✅
+- **F-T5** `console.*` 정리(감사 49→이번 점검 84건): **순수 디버그 `console.log` 전량 제거**(엔드필드
+  Passive/Skill 뷰모델, Reverse1999 장비·Ww랭크 뷰모델, HsrItemService gameId, 어드민 크롤러 로그/상태
+  컴포넌트의 API 덤프·매핑 로그, content 로드의 searchParams), **에러 경로의 `console.log` → `console.error`로
+  정규화**(coupon/tier-list/calendar·calendar-detail·content 로드와 크롤러 컴포넌트 — 진단 유지하며 레벨만
+  정정, 기존 `+layout.ts` 컨벤션과 일치). 잔존 `console.*`는 catch 블록의 정당한 `console.error`(69)·
+  `console.warn`(3)뿐. `pnpm run check` 0 errors. 중복 파일은 이전 세션에서 이미 삭제됨. ✅
+
 ---
 
 ## 1. 백엔드 — 보안 (`kingduck-server`)
@@ -215,10 +227,10 @@ B-L1 DB 연결 실패해도 listen 지속(`process.exit` 없음) · B-L2 detache
 
 ### 🟡 기술부채
 - **F-T1 · 운영 서비스에 가짜 데이터 폴백**: `AdminStatsService.ts:174-205`(가짜 CPU/메모리), `AdminUserService.ts:170-171`(가짜 시각) — API 실패가 "정상 그래프"로 위장 → 모니터링 신뢰성 훼손. 목 폴백 제거.
-- **F-T2 · 문서-실제 불일치**: `src/service/`는 **빈 디렉터리**인데 `CLAUDE.md`/`ARCHITECTURE.md`는 "레거시 공존"이라 기술. → 빈 폴더 삭제 + 문서 갱신.(아래 5장에서 처리)
+- **F-T2 · 문서-실제 불일치** ✅(2026-06-17 처리): `src/service/`는 **빈 디렉터리**인데 `CLAUDE.md`/`ARCHITECTURE.md`는 "레거시 공존"이라 기술했음. → 빈 폴더 삭제 + 두 문서 갱신 완료.
 - **F-T3** `<svelte:component>` deprecated: `admin/[slug]/+page.svelte:60`, `admin/[slug]/[id]/+page.svelte:46`.
 - **F-T4** `any`/`$state<any>` 288건(83파일) — 타입 안전성 무력화. 핵심 흐름부터 실제 타입.
-- **F-T5 🟢** `console.*` 49건, 중복 파일 `agent/mobile/ContentView copy.svelte` 삭제.
+- **F-T5 🟢** ✅(2026-06-17 처리) `console.*` 정리: 디버그 `console.log` 전량 제거 + 에러 경로 `console.error` 정규화(잔존은 정당한 error/warn만). 중복 파일은 이전 세션에 삭제됨.
 
 ---
 

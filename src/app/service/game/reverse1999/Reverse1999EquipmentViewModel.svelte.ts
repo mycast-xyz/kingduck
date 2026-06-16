@@ -17,8 +17,6 @@ export class Reverse1999EquipmentViewModel {
 			psychubes = this.listData.builds.psychubes;
 		}
 
-		console.log(psychubes);
-
 		if (!Array.isArray(psychubes)) return [];
 
 		// Skip index 0 (header/disclaimer)

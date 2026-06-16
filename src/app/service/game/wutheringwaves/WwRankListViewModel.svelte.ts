@@ -24,8 +24,6 @@ export class WwRankListViewModel extends RankListViewModel {
 	}
 
 	private getFormattedImage(item: any) {
-		console.log(item);
-
 		let iconPath = item.NodeIcon || item.Icon || item.Image || item.icon || item.iconUrl || '';
 		if (iconPath && typeof iconPath === 'string') {
 			// Normalize backslashes to forward slashes

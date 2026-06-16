@@ -4,12 +4,10 @@ export class EndfieldSkillViewModel {
 	currentUrl: string;
 
 	constructor(data: any, currentUrl: string, context: any) {
-		console.log('EndfieldSkillViewModel init', data);
 		// data is 'metadata' (full object)
 		this.skills = data?.skills || {};
 		const talents = data?.talents || {};
 		this.skillGroupMap = talents.skillGroupMap || {};
-		console.log('SkillGroupMap', this.skillGroupMap);
 		this.currentUrl = currentUrl;
 	}
 

@@ -80,13 +80,13 @@ export const load: PageLoad = async ({ params, url }) => {
 			if (resGame.status === 200) {
 				gameInfo = resGame.data;
 			} else {
-				console.log('err: Server Error (Game Info)');
+				console.error('이벤트 상세 게임 정보 조회 실패: 서버 코드', resGame.status);
 			}
 
 			if (resCoupons.status === 200) {
 				coupons = resCoupons.data;
 			} else {
-				console.log('err: Server Error (Coupons)');
+				console.error('이벤트 상세 쿠폰 조회 실패: 서버 코드', resCoupons.status);
 			}
 
 			if (resEvent.status === 200 && resEvent.data) {
@@ -111,7 +111,7 @@ export const load: PageLoad = async ({ params, url }) => {
 							.get(`/api/v0/${type}/${gameId}/name/${encodeURIComponent(name.trim())}`)
 							.then((res) => (res.status === 200 ? { ...res.data, name } : { name }))
 							.catch((err) => {
-								console.log(`Failed to fetch ${type} detail for ${name}`, err);
+								console.error(`Failed to fetch ${type} detail for ${name}`, err);
 								return { name };
 							})
 					);
@@ -178,11 +178,11 @@ export const load: PageLoad = async ({ params, url }) => {
 				// For compatibility with components expecting a list, we put the single event in the array
 				events = [detailedEvent];
 			} else {
-				console.log('err: Server Error (Event Detail)');
+				console.error('이벤트 상세 조회 실패: 서버 코드', resEvent.status);
 			}
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error('이벤트 상세 데이터 조회 실패:', err);
 		});
 
 	// Check if gameInfo exists before proceeding

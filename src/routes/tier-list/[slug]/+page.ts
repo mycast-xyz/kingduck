@@ -50,11 +50,11 @@ export const load: PageLoad = async ({ params, url }) => {
 			if (res.status === 200) {
 				gameInfo = res.data;
 			} else {
-				console.log('err: Server Error');
+				console.error('티어리스트 게임 정보 조회 실패: 서버 코드', res.status);
 			}
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error('티어리스트 게임 정보 조회 실패:', err);
 		});
 
 	// Check if gameInfo exists before proceeding

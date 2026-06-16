@@ -58,7 +58,6 @@ export const load: PageLoad = async ({ params, url }) => {
 	}
 
 	let gameInfo: GameType | undefined;
-	console.log(url.searchParams.get('type'));
 
 	const characterListConfig = {
 		params: {
@@ -80,11 +79,11 @@ export const load: PageLoad = async ({ params, url }) => {
 			if (res.data) {
 				gameInfo = res.data;
 			} else {
-				console.log('err: 서버 코드 에러');
+				console.error('캐릭터 콘텐츠 게임 정보 조회 실패: 서버 응답 없음');
 			}
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error('캐릭터 콘텐츠 게임 정보 조회 실패:', err);
 		});
 
 	let data: CharacterType | undefined;

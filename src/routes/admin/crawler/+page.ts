@@ -12,7 +12,7 @@ export const load: PageLoad = async ({ url }) => {
 			gameList = res.data || [];
 		})
 		.catch((err) => {
-			console.log('게임 목록 조회 실패:', err);
+			console.error('게임 목록 조회 실패:', err);
 		});
 
 	return {

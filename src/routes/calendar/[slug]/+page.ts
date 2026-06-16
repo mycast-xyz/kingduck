@@ -78,13 +78,13 @@ export const load: PageLoad = async ({ params, url }) => {
 			if (resGame.status === 200) {
 				gameInfo = resGame.data;
 			} else {
-				console.log('err: Server Error (Game Info)');
+				console.error('캘린더 게임 정보 조회 실패: 서버 코드', resGame.status);
 			}
 
 			if (resCoupons.status === 200) {
 				coupons = resCoupons.data;
 			} else {
-				console.log('err: Server Error (Coupons)');
+				console.error('캘린더 쿠폰 조회 실패: 서버 코드', resCoupons.status);
 			}
 
 			if (resEvents.status === 200 && resEvents.data) {
@@ -100,11 +100,11 @@ export const load: PageLoad = async ({ params, url }) => {
 					characterName: e.description
 				}));
 			} else {
-				console.log('err: Server Error (Events)');
+				console.error('캘린더 이벤트 조회 실패: 서버 코드', resEvents.status);
 			}
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error('캘린더 데이터 조회 실패:', err);
 		});
 
 	// Check if gameInfo exists before proceeding
