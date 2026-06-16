@@ -7,31 +7,33 @@
 	import { Reverse1999RankListViewModel } from '../../service/game/reverse1999/Reverse1999RankListViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 
-	const { listData, currentUrl, gameId, gameSlug, initData, vmType, title } = $props<{
+	const { listData, currentUrl, gameSlug, initData, vmType, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
 		initData: any;
-		gameId?: string | number;
 		gameSlug: string;
 		vmType?: string;
 		title?: string;
 	}>();
 
+	// gameSlug 단일 키로 정규화 (F-B3). 과거엔 gameId(enum명·숫자ID)와 slug를 섞어 분기했다.
 	let vm = $derived.by(() => {
-		if (gameId === 'HonkaiStarRail' || gameSlug === 'starrail') {
-			return new HsrRankListViewModel(listData, gameSlug, currentUrl);
-		} else if (gameId === 'WutheringWaves' || gameSlug === 'wutheringwaves') {
-			return new WwRankListViewModel(listData, gameSlug, currentUrl);
-		} else if (gameId === 'endfield' || gameSlug === 'endfield' || gameId === 13) {
-			if (vmType === 'potential' || initData?.props?.vmType === 'potential') {
-				return new EndfieldPotentialViewModel(listData, gameSlug, currentUrl);
-			}
-			return new EndfieldRankListViewModel(listData, gameSlug, currentUrl, initData);
-		} else if (gameId === 'Reverse1999' || gameSlug === 'reverse1999') {
-			return new Reverse1999RankListViewModel(listData, gameSlug, currentUrl);
+		switch (gameSlug) {
+			case 'starrail':
+				return new HsrRankListViewModel(listData, gameSlug, currentUrl);
+			case 'wutheringwaves':
+				return new WwRankListViewModel(listData, gameSlug, currentUrl);
+			case 'endfield':
+				if (vmType === 'potential' || initData?.props?.vmType === 'potential') {
+					return new EndfieldPotentialViewModel(listData, gameSlug, currentUrl);
+				}
+				return new EndfieldRankListViewModel(listData, gameSlug, currentUrl, initData);
+			case 'reverse1999':
+				return new Reverse1999RankListViewModel(listData, gameSlug, currentUrl);
+			default:
+				return null;
 		}
-		return null;
 	});
 
 	let items = $derived(vm?.items || []);
