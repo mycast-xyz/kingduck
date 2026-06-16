@@ -26,7 +26,6 @@ kingduck 프론트엔드의 구조 종합 문서. 빠른 시작/명령어는 루
 | `src/app/view-framework/**` | 게임 무관 UI 프리미티브(ContentLayer, Desktop/MobileModal 셸) |
 | `src/app/store/**` | 전역 Svelte 스토어(현재 `theme.ts`) |
 | `src/utils/**` | 순수 헬퍼(calendar 타임라인 계산, mobile UA 감지, URL) |
-| `src/service/**` | ⚠️ 빈 디렉터리(잔재). 신규 코드는 `src/app/service/`에. 정리 대상(`doc/code-audit.md` F-T2) |
 
 ## 3. 핵심 패턴 — 게임별 설정을 데이터로
 

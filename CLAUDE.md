@@ -73,7 +73,7 @@ pnpm run test         # vitest --run
   배포 시 백엔드가 같은 호스트 3000이 아니면 이 로직을 손봐야 한다(`PUBLIC_API_BASE_URL`만 바꾼다고 안 됨).
 - **CSR 전용**: `browser` 가드 없는 `window`/`localStorage` 접근 주의. prerender 안 함.
 - **관리자 가드가 클라이언트 전용**: 진짜 권한 검증은 백엔드 책임. 프론트 가드는 UX용.
-- **서비스 위치**: 모든 서비스는 `src/app/service/`에 있다. (`src/service/`는 현재 **빈 디렉터리**로 남은 잔재 — 신규 코드를 여기 두지 말 것. 정리 대상은 `doc/code-audit.md` F-T2 참고.)
+- **서비스 위치**: 모든 서비스는 `src/app/service/`에 있다. (옛 `src/service/` 잔재 폴더는 제거됨 — `doc/code-audit.md` F-T2.)
 - 변경 후 **`pnpm run check`로 타입 통과를 확인**하고, 커밋 전 `pnpm run lint`.
 
 ## 작업 시 기본 태도
