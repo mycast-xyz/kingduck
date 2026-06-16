@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { PUBLIC_API_BASE_URL } from '$env/static/public';
+import { browser } from '$app/environment';
 import { authTokenService } from '../auth/AuthTokenService';
+import { toastStore } from '../ToastService';
 
 export const getApiBaseUrl = (): string => {
 	if (PUBLIC_API_BASE_URL) {
@@ -33,14 +35,26 @@ client.interceptors.request.use(
 	}
 );
 
-// Response interceptor for error handling
+// Response interceptor for error handling.
+// NOTE: Refresh-token exchange (getRefreshToken / needsRefresh / setRefreshToken) is intentionally
+// deferred until the backend refresh endpoint is confirmed and coordinated with kingduck-server.
 client.interceptors.response.use(
 	(response) => {
 		return response;
 	},
 	(error) => {
-		// Handle common errors here (e.g., 401 Unauthorized)
-		console.error('API Error:', error);
+		if (error.response?.status === 401 && browser) {
+			// Token is expired or invalid — clear auth state and redirect to login.
+			// Guard against redirect loops: skip navigation if already on /login.
+			console.error('API 401: session expired, clearing tokens');
+			authTokenService.clearTokens();
+			toastStore.error('세션이 만료되었습니다. 다시 로그인해주세요.');
+			if (!window.location.pathname.startsWith('/login')) {
+				window.location.href = '/login';
+			}
+		} else {
+			console.error('API Error:', error);
+		}
 		return Promise.reject(error);
 	}
 );
