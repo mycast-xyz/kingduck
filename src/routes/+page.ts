@@ -9,6 +9,7 @@ import type { GameType, ResultCodeType } from '../app/model/api/api';
 export const load: PageLoad = async () => {
 	let isMobile = false;
 	let data: GameType[] = [];
+	let loadFailed = false;
 
 	if (browser) {
 		isMobile = MobileUtils.isMobile();
@@ -19,12 +20,15 @@ export const load: PageLoad = async () => {
 			data = res.data || [];
 		})
 		.catch((err) => {
-			console.log(err);
+			// 동일 엔드포인트 실패 토스트는 +layout.ts가 띄우므로 여기선 플래그만 노출(중복 방지).
+			console.error('게임 목록 조회 실패:', err);
+			loadFailed = true;
 		});
 
 	return {
 		url: getApiBaseUrl(),
 		isMobile: isMobile,
-		info: data
+		info: data,
+		infoError: loadFailed
 	};
 };

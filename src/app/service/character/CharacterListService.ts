@@ -39,7 +39,8 @@ class CharacterListServiceInit {
 		this.applyFilter();
 	}
 
-	public async getCharacterList(slug: string) {
+	// 성공 여부를 반환해 호출부(load)가 장애를 표면화할 수 있게 한다 (F-A3).
+	public async getCharacterList(slug: string): Promise<boolean> {
 		try {
 			// Always fetch fresh data on initial load of the page/component call
 			const response = await client.get<CharacterType[]>(`/api/v0/character/${slug}/list`);
@@ -47,15 +48,18 @@ class CharacterListServiceInit {
 			if (response.data) {
 				this._allCharacters = response.data || [];
 				this.applyFilter();
+				return true;
 			} else {
-				console.log('err: 서버 코드 에러');
+				console.error('캐릭터 리스트 조회 실패: 응답 본문 없음');
 				this._allCharacters = [];
 				characterList.set([]);
+				return false;
 			}
 		} catch (error) {
 			console.error('캐릭터 리스트 조회 중 오류 발생:', error);
 			this._allCharacters = [];
 			characterList.set([]);
+			return false;
 		}
 	}
 

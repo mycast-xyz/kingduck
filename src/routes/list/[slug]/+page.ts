@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import client, { getApiBaseUrl } from '../../../app/service/api/client';
 import { browser } from '$app/environment';
+import { toastStore } from '../../../app/service/ToastService';
 
 // 유틸
 import { MobileUtils } from '../../../utils/mobile/MobileUtils';
@@ -46,19 +47,27 @@ export const load: PageLoad = async ({ params, url }) => {
 		}
 	};
 
+	let fetchFailed = false;
+
 	await client
 		.get<GameType>('/api/v0/game/' + params.slug, gameInfoConfig)
 		.then((res) => {
 			if (res.status === 200) {
 				gameInfo = res.data;
 			} else {
-				console.log('err: 서버 코드 에러');
+				console.error('게임 정보 조회 실패: 서버 코드', res.status);
+				fetchFailed = true;
 			}
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error('게임 정보 조회 실패:', err);
+			fetchFailed = true;
 		});
 
+	// 네트워크/서버 장애를 "게임 없음(404)"으로 위장하지 않는다 (F-A3).
+	if (fetchFailed) {
+		throw error(503, '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+	}
 	// CharacterListService의 메서드 호출 전에 gameInfo가 있는지 확인
 	if (!gameInfo) {
 		throw error(404, 'Game not found');
@@ -89,9 +98,14 @@ export const load: PageLoad = async ({ params, url }) => {
 	}
 	CharacterListService.clearCharacterConfig();
 	CharacterListService.getCharacterListConfig(gameInfo.id, '', '');
-	await CharacterListService.getCharacterList(params.slug);
+	const listOk = await CharacterListService.getCharacterList(params.slug);
 	let characterListData;
 	characterList.subscribe((value) => (characterListData = value));
+
+	// 캐릭터 목록 실패는 게임 정보와 달리 페이지는 살리고 토스트로 알린다 (F-A3).
+	if (browser && !listOk) {
+		toastStore.error('캐릭터 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+	}
 
 	return {
 		params: params.slug,
@@ -99,6 +113,7 @@ export const load: PageLoad = async ({ params, url }) => {
 		isMobile: !!isMobile,
 		info: gameInfo,
 		list: characterListData,
+		listError: !listOk,
 		type: gameType,
 		title: `${gameInfo.name} - 게임 정보`,
 		meta: {
