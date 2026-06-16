@@ -17,8 +17,8 @@ export class Reverse1999SkillViewModel extends SkillTreeViewModel {
 
 		if (!Array.isArray(rawItems)) return [];
 
-		return rawItems.map((item: any) => ({
-			id: item.id || item.name || Math.random(),
+		return rawItems.map((item: any, index: number) => ({
+			id: item.id || item.name || `skill-${index}`,
 			name: item.name || '',
 			type: item.type || null,
 			description: item.description || '',

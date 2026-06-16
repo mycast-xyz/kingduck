@@ -15,8 +15,8 @@ export class WwSkillTreeViewModel extends SkillTreeViewModel {
 
 		if (!Array.isArray(rawItems)) return [];
 
-		return rawItems.map((item: any) => ({
-			id: item.SkillId || Math.random(),
+		return rawItems.map((item: any, index: number) => ({
+			id: item.SkillId || `skill-${index}`,
 			name: item.SkillName || '',
 			type: item.SkillType || null,
 			description: item.SkillDescribe || '',
