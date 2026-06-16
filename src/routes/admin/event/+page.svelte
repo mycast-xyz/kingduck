@@ -2,6 +2,7 @@
 	import { AdminSideMenuService } from '../../../app/service/AdminSiedMenuService';
 	import AdminHeadMenu from '../../../app/view/menu/AdminHeadMenu.svelte';
 	import AdminEventList from '../../../app/view/admin/event/AdminEventList.svelte';
+	import DesktopModal from '../../../app/view/modal/DesktopModal.svelte';
 
 	const { data } = $props<{ data: any }>();
 
@@ -19,3 +20,5 @@
 	/>
 	<AdminEventList {data} />
 </main>
+
+<DesktopModal />

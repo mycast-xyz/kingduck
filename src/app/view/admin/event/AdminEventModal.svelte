@@ -86,6 +86,18 @@
 		}
 	}
 
+	// 백엔드는 ISO-8601(예: 2026-07-01T10:00:00.000Z)을 줄 수 있는데
+	// <input type="datetime-local">은 'YYYY-MM-DDTHH:mm'(로컬, TZ 없음)만 받는다.
+	// 이미 해당 포맷이면 그대로 두고, 아니면 로컬 시각으로 변환한다.
+	function toDateTimeLocal(value: string): string {
+		if (!value) return '';
+		if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) return value;
+		const d = new Date(value);
+		if (isNaN(d.getTime())) return '';
+		const pad = (n: number) => String(n).padStart(2, '0');
+		return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+	}
+
 	// 외부에서 수정 모드로 열 수 있도록
 	export function openForEdit(event: any) {
 		isEditing = true;
@@ -94,8 +106,8 @@
 			gameId: event.gameId,
 			title: event.title,
 			type: event.type,
-			startTime: event.startTime,
-			endTime: event.endTime,
+			startTime: toDateTimeLocal(event.startTime),
+			endTime: toDateTimeLocal(event.endTime),
 			description: event.description || '',
 			image: event.image || '',
 			officialLink: event.officialLink || '',
