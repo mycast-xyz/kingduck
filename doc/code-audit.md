@@ -102,6 +102,32 @@
 
 > ⚠️ **남은 보안 후속(Phase 1)**: 커밋된 dev 시크릿/DB 비번(B-S1·S2)은 코드 변경만으론 안 되고 **키 로테이션 + git 히스토리 스크럽**이 필요 — 파괴적 작업이라 사용자 확인 후 진행. config.ts 변경으로 prod는 env 기반이 됐으나 dev json의 평문 시크릿은 여전히 추적 중.
 
+### 2026-06-16 · 프론트 보류 항목 처리 (런타임 검증 동반)
+
+이전 "보류(설계성)"로 남겼던 프론트 항목들을 실제 앱 구동(Playwright + 시스템 Chrome, 백엔드는 목)으로
+검증하며 처리. 각 건 `pnpm run check` 0 errors.
+
+- **어드민 이벤트 모달 (수동 확인 1건 → 버그 2개 발견·수정)** (`58dafe0`): `/admin/event`에 모달 호스트
+  `<DesktopModal />`가 미마운트라 편집·추가 둘 다 모달이 안 떴음 → 마운트. 추가로 `openForEdit`이 ISO-8601
+  날짜를 `datetime-local`에 그대로 넣어 시작/종료가 비고 저장이 막히던 2차 버그 → `toDateTimeLocal` 정규화. ✅
+- **F-A3** 에러를 빈 데이터로 위장 (`6b8b500`): `+layout.ts`/`+page.ts` 게임목록 실패 → 토스트 + `infoError`,
+  `list/[slug]` 게임정보 실패 → 가짜 404 대신 **503**, 캐릭터목록 실패 → 토스트 + `listError`,
+  `getCharacterList` 성공여부 반환. ✅
+- **F-T1** 가짜 모니터링 데이터 폴백 (`ab50628`): `AdminStatsService`(system stats/summary)·`AdminUserService`
+  (users/detail)의 목 폴백 제거 → null/empty + 표면화(차트·요약 인라인 에러, 사용자 토스트), 무한 스피너(로딩 위장)
+  → 에러 분기. 죽은 `setMock*` 삭제. (`fetchCompleteness`/visitor/keyword는 실패 위장이 아닌 미구현 스텁이라 범위 외) ✅
+- **F-B1/F-B2** 구독 누수 + 싱글톤 race (`040f25f`): `getGameInit`·`applyFilter`·load들의 subscribe-읽기 →
+  `get()`. `getCharacterList`는 active slug 태깅 + `'ok'|'error'|'stale'` 반환 → 빠른 네비 시 stale 응답이
+  현재 게임을 덮어쓰지 않게(가드), 'stale'은 에러로 취급 안 함. ✅
+- **F-B4** `Math.random()` 리스트 key (`c0e36f3`, 팀 에이전트): 3개 스킬트리 뷰모델의 key 폴백을
+  결정적 `skill-${index}`로. ✅
+- **F-B3** slug 3중 혼재 (`da41db4`): RankListView의 vm 분기가 gameId(enum명·숫자)·slug를 섞던 것(enum명 검사는
+  숫자 gameId라 죽은 코드) → `gameSlug` 단일 키 switch로 정규화, 미사용 `gameId` prop 제거. content 링크는
+  전부 slug라 실네비 동작 동일. ✅
+
+> ⏭️ **남음**: **F-S2**(localStorage 토큰 → HttpOnly 쿠키)는 백엔드 쿠키 set/clear + CORS credentials 동반이라
+> 양쪽 동시 작업 필요. **F-A2**(401/refresh dead code), **F-T4**(`any` 288건)는 별도 과제.
+
 ---
 
 ## 1. 백엔드 — 보안 (`kingduck-server`)
