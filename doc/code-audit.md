@@ -8,6 +8,18 @@
 
 ---
 
+## ⭐ 최우선 다음 작업 (NEXT — 다른 무엇보다 먼저)
+
+🔴 **스타레일 크롤러 장애 수정** — 백엔드 작업. 기획안은 별도 저장소에 있다:
+`../kingduck-server/docs/CRAWLER_SOURCE_MIGRATION_PLAN.md` (작성 2026-06-16, 상태: 기획·미착수).
+
+- **증상**: starrail character / item(LightCone) / relic 크롤 **전멸**. 외부 소스 `api.hakush.in` 도메인 사망(코드 문제 아님 → 롤백 무의미).
+- **권장 순서**: ① **단기 동결(freeze)** — 죽은 hakush 태스크 `enabled:false`로 비활성화, 기존 DB 데이터(캐릭터 86 / 아이템 1740) 그대로 서빙해 에러·로그 스팸 차단. ② **중기 마이그레이션** — `starrailstation.com` 소스로 교체해 갱신 재개.
+- **덤(같은 기획안 과제 2)**: endfield item sync 실패(`type` Int→String Prisma 검증 오류, 95건).
+- ⚠️ **작업 위치**: `kingduck-server` 저장소. 이 프론트 repo가 아니다.
+
+---
+
 ## 0. 한눈에 (Executive Summary)
 
 가장 무거운 결론 셋:
