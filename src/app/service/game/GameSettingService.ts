@@ -1,4 +1,4 @@
-import { writable, type Writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store';
 
 export class GameSettingService {
 	private _defaultGameList: Writable<any>;
@@ -21,11 +21,8 @@ export class GameSettingService {
 	}
 
 	getGameInit(): any {
-		let data = {};
-		this._defaultGameList.subscribe((value) => {
-			data = value;
-		});
-		return data;
+		// get()으로 즉시 읽는다 — 과거 subscribe는 unsubscribe 없이 매 호출 누수했다 (F-B1).
+		return get(this._defaultGameList);
 	}
 }
 

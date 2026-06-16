@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+import { get } from 'svelte/store';
 import client, { getApiBaseUrl } from '../../../app/service/api/client';
 import { browser } from '$app/environment';
 
@@ -88,8 +89,8 @@ export const load: PageLoad = async ({ params, url }) => {
 	CharacterListService.getCharacterListConfig(gameInfo.id, '', '');
 	await CharacterListService.getCharacterList(params.slug);
 
-	let characterListData;
-	characterList.subscribe((value) => (characterListData = value));
+	// get()으로 현재 값만 읽는다 — subscribe는 unsubscribe 없이 load마다 누수했다 (F-B1).
+	const characterListData = get(characterList);
 
 	return {
 		params: params.slug,

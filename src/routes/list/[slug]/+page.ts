@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+import { get } from 'svelte/store';
 import client, { getApiBaseUrl } from '../../../app/service/api/client';
 import { browser } from '$app/environment';
 import { toastStore } from '../../../app/service/ToastService';
@@ -98,12 +99,13 @@ export const load: PageLoad = async ({ params, url }) => {
 	}
 	CharacterListService.clearCharacterConfig();
 	CharacterListService.getCharacterListConfig(gameInfo.id, '', '');
-	const listOk = await CharacterListService.getCharacterList(params.slug);
-	let characterListData;
-	characterList.subscribe((value) => (characterListData = value));
+	const listStatus = await CharacterListService.getCharacterList(params.slug);
+	// get()으로 현재 값만 읽는다 — subscribe는 unsubscribe 없이 load마다 누수했다 (F-B1).
+	const characterListData = get(characterList);
 
 	// 캐릭터 목록 실패는 게임 정보와 달리 페이지는 살리고 토스트로 알린다 (F-A3).
-	if (browser && !listOk) {
+	// 'stale'(빠른 네비로 superseded된 응답)은 에러로 취급하지 않는다 (F-B2).
+	if (browser && listStatus === 'error') {
 		toastStore.error('캐릭터 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
 	}
 
@@ -113,7 +115,7 @@ export const load: PageLoad = async ({ params, url }) => {
 		isMobile: !!isMobile,
 		info: gameInfo,
 		list: characterListData,
-		listError: !listOk,
+		listError: listStatus === 'error',
 		type: gameType,
 		title: `${gameInfo.name} - 게임 정보`,
 		meta: {

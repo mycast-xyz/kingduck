@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import client from '../api/client';
 import type { CharacterType, ResultCodeType } from '../../model/api/api';
 
@@ -39,27 +39,35 @@ class CharacterListServiceInit {
 		this.applyFilter();
 	}
 
-	// 성공 여부를 반환해 호출부(load)가 장애를 표면화할 수 있게 한다 (F-A3).
-	public async getCharacterList(slug: string): Promise<boolean> {
+	// 마지막으로 요청한 slug. 빠른 네비게이션 시 stale 응답을 가려낸다 (F-B2).
+	private _activeSlug = '';
+
+	// 'ok'/'error'는 호출부(load)가 장애를 표면화하는 데 쓰고 (F-A3),
+	// 'stale'은 superseded된 응답이라 현재 게임 데이터를 건드리지 않는다 (F-B2).
+	public async getCharacterList(slug: string): Promise<'ok' | 'error' | 'stale'> {
+		this._activeSlug = slug;
 		try {
 			// Always fetch fresh data on initial load of the page/component call
 			const response = await client.get<CharacterType[]>(`/api/v0/character/${slug}/list`);
 
+			// 응답 도착 사이에 다른 게임으로 네비게이션했다면 덮어쓰지 않고 폐기한다.
+			if (this._activeSlug !== slug) return 'stale';
+
 			if (response.data) {
 				this._allCharacters = response.data || [];
 				this.applyFilter();
-				return true;
-			} else {
-				console.error('캐릭터 리스트 조회 실패: 응답 본문 없음');
-				this._allCharacters = [];
-				characterList.set([]);
-				return false;
+				return 'ok';
 			}
+			console.error('캐릭터 리스트 조회 실패: 응답 본문 없음');
+			this._allCharacters = [];
+			characterList.set([]);
+			return 'error';
 		} catch (error) {
+			if (this._activeSlug !== slug) return 'stale';
 			console.error('캐릭터 리스트 조회 중 오류 발생:', error);
 			this._allCharacters = [];
 			characterList.set([]);
-			return false;
+			return 'error';
 		}
 	}
 
@@ -70,13 +78,8 @@ class CharacterListServiceInit {
 	}
 
 	private applyFilter() {
-		let currentType = '';
-		let currentRarity = '';
-
-		const unsubscribeType = this._characterType.subscribe((v) => (currentType = v));
-		const unsubscribeRarity = this._characterRarity.subscribe((v) => (currentRarity = v));
-		unsubscribeType();
-		unsubscribeRarity();
+		const currentType = get(this._characterType);
+		const currentRarity = get(this._characterRarity);
 
 		let filtered = [...this._allCharacters];
 
@@ -114,9 +117,7 @@ class CharacterListServiceInit {
 		}
 
 		// Filter by Search Query
-		let currentSearchQuery = '';
-		const unsubscribeSearch = this._searchQuery.subscribe((v) => (currentSearchQuery = v));
-		unsubscribeSearch();
+		const currentSearchQuery = get(this._searchQuery);
 
 		if (currentSearchQuery.trim()) {
 			filtered = filtered.filter((char) =>
