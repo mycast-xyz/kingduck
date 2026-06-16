@@ -3,6 +3,7 @@
 	import { adminStatsService, type SystemSummary } from '../../../service/AdminStatsService';
 
 	let summary: SystemSummary | null = null;
+	let hasError = false;
 
 	// 바이트 단위 변환 함수
 	function formatBytes(bytes: number, decimals = 2) {
@@ -27,7 +28,9 @@
 			summary = value;
 		});
 
-		adminStatsService.fetchSystemSummary();
+		adminStatsService.fetchSystemSummary().then((ok) => {
+			hasError = !ok;
+		});
 
 		return () => {
 			unsubscribe();
@@ -98,6 +101,11 @@
 					<p class="text-xs text-gray-400">Up: {formatUptime(summary.time.uptime)}</p>
 				</div>
 			</div>
+		</div>
+	{:else if hasError}
+		<div class="flex h-32 flex-col items-center justify-center gap-2 text-red-500">
+			<i class="ri-error-warning-line text-2xl"></i>
+			<p class="text-sm">시스템 요약 정보를 불러올 수 없습니다.</p>
 		</div>
 	{:else}
 		<div class="flex h-32 items-center justify-center">

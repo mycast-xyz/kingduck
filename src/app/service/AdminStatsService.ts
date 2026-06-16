@@ -125,84 +125,36 @@ export class AdminStatsService {
 		}
 	}
 
-	async fetchSystemSummary() {
+	// 실패를 가짜 데이터로 위장하지 않는다 (F-T1). 성공 여부를 반환해 UI가 에러 상태를 표시한다.
+	async fetchSystemSummary(): Promise<boolean> {
 		try {
 			const response = await client.get('/api/v0/admin/system/summary');
 			if (response.status === 200 && response.data) {
 				this._systemSummary.set(response.data);
+				return true;
 			}
+			this._systemSummary.set(null);
+			return false;
 		} catch (error) {
 			console.error('Failed to fetch system summary:', error);
-			// Fallback with mock data for development
-			this._systemSummary.set({
-				os: {
-					platform: 'Windows',
-					distro: 'Microsoft Windows 11 Home',
-					release: '10.0.26220',
-					hostname: 'leegunhee',
-					arch: 'x64'
-				},
-				cpu: {
-					manufacturer: 'AMD',
-					brand: 'Ryzen 9 7950X 16-Core Processor',
-					cores: 32,
-					speed: 4.5
-				},
-				memory: {
-					total: 68444491776,
-					swaptotal: 20401094656
-				},
-				time: {
-					current: 1770561007829,
-					uptime: 12486.781,
-					timezone: 'GMT+0900'
-				}
-			});
+			this._systemSummary.set(null);
+			return false;
 		}
 	}
 
-	async fetchSystemStats() {
+	async fetchSystemStats(): Promise<boolean> {
 		try {
 			const response = await client.get('/api/v0/admin/system/stats');
 			if (response.status === 200 && response.data) {
 				this._systemStats.set(response.data);
+				return true;
 			}
+			this._systemStats.set(null);
+			return false;
 		} catch (error) {
-			// console.error('Failed to fetch system stats:', error);
-			// Fallback with mock data for development
-			// Simulate varying load
-			const time = Date.now();
-			const load = 30 + Math.sin(time / 10000) * 20 + Math.random() * 10;
-
-			this._systemStats.set({
-				timestamp: time,
-				cpuLoad: {
-					currentLoad: load,
-					currentLoadUser: load * 0.6,
-					currentLoadSystem: load * 0.4
-				},
-				memory: {
-					active: 8589934592 + Math.random() * 1024 * 1024 * 100,
-					usePercentage: 25 + Math.random() * 5,
-					total: 34359738368,
-					free: 17179869184
-				},
-				network: {
-					iface: 'eth0',
-					rx_sec: Math.random() * 1024 * 1024 * 5,
-					tx_sec: Math.random() * 1024 * 1024 * 1
-				},
-				process: {
-					memory: {
-						rss: 1024 * 1024 * 500,
-						heapTotal: 1024 * 1024 * 300,
-						heapUsed: 1024 * 1024 * 200,
-						external: 1024 * 1024 * 10,
-						arrayBuffers: 1024 * 1024 * 1
-					},
-					uptime: 3600 + Math.random() * 100
-				}
-			});
+			console.error('Failed to fetch system stats:', error);
+			this._systemStats.set(null);
+			return false;
 		}
 	}
 

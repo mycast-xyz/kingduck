@@ -1,5 +1,7 @@
 import client from './api/client';
 import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
+import { toastStore } from './ToastService';
 
 export interface User {
 	id: number;
@@ -87,9 +89,13 @@ export class AdminUserService {
 				this._total.set(apiData.pagination ? apiData.pagination.total : 0);
 			}
 		} catch (error) {
+			// 실패를 가짜 사용자로 위장하지 않는다 (F-T1).
 			console.error('Failed to fetch users:', error);
-			// Mock data for development
-			this.setMockUsers(params);
+			this._users.set([]);
+			this._total.set(0);
+			if (browser) {
+				toastStore.error('사용자 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+			}
 		}
 	}
 
@@ -141,9 +147,12 @@ export class AdminUserService {
 				this._currentUser.set(mappedUser);
 			}
 		} catch (error) {
+			// 실패를 가짜 상세로 위장하지 않는다 (F-T1).
 			console.error(`Failed to fetch user detail for ${id}:`, error);
-			// Mock data
-			this.setMockUserDetail(id);
+			this._currentUser.set(null);
+			if (browser) {
+				toastStore.error('사용자 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+			}
 		}
 	}
 
@@ -158,46 +167,6 @@ export class AdminUserService {
 		}
 	}
 
-	// Mock Data Helpers
-	private setMockUsers(params: UserSearchParams) {
-		const mockUsers: User[] = Array.from({ length: params.size || 20 }).map((_, i) => ({
-			id: i + 1,
-			email: `user${i}@example.com`,
-			nickname: `User ${i}`,
-			profileImage: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`,
-			role: i % 10 === 0 ? 'ADMIN' : 'USER',
-			status: i % 15 === 0 ? 'BANNED' : 'ACTIVE',
-			createdAt: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
-			lastLoginAt: new Date(Date.now() - Math.random() * 100000000).toISOString()
-		}));
-
-		if (params.keyword) {
-			const lowerKeyword = params.keyword.toLowerCase();
-			const filtered = mockUsers.filter(
-				(u) =>
-					u.nickname.toLowerCase().includes(lowerKeyword) ||
-					u.email.toLowerCase().includes(lowerKeyword)
-			);
-			this._users.set(filtered);
-			this._total.set(filtered.length);
-		} else {
-			this._users.set(mockUsers);
-			this._total.set(100); // Mock total count
-		}
-	}
-
-	private setMockUserDetail(id: string) {
-		this._currentUser.set({
-			id: parseInt(id) || 1,
-			email: 'mock@example.com',
-			nickname: 'Mock User',
-			profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=mock',
-			role: 'USER',
-			status: 'ACTIVE',
-			createdAt: new Date().toISOString(),
-			lastLoginAt: new Date().toISOString()
-		});
-	}
 }
 
 export const adminUserService = new AdminUserService();

@@ -12,6 +12,7 @@
 	let cpuHistory: number[] = new Array(MAX_DATA_POINTS).fill(0);
 	let memoryHistory: number[] = new Array(MAX_DATA_POINTS).fill(0);
 	let currentStats: SystemStats | null = null;
+	let hasError = false;
 	let timer: any;
 
 	// 데이터 갱신 및 히스토리 관리
@@ -51,9 +52,15 @@
 		// AdminStatsService가 polling 기능이 없으므로 여기서 주기적으로 fetch 호출
 
 		const fetchAndExit = async () => {
-			await adminStatsService.fetchSystemStats();
-			const stats = get(adminStatsService.systemStats);
-			if (stats) updateHistory(stats);
+			// 실패 시 가짜 데이터를 그리지 않고 에러 상태를 표시한다 (F-T1).
+			const ok = await adminStatsService.fetchSystemStats();
+			if (ok) {
+				const stats = get(adminStatsService.systemStats);
+				if (stats) updateHistory(stats);
+				hasError = false;
+			} else {
+				hasError = true;
+			}
 		};
 
 		// 초기 실행
@@ -77,7 +84,11 @@
 		<span class="flex items-center gap-2"
 			><i class="ri-pulse-line text-red-500"></i> 실시간 리소스 모니터링</span
 		>
-		{#if currentStats}
+		{#if hasError}
+			<span class="flex items-center gap-1 text-xs font-normal text-red-500"
+				><i class="ri-error-warning-line"></i> 데이터를 불러올 수 없습니다</span
+			>
+		{:else if currentStats}
 			<span class="text-xs font-normal text-gray-500"
 				>Last update: {new Date(currentStats.timestamp).toLocaleTimeString()}</span
 			>
