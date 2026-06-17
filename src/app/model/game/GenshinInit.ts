@@ -144,6 +144,11 @@ export class GenshinInit {
 			// starrail과 동일한 틀: 돌파 재료(MainItemView) / 스킬(SkillTreeView) / 별자리(RankListView).
 			// 기초 스탯(StatsView)은 원신 성장 곡선 계산이 필요해 후속.
 			layout: [
+				{
+					component: 'MainItemView',
+					dataKey: 'recommendedWeapons',
+					props: { title: '추천 무기' }
+				},
 				{ component: 'MainItemView', dataKey: 'ascension', props: { title: '돌파 재료' } },
 				{
 					component: 'SkillTreeView',
