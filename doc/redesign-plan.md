@@ -355,10 +355,10 @@
 3. Element 유니크/reviewedBy 인덱스 추가, item 타입 강제. (S)
 
 **나머지 Phase 3:**
-4. 게임별 metadata 타입 정의 → `CharacterType<T>`/`ItemType<T>` 특화로 `any` 290+ 제거. (F-T4, XL)
+4. 🔶 게임별 metadata 타입 정의 → `CharacterType<T>`/`ItemType<T>` 특화로 `any` 290+ 제거. (F-T4, XL) — **부분 진행(2026-06-17)**: `GameSlug` 유니온, 4뷰 gameInit→`GameInitConfig`, 11뷰 initData→`ViewInitData`. metadata 인터페이스/`CharacterType` 특화는 남음.
 5. ✅(2026-06-17) `StatsViewModelBase`/`GameItemService` 추상화로 viewmodel 중복 제거 + cross-game import 정리. **추가**: 게임 라우트 공통 로드를 `loadGameContext()`로 모듈화(list·tier-list 적용). (L)
-6. 뷰 레이어 `.subscribe()` 통일 + 구독 cleanup($effect) + `$state<any>` 구체화. (M)
-7. Desktop/Mobile 6파일 중복 통합 + 모달 셸 패턴 통일. (L)
+6. 🔶 뷰 레이어 `.subscribe()` 통일 + `$state<any>` 구체화. (M) — **구독 cleanup 완료(2026-06-17, F-B1/B2)**: 14곳 onDestroy 해제. `$state<any>`(selectedList 등) 구체화는 남음.
+7. ~~Desktop/Mobile 6파일 중복 통합~~ + 모달 셸 패턴 통일. (L) — **통합 보류**(사용자 결정: 레이아웃 깨짐 위험).
 8. 컴포넌트 레지스트리, metadata 런타임(Zod) 검증, axios 재시도/백오프, deep-merge, pool 모니터링 등 잔여 백로그. (M~S)
 
 ---
