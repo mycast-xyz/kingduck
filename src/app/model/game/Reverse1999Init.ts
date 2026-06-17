@@ -3,7 +3,7 @@ import type { GameInitConfig } from './GameInitConfig';
 export class Reverse1999Init {
 	init(): GameInitConfig {
 		return {
-			gameId: 'Reverse1999',
+			gameId: 'reverse1999',
 			copyright: {
 				title: 'KingDuck는 리버스: 1999 플레이어를 위한 비공식 정보 웹사이트 입니다.',
 				description: '해당 사이트 내 쓰여진 이미지, 영상에 대한 저작권은 Bluepoch에 있습니다.',

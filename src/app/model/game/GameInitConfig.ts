@@ -1,5 +1,16 @@
+// 게임 식별자는 slug 하나로 통일한다(과거엔 enum 이름·숫자 DB id·slug가 혼용됐다 — F-B3).
+// 새 게임을 추가하면 이 유니온과 GameRegistry에 등록한다.
+export type GameSlug =
+	| 'starrail'
+	| 'wutheringwaves'
+	| 'reverse1999'
+	| 'endfield'
+	| 'nikke'
+	| 'GirlsFrontline2Exilium';
+
 export interface GameInitConfig {
-	gameId: string;
+	// 게임 slug. 'Calendar'는 게임이 아닌 캘린더 전용 특수 설정.
+	gameId: GameSlug | 'Calendar';
 	copyright: {
 		title: string;
 		description: string;

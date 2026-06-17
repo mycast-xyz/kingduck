@@ -32,11 +32,9 @@
 	});
 
 	let vm = $derived.by(() => {
-		if (
-			gameId === 'Reverse1999' ||
-			gameSlug === 'reverse1999' ||
-			initData?.gameId === 'Reverse1999'
-		) {
+		// gameId는 이제 slug로 통일됨(F-B3).
+		const slug = gameSlug || initData?.gameSlug || gameId || initData?.gameId;
+		if (slug === 'reverse1999') {
 			return new Reverse1999TeamViewModel(listData);
 		}
 		return null;

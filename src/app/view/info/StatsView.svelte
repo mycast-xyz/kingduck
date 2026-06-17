@@ -25,11 +25,12 @@
 
 	// ViewModel 통합 관리
 	const vm = $derived.by<StatsVM | null>(() => {
-		const gId = initData?.gameId || gameId;
-		const isHsr = gId === 'HonkaiStarRail' || gId === 2 || gId === '2';
-		const isWw = gId === 'WutheringWaves' || gId === '8' || gId === 8;
-		const isEndfield = gId === 'endfield' || gId === 3 || gId === '13'; // 13 from API
-		const isReverse1999 = gId === 'Reverse1999' || gId === '6' || gId === 6;
+		// gameId는 이제 slug로 통일됨(F-B3). 단일 slug 키로 분기.
+		const gId = initData?.gameSlug || initData?.gameId || gameId;
+		const isHsr = gId === 'starrail';
+		const isWw = gId === 'wutheringwaves';
+		const isEndfield = gId === 'endfield';
+		const isReverse1999 = gId === 'reverse1999';
 
 		if (isHsr && listData && (listData['0'] || listData[0])) {
 			return new HsrStatsViewModel(listData, String(gId));

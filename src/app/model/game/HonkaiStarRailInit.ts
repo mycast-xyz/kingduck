@@ -3,7 +3,7 @@ import type { GameInitConfig } from './GameInitConfig';
 export class HonkaiStarRailInit {
 	init(): GameInitConfig {
 		return {
-			gameId: 'HonkaiStarRail',
+			gameId: 'starrail',
 			copyright: {
 				title: 'KingDuck는 붕괴: 스타레일 플레이어를 위한 비공식 정보 웹사이트 입니다.',
 				description:

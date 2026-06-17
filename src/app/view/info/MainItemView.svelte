@@ -5,6 +5,7 @@
 	// 커스텀 서비스 임포트
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
+	import { resolveGameSlug } from '../../model/game/GameRegistry';
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
@@ -29,8 +30,8 @@
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 
-			// HSR 전용 데이터 로드
-			if (gameInit.gameId === 'HonkaiStarRail' || $page.params.gameEnName === 'HonkaiStarRail') {
+			// HSR 전용 데이터 로드 (gameId는 slug로 통일, URL 별칭은 resolve)
+			if (gameInit.gameId === 'starrail' || resolveGameSlug($page.params.gameEnName) === 'starrail') {
 				loadHsrItems();
 			}
 		}
@@ -44,7 +45,7 @@
 					try {
 						const res = await hsrItemService.getItemList(
 							String(id),
-							gameInit?.gameId ?? $page.params.gameEnName
+							gameInit?.gameId ?? resolveGameSlug($page.params.gameEnName)
 						);
 						return res.data;
 					} catch (err) {

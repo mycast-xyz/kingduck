@@ -27,10 +27,11 @@
 
 	// VM Integration
 	let vm = $derived.by(() => {
-		const targetGameId = gameId || initData?.gameId;
-		if ((targetGameId === 'endfield' || targetGameId === 13) && vmType === 'factory') {
+		// gameId는 이제 slug로 통일됨(F-B3).
+		const slug = initData?.gameSlug || gameId || initData?.gameId;
+		if (slug === 'endfield' && vmType === 'factory') {
 			return new EndfieldFactoryViewModel(listData, currentUrl);
-		} else if (targetGameId === 'Reverse1999' || targetGameId === 6) {
+		} else if (slug === 'reverse1999') {
 			return new Reverse1999TraceViewModel(listData);
 		}
 		return null;

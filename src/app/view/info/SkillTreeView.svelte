@@ -26,23 +26,19 @@
 		let data = activeTab === 0 ? listData : extraData;
 		if (!data) return null;
 
-		const targetGameId = gameId || initData?.gameId;
-		const targetGameSlug = gameSlug || initData?.gameSlug;
+		// gameId는 이제 slug로 통일됨(F-B3). 단일 slug 키로 분기.
+		const slug = gameSlug || initData?.gameSlug || gameId || initData?.gameId;
 
-		if (targetGameId === 'HonkaiStarRail' || targetGameId === 2 || targetGameSlug === 'starrail') {
+		if (slug === 'starrail') {
 			return new HsrSkillTreeViewModel(data, currentUrl, { initData });
-		} else if (
-			targetGameId === 'WutheringWaves' ||
-			targetGameId === 3 ||
-			targetGameSlug === 'wutheringwaves'
-		) {
+		} else if (slug === 'wutheringwaves') {
 			return new WwSkillTreeViewModel(data, currentUrl, { initData });
-		} else if (targetGameId === 'endfield' || targetGameId === 13) {
+		} else if (slug === 'endfield') {
 			if (vmType === 'passive') {
 				return new EndfieldPassiveViewModel(data, currentUrl, { initData, extraData });
 			}
 			return new EndfieldSkillViewModel(data, currentUrl, { initData, extraData });
-		} else if (targetGameId === 'Reverse1999' || targetGameSlug === 'reverse1999') {
+		} else if (slug === 'reverse1999') {
 			return new Reverse1999SkillViewModel(data, currentUrl, { initData });
 		}
 		return null;
@@ -62,10 +58,7 @@
 	});
 
 	let isWW = $derived(
-		initData?.gameId === 'WutheringWaves' ||
-			gameId === 3 ||
-			gameSlug === 'wutheringwaves' ||
-			initData?.gameSlug === 'wutheringwaves'
+		(gameSlug || initData?.gameSlug || gameId || initData?.gameId) === 'wutheringwaves'
 	);
 </script>
 

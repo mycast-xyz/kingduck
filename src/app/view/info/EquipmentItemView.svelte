@@ -29,8 +29,9 @@
 	});
 
 	let vm = $derived.by(() => {
-		const gId = initData?.gameId || gameInit?.gameId;
-		if (gId === 'Reverse1999' || gId === 6 || gId === '6') {
+		// gameId는 이제 slug로 통일됨(F-B3).
+		const gId = initData?.gameSlug || initData?.gameId || gameInit?.gameId;
+		if (gId === 'reverse1999') {
 			return new Reverse1999EquipmentViewModel(itemData);
 		}
 		return null;
@@ -65,7 +66,7 @@
 	});
 	const getFormattedType = (relicType: any, gameId: string) => {
 		let type = '';
-		if (gameId == 'HonkaiStarRail') {
+		if (gameId == 'starrail') {
 			switch (relicType) {
 				case 'BODY':
 					type = '몸';
@@ -95,7 +96,7 @@
 	// 장비 착용 부분에 대한 안내 표시
 	const getFormattedProperty = (property: any, gameId: string) => {
 		let result = '';
-		if (gameId == 'HonkaiStarRail') {
+		if (gameId == 'starrail') {
 			const setProperty = {
 				HealRatioBase: '치유량 보너스',
 				PhysicalAddedRatio: '물리 속성 피해 증가',
