@@ -16,7 +16,7 @@
 		try {
 			const response = await client.get('/api/v0/admin/game/list');
 			if (response.data.resultCode === 200) {
-				gameList = response.data.items;
+				gameList = response.data.data;
 			} else {
 				console.error('서버 응답 코드 에러:', response.data.resultCode);
 			}

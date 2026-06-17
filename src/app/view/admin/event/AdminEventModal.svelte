@@ -35,7 +35,7 @@
 		try {
 			const response = await client.get('/api/v0/admin/game/list');
 			if (response.data.resultCode === 200) {
-				gameList = response.data.items;
+				gameList = response.data.data;
 			}
 		} catch (error) {
 			console.error('게임 목록 조회 중 오류 발생:', error);
