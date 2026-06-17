@@ -8,6 +8,7 @@
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 	import { resolveGameSlug } from '../../model/game/GameRegistry';
 	import type { GameInitConfig } from '../../model/game/GameInitConfig';
+	import { localizedName } from '../../model/game/localizedName';
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
@@ -86,10 +87,8 @@
 
 		return rawList.map((item: any) => {
 			// 이름 정규화
-			let name = item.name;
-			if (item.name?.kr) name = item.name.kr;
-			else if (typeof item.name === 'object' && item.name?.kr) name = item.name.kr;
-			else if (typeof item.name === 'string') name = item.name;
+			const name =
+				localizedName(item.name) || (typeof item.name === 'string' ? item.name : '');
 
 			// 이미지 정규화
 			let image = '';
