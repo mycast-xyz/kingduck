@@ -29,10 +29,6 @@
 		}
 	});
 
-	// svelte-ignore state_referenced_locally
-
-	$effect(() => {});
-
 	$effect(() => {
 		if ($ModalView) {
 			document.body.style.overflow = 'hidden';
