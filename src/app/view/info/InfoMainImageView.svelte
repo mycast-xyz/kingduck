@@ -33,7 +33,7 @@
 	let meta = infoData.metadata || {};
 	let videoArray = infoData.videos;
 
-	let slideData = $state([
+	const baseSlides = [
 		...(videoArray || []).map((v: any) => ({
 			...v,
 			url: v.localPath,
@@ -43,7 +43,26 @@
 		...(meta.images || []),
 		...(meta.skins || []).map((skin: any) => ({ url: skin.imageUrl })),
 		...(meta.cardImageUrl ? [{ url: meta.cardImageUrl }] : [])
-	]);
+	];
+
+	// 영상/스킨/카드 이미지가 하나도 없으면 캐릭터 아이콘으로 폴백한다.
+	// (엔드필드 등 카드 스플래시 미수집 캐릭터의 콘텐츠 메인이 빈 화면이 되는 문제 방지)
+	let slideData = $state(
+		baseSlides.length > 0
+			? baseSlides
+			: infoData.imageUrl
+				? [{ url: infoData.imageUrl }]
+				: []
+	);
+
+	// 이미지 로드 실패 시 폴백할 캐릭터 아이콘 URL(외부 URL 404·차단 대비, 예: WW encore.moe).
+	const fallbackIconUrl = (() => {
+		const u = infoData.imageUrl;
+		if (!u) return '';
+		if (u.startsWith('http')) return u;
+		const hasExtension = /\.[a-z0-9]+$/i.test(u);
+		return `${currentUrl}/${u}${hasExtension ? '' : '.webp'}`;
+	})();
 
 	let currentSlide = $derived.by(() => {
 		return slideData[slideIndex] || {};
@@ -118,6 +137,12 @@
 				{:else}
 					<img
 						src={getImageUrl(currentSlide)}
+						onerror={(e) => {
+							const el = e.currentTarget as HTMLImageElement;
+							if (fallbackIconUrl && el.src !== fallbackIconUrl) {
+								el.src = fallbackIconUrl;
+							}
+						}}
 						class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-top pt-16 md:p-0"
 						alt="..."
 					/>
