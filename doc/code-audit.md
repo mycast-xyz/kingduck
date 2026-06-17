@@ -5,17 +5,22 @@
 > 이 문서는 양쪽 저장소를 보안 / 정확성·운영 / 기술부채 3축으로 감사한 결과다.
 > 각 항목은 **심각도 · `파일:라인` · 근거 · 권장 수정**으로 적었다. "추정"은 실행 검증 없이
 > 코드 정황으로 판단한 것. 수정 시 `.claude/agents/`의 전용 에이전트에 위임 가능.
+>
+> 📐 **전체 리팩터 설계 계획은 별도 문서 [`redesign-plan.md`](./redesign-plan.md)** (2026-06-17, 멀티에이전트
+> 심층 리뷰 기반: 96개 발견 → critical/high 27건 확정). 이 감사(code-audit)는 발견·이력 기록이고,
+> redesign-plan은 "전체를 어떻게 리팩터할지" 설계·우선순위 로드맵이다.
 
 ---
 
-## ⭐ 최우선 다음 작업 (NEXT — 다른 무엇보다 먼저)
+## ⭐ 최우선 다음 작업 (NEXT)
 
-🔴 **스타레일 크롤러 장애 수정** — 백엔드 작업. 기획안은 별도 저장소에 있다:
-`../kingduck-server/docs/CRAWLER_SOURCE_MIGRATION_PLAN.md` (작성 2026-06-16, 상태: 기획·미착수).
+✅ **스타레일 크롤러 — 동결 + 마이그레이션 완료(2026-06-17)** — 백엔드 작업. 이력:
+`../kingduck-server/docs/CRAWLER_SOURCE_MIGRATION_PLAN.md`.
 
-- **증상**: starrail character / item(LightCone) / relic 크롤 **전멸**. 외부 소스 `api.hakush.in` 도메인 사망(코드 문제 아님 → 롤백 무의미).
-- **권장 순서**: ① **단기 동결(freeze)** — 죽은 hakush 태스크 `enabled:false`로 비활성화, 기존 DB 데이터(캐릭터 86 / 아이템 1740) 그대로 서빙해 에러·로그 스팸 차단. ② **중기 마이그레이션** — `starrailstation.com` 소스로 교체해 갱신 재개.
-- **덤(같은 기획안 과제 2)**: endfield item sync 실패(`type` Int→String Prisma 검증 오류, 95건).
+- **배경**: `api.hakush.in` 도메인 사망으로 starrail character/item(LightCone)/relic 크롤 전멸.
+- ✅ **① 동결 + ② starrailstation.com(PAGE_CONFIG) 마이그레이션 완료**: character 92(기존 86+신규 6)·LightCone 162·RelicSet 58 갱신, 0 에러. element/path 영문 키 유지(필터 무결), 기존 추천필드(teams 등) merge 보존. DB 백업 완료.
+- ✅ **덤 — 과제 2(`61b517f`)**: endfield item sync `type` Int→String 해소.
+- ⏸️ **남은 동결**: 일반 재료(Material/Usable/Mission/Virtual ≈1530)만 동결 유지 — SRS에 독립 재료 소스 없음(사용자 결정). 기존 DB 데이터 그대로 서빙.
 - ⚠️ **작업 위치**: `kingduck-server` 저장소. 이 프론트 repo가 아니다.
 
 ---
