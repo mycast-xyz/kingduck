@@ -171,6 +171,7 @@
 - **B-M7** 데드 config 제거: `application.{dev,prod}.json`의 db_server(Sequelize 잔재)·redis_server 삭제. ✅
 - **B-H4b** originalId 정규화(신중 모드, 마이그레이션 동반): ① WW/endfield 캐릭터 originalId 갭(Id/charId에서) backfill + 스크래퍼 설정(부수로 endfield 캐릭터 sync 전량 skip 버그 + role Int→String 수정), ② Character `@@unique([gameId,originalId])` + 컬럼 backfill + sync/조회 컬럼 전환, ③ Item은 타입 간 id 충돌로 `@@unique([gameId,type,originalId])` + 컬럼 backfill(중복 1건 정리) + syncItems/RelicScraper/getItemList 컬럼 전환. 게임별 재크롤로 중복 0 검증. ④ own-save 아이템 스크래퍼(ww weapon/echo·endfield weapon/equip)도 컬럼 set 완료 → 전 쓰기 경로 컬럼 동기화. **B-H4b 완전 완료.** ✅
 - **B-H7 후속(A5)** 크롤러 HTTP 재시도: `crawlers/utils/httpRetry.ts`(axiosGetWithRetry — 전이성 에러만 지수 백오프, 4xx/파싱 fail-fast). srsPageConfig·ImageDownloader + 전 스크래퍼 fetch 27곳(encore/warfarin/endfieldtools/hoyolab/trickcal)에 적용. ww/starrail 재크롤 검증. ✅
+- **B-M1** 응답 봉투 통일: `utils/responseBuilder.ts`(sendOk/sendError → `{resultCode,resultMsg,data}`). 공개 7개 컨트롤러(game/character/item/event/element/redeem/skill) + admin 전부 단일 봉투로. 프론트 `client.ts`에 **URL-aware unwrap 인터셉터**(공개 봉투만 unwrap, `/api/v0/admin/` 제외) 추가 → 공개 소비처 코드 변경 0, 엔드포인트별 점진 전환 안전. 클린 서버 curl로 봉투/에러/admin 검증. (5개 병렬 에이전트로 컨트롤러 전환.) ✅
 - **starrail 크롤러**: hakush→starrailstation 마이그레이션(과제1) + endfield item fix(과제2) — `CRAWLER_SOURCE_MIGRATION_PLAN.md` 참고. ✅
 
 ---
