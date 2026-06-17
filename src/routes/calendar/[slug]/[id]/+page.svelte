@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import DesktopListMenu from '../../../../app/view/menu/DesktopListMenu.svelte';
 	import FooterView from '../../../../app/view/footer/FooterView.svelte';
@@ -102,12 +103,13 @@
 	let gameInit: any;
 	let rarityService = $state<CharacterRarityService>();
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	// 등급별 색상 가져오기 (반응형)
 	const getRarityColor = (rarity: any) => {

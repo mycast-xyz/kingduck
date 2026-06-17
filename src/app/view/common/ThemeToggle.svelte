@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { theme } from '../../store/theme';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
 	let currentTheme: string;
 
-	theme.subscribe((value) => {
+	const _unsubTheme = theme.subscribe((value) => {
 		currentTheme = value;
 	});
+	onDestroy(_unsubTheme);
 
 	const toggleTheme = () => {
 		theme.toggle();

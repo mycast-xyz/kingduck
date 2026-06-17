@@ -1,5 +1,6 @@
 <script lang="ts">
 	// 커스텀 서비스 임포트
+	import { onDestroy } from 'svelte';
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 	import { Reverse1999EquipmentViewModel } from '../../service/game/reverse1999/Reverse1999EquipmentViewModel.svelte';
@@ -23,12 +24,13 @@
 	let gameInit = $state<GameInitConfig | null>(null);
 	let rarityService = $state<CharacterRarityService>();
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	let vm = $derived.by(() => {
 		// gameId는 이제 slug로 통일됨(F-B3).

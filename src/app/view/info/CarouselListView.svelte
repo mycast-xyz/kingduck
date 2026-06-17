@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Svelte 및 외부 라이브러리 임포트
+	import { onDestroy } from 'svelte';
 	import { register } from 'swiper/element/bundle';
 
 	// 커스텀 서비스 임포트
@@ -23,12 +24,13 @@
 	let gameInit: GameInitConfig | null = null;
 	let rarityService: CharacterRarityService;
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	// 스킬 관련 상태 관리
 	let selectedList = $state<any>(null);

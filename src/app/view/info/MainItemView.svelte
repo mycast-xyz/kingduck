@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Svelte 및 외부 라이브러리 임포트
+	import { onDestroy } from 'svelte';
 	import { register } from 'swiper/element/bundle';
 
 	// 커스텀 서비스 임포트
@@ -26,7 +27,7 @@
 	let rarityService: CharacterRarityService;
 	let fetchedItems = $state<any[]>([]);
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
@@ -37,6 +38,7 @@
 			}
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	async function loadHsrItems() {
 		try {

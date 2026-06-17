@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { WindowService, ModalView } from '../../service/WindowService';
 	import MobileLayer from '../../view-framework/modal/MobileModal.svelte';
 	import MobileFilter from './filter/MobileFilter.svelte';
@@ -10,7 +11,7 @@
 	let ModalComponent = $state<Component<any> | null>(null);
 	let ModalTitle = $state('');
 
-	WindowService.modal.subscribe((m) => {
+	const _unsubModal = WindowService.modal.subscribe((m) => {
 		switch (m) {
 			case 'mobile-filter':
 				ModalComponent = MobileFilter;
@@ -21,6 +22,7 @@
 				break;
 		}
 	});
+	onDestroy(_unsubModal);
 
 	$effect(() => {
 		if ($ModalView) {

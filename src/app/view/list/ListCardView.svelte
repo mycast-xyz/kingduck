@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 	import { getCardBgStyle as getGradientStyle } from '../../util/StyleUtils';
@@ -9,12 +10,13 @@
 	let gameInit: any;
 	let rarityService = $state<CharacterRarityService>();
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	// element 이미지 경로 생성
 	const getElementImageUrl = (element: any, isMobile: boolean = false) => {

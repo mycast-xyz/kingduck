@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { CharacterListService } from '../../../service/character/CharacterListService';
 	import { GameSettingInitService } from '../../../service/game/GameSettingService';
@@ -14,10 +15,11 @@
 	let gameInit;
 
 	// 게임 설정 초기화 및 구독
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		RarityOption.set(value.rarity);
 	});
+	onDestroy(_unsubShowList);
 
 	// 레어리티 메뉴 토글 함수
 	const toggleMenuRarity = () => {

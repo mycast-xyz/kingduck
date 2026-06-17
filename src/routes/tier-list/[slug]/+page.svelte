@@ -41,12 +41,13 @@
 	let gameInit: any;
 	let rarityService = $state<CharacterRarityService>();
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	// Get rarity color
 	const getRarityColor = (rarity: any) => {

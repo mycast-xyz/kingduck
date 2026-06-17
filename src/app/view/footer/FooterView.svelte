@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	// 게임 정보 처리
 	let gameInit: any;
 
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 	});
+	onDestroy(_unsubShowList);
 </script>
 
 <footer class="mt-auto w-full bg-gray-100 dark:bg-gray-800">

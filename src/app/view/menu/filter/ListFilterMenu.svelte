@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { CharacterListService } from '../../../service/character/CharacterListService';
 	import { GameSettingInitService } from '../../../service/game/GameSettingService';
@@ -15,7 +16,7 @@
 	let gameInit: any;
 
 	// 게임 설정 초기화 및 구독
-	GameSettingInitService.showList.subscribe((value) => {
+	const _unsubShowList = GameSettingInitService.showList.subscribe((value) => {
 		gameInit = value;
 		RarityOption.set(value?.rarity || {});
 		TypeOption.set(value?.type || {});
@@ -25,6 +26,7 @@
 			selectedTypeOption.set({});
 		}
 	});
+	onDestroy(_unsubShowList);
 
 	// 타입 메뉴 토글 함수
 	const toggleMenuType = (type: string) => {
@@ -43,9 +45,10 @@
 	// 타입 버튼 토글 및 필터링 함수
 	const toggleMenuTypeButton = async (key: string, value: string) => {
 		let currentTypeText = '';
-		typeText.subscribe((value) => {
+		const _unsubTypeText = typeText.subscribe((value) => {
 			currentTypeText = value;
 		});
+		_unsubTypeText();
 
 		const filterKey = gameInit?.type?.[key]?.apiPoint || key;
 		const typesMap = new Map();

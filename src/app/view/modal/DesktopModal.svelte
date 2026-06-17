@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { WindowService, ModalView } from '../../service/WindowService';
 	import DesktopModal from '../../view-framework/modal/DesktopModal.svelte';
 	import AddKanban from './kanban/AddKanban.svelte';
@@ -11,7 +12,7 @@
 	let ModalTitle = $state('');
 	let ModalSize = $state('');
 
-	WindowService.modal.subscribe((m) => {
+	const _unsubModal = WindowService.modal.subscribe((m) => {
 		switch (m) {
 			case 'admin-add-kanban':
 				ModalComponent = AddKanban;
@@ -28,6 +29,7 @@
 				break;
 		}
 	});
+	onDestroy(_unsubModal);
 
 	$effect(() => {
 		if ($ModalView) {

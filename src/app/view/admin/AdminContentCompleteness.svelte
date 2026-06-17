@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { adminStatsService, type GameCompleteness } from '../../service/AdminStatsService';
 
 	let completeness: GameCompleteness[] = [];
+	let _unsubCompleteness: (() => void) | undefined;
 
 	onMount(async () => {
-		adminStatsService.completeness.subscribe((value) => {
+		_unsubCompleteness = adminStatsService.completeness.subscribe((value) => {
 			completeness = value;
 		});
 		await adminStatsService.fetchCompleteness();
 	});
+
+	onDestroy(() => _unsubCompleteness?.());
 </script>
 
 <div class="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
