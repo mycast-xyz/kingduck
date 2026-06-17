@@ -149,6 +149,11 @@ export class GenshinInit {
 					dataKey: 'recommendedWeapons',
 					props: { title: '추천 무기' }
 				},
+				{
+					component: 'BuildRecommendationView',
+					dataKey: 'recommendedArtifacts',
+					props: { title: '추천 성유물' }
+				},
 				{ component: 'MainItemView', dataKey: 'ascension', props: { title: '돌파 재료' } },
 				{
 					component: 'SkillTreeView',
