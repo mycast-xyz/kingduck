@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
+	import type { GameInitConfig } from '../../model/game/GameInitConfig';
 
 	const { data } = $props<{ data: any }>();
 
@@ -11,7 +12,7 @@
 	let infoData = data.info;
 
 	// 게임 초기화 정보 초기화
-	let gameInit: any;
+	let gameInit: GameInitConfig | null = null;
 	let rarityService = $state<CharacterRarityService>();
 
 	GameSettingInitService.showList.subscribe((value) => {

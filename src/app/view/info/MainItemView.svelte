@@ -6,6 +6,7 @@
 	import { GameSettingInitService } from '../../service/game/GameSettingService';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 	import { resolveGameSlug } from '../../model/game/GameRegistry';
+	import type { GameInitConfig } from '../../model/game/GameInitConfig';
 
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
@@ -21,7 +22,7 @@
 		title?: string;
 	}>();
 
-	let gameInit = $state<any>(null);
+	let gameInit = $state<GameInitConfig | null>(null);
 	let rarityService: CharacterRarityService;
 	let fetchedItems = $state<any[]>([]);
 

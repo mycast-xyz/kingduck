@@ -9,6 +9,7 @@
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
+	import type { GameInitConfig } from '../../model/game/GameInitConfig';
 
 	const { listData, currentUrl, isMobile, initData, title } = $props<{
 		listData: any;
@@ -18,7 +19,7 @@
 		title?: string;
 	}>();
 
-	let gameInit: any;
+	let gameInit: GameInitConfig | null = null;
 	let rarityService: CharacterRarityService;
 
 	GameSettingInitService.showList.subscribe((value) => {

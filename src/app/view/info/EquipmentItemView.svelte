@@ -7,6 +7,7 @@
 	// 컴포넌트 임포트
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
+	import type { GameInitConfig } from '../../model/game/GameInitConfig';
 
 	const { itemData, propertyBase, currentUrl, isMobile, contentColor, title, initData } = $props<{
 		itemData: any;
@@ -18,7 +19,7 @@
 		initData?: any;
 	}>();
 
-	let gameInit = $state<any>(null);
+	let gameInit = $state<GameInitConfig | null>(null);
 	let rarityService = $state<CharacterRarityService>();
 
 	GameSettingInitService.showList.subscribe((value) => {
@@ -341,7 +342,7 @@
 		</div>
 	{/if}
 	<!-- 기본 형태 | 이미지가 들어가는 경우 -->
-	{#if gameInit?.content?.info?.item?.option.main && propertyBase.main}
+	{#if gameInit?.content?.info?.item?.option?.main && propertyBase.main}
 		<div class="w-full border-t border-gray-200 p-3">
 			<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 				추천 메인 속성
@@ -369,7 +370,7 @@
 		</div>
 	{/if}
 	<!-- 기본 형태 | 텍스트만 표기시 -->
-	{#if gameInit?.content?.info?.item?.option.sub && propertyBase.sub}
+	{#if gameInit?.content?.info?.item?.option?.sub && propertyBase.sub}
 		<div class="w-full border-t border-gray-200 p-3 pb-0">
 			<h5 class="pb-3 pl-3 text-lg font-bold tracking-tight text-gray-700 dark:text-white">
 				추천 보조 속성
