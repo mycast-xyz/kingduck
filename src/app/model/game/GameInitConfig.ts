@@ -2,6 +2,7 @@
 // 새 게임을 추가하면 이 유니온과 GameRegistry에 등록한다.
 export type GameSlug =
 	| 'starrail'
+	| 'genshin'
 	| 'wutheringwaves'
 	| 'reverse1999'
 	| 'endfield'

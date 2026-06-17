@@ -1,5 +1,6 @@
 import type { GameInitConfig } from './GameInitConfig';
 import { HonkaiStarRailInit } from './HonkaiStarRailInit';
+import { GenshinInit } from './GenshinInit';
 import { GirlsFrontline2Init } from './GirlsFrontline2Init';
 import { nikkeInit } from './nikkeInit';
 import { Reverse1999Init } from './Reverse1999Init';
@@ -19,6 +20,7 @@ import { EndfieldInit } from './EndfieldInit';
  */
 const GAME_INIT_FACTORIES: Record<string, () => GameInitConfig> = {
 	starrail: () => new HonkaiStarRailInit().setInit(),
+	genshin: () => new GenshinInit().setInit(),
 	// GirlsFrontline2/nikke의 Init은 아직 GameInitConfig를 완전히 만족하지 않는다(content.info의
 	// option/main 형태 불일치, 데이터 0건의 비활성 게임). 정식 타이핑은 redesign-plan E3 과제.
 	// 그때까지 레지스트리 도입을 막지 않도록 이 둘만 명시적으로 단언한다.
