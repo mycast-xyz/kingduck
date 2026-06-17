@@ -65,19 +65,8 @@ export interface ItemType<T = any> {
 	updatedAt: string;
 }
 
-// Example Metadata Interfaces (To be expanded)
-export interface GenshinCharacterMetaType {
-	constellation: string[];
-	vision: string;
-	// ...
-}
-
-export interface NikkeCharacterMetaType {
-	manufacturer: string;
-	burstType: string;
-	// ...
-}
-// Output truncated for brevity, adding Crawler types
+// 게임별 metadata 타입과 typed 별칭(HsrCharacter 등)은 `../game/metadata`에 정의되어 있다.
+// (CharacterType<T>/ItemType<T>의 T로 주입해 점진 채택. redesign-plan F-T4.)
 
 export interface CrawlerStatusType {
 	gameId: number;
