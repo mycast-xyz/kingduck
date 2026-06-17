@@ -1,19 +1,17 @@
-import { hsrItemService } from '../starrail/HsrItemService';
+import { StatsViewModelBase } from '../common/StatsViewModelBase.svelte';
 
-export class WwStatsViewModel {
-	listData: any; // Full metadata object
-	currentLevel = $state(90);
+export class WwStatsViewModel extends StatsViewModelBase {
 	isAscended = $state(true); // 해당 레벨에서 돌파 여부
 	levels = [1, 20, 40, 50, 60, 70, 80, 90];
-	itemCache = $state<Record<string, any>>({});
-	currentUrl: string;
-	gameId: string;
 
 	constructor(listData: any, gameId: string, currentUrl: string) {
-		this.listData = listData || {};
-		this.gameId = gameId;
-		this.currentUrl = currentUrl;
+		super(listData, gameId, currentUrl);
 		this.currentLevel = 90;
+	}
+
+	// 명조 cost 엔트리는 { Key, Value } 형태
+	protected getCostItemId(cost: any): string {
+		return String(cost.Key);
 	}
 
 	// 레벨별 인덱스 매핑 (명조는 1-90 레벨 + 돌파 단계 포함 96개 항목)
@@ -116,34 +114,7 @@ export class WwStatsViewModel {
 	});
 
 	costPromise = $derived.by(() => this.loadCostItems(this.costList));
-
-	async loadCostItems(costs: any[]) {
-		if (!costs || costs.length === 0) return [];
-
-		const promises = costs.map(async (item) => {
-			const id = String(item.Key);
-			if (this.itemCache[id]) {
-				return { ...item, info: this.itemCache[id] };
-			}
-			try {
-				const res = await hsrItemService.getItem(id, this.gameId);
-				let info = res.data || res;
-				if (Array.isArray(info)) {
-					info = info[0];
-				} else if (info && Array.isArray(info.data)) {
-					info = info.data[0];
-				}
-
-				this.itemCache[id] = info;
-				return { ...item, info };
-			} catch (e) {
-				console.error(`Failed to load item ${id}`, e);
-				return { ...item, info: null };
-			}
-		});
-
-		return Promise.all(promises);
-	}
+	// loadCostItems는 StatsViewModelBase로 이동(공통).
 
 	private translateStatName(name: string): string {
 		const n = (name || '').toLowerCase();

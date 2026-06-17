@@ -1,24 +1,20 @@
-import { hsrItemService } from '../starrail/HsrItemService';
+import { StatsViewModelBase } from '../common/StatsViewModelBase.svelte';
 
-export class EndfieldStatsViewModel {
-	listData: any; // Full metadata
-	attributes: any[];
-	talentNodeMap: any;
-
-	currentLevel = $state(90);
+export class EndfieldStatsViewModel extends StatsViewModelBase {
+	attributes: any[] = [];
+	talentNodeMap: any = {};
 	levels = [1, 20, 40, 60, 80, 90]; // Breakpoints: 20 / 40 / 60 / 80 / 90
-	gameId: string;
-	currentUrl: string;
-	itemCache = $state<Record<string, any>>({});
 
 	constructor(listData: any, gameId: string, currentUrl: string) {
-		this.listData = listData || {};
+		super(listData, gameId, currentUrl);
 		this.attributes = this.listData.attributes || [];
 		this.talentNodeMap = this.listData.talents?.talentNodeMap || {};
-
-		this.gameId = gameId;
-		this.currentUrl = currentUrl;
 		this.currentLevel = 90;
+	}
+
+	// Endfield의 requiredItem 엔트리는 originalId(없으면 id)를 쓴다
+	protected getCostItemId(cost: any): string {
+		return String(cost.originalId || cost.id);
 	}
 
 	stats = $derived.by(() => {
@@ -94,42 +90,8 @@ export class EndfieldStatsViewModel {
 		return Object.values(costs);
 	});
 
-	costPromise = $derived.by(async () => {
-		return this.loadCostItems(this.costList);
-	});
-
-	async loadCostItems(costs: any[]) {
-		if (!costs || costs.length === 0) return [];
-
-		const promises = costs.map(async (item) => {
-			// User specified: requiredItem has originalId which is the id to fetch.
-			// Fallback to item.id if originalId is missing.
-			const id = String(item.originalId || item.id);
-
-			if (this.itemCache[id]) {
-				return { ...item, info: this.itemCache[id] };
-			}
-			try {
-				const res = await hsrItemService.getItem(id, this.gameId);
-				let info = res.data || res;
-
-				// Handle potential array response wrappers
-				if (Array.isArray(info)) {
-					info = info[0];
-				} else if (info && Array.isArray(info.data)) {
-					info = info.data[0];
-				}
-
-				this.itemCache[id] = info;
-				return { ...item, info };
-			} catch (e) {
-				console.error(`Failed to load item ${id}`, e);
-				return { ...item, info: null };
-			}
-		});
-
-		return Promise.all(promises);
-	}
+	costPromise = $derived.by(() => this.loadCostItems(this.costList));
+	// loadCostItems는 StatsViewModelBase로 이동(공통).
 
 	private getStatIcon(key: string): string {
 		const k = key.toLowerCase();

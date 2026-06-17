@@ -1,17 +1,17 @@
-import { hsrItemService } from './HsrItemService';
+import { StatsViewModelBase } from '../common/StatsViewModelBase.svelte';
 
-export class HsrStatsViewModel {
-	listData: any;
-	gameId: string;
-	currentLevel = $state(80);
-	itemCache = $state<Record<string, any>>({});
+export class HsrStatsViewModel extends StatsViewModelBase {
 	levels = [1, 20, 30, 40, 50, 60, 70, 80];
 
 	constructor(listData: any, gameId: string) {
-		this.listData = listData;
-		this.gameId = gameId;
+		super(listData, gameId);
 		// HSR은 기본적으로 80레벨
 		this.currentLevel = 80;
+	}
+
+	// HSR cost 엔트리는 { ItemID, ItemNum } 형태
+	protected getCostItemId(cost: any): string {
+		return String(cost.ItemID);
 	}
 
 	ascensionKey = $derived.by(() => {
@@ -101,36 +101,5 @@ export class HsrStatsViewModel {
 	});
 
 	costPromise = $derived.by(() => this.loadCostItems(this.costList));
-
-	async loadCostItems(costs: any[]) {
-		if (!costs || costs.length === 0) return [];
-
-		const promises = costs.map(async (item) => {
-			if (this.itemCache[item.ItemID]) {
-				return { ...item, info: this.itemCache[item.ItemID] };
-			}
-			try {
-				const res = await hsrItemService.getItem(item.ItemID, this.gameId);
-				// API returns a list, so we take the first item if available, or the response itself if struct differs
-				// User changed getItem to return client.get('/api/v0/item/list', ...).
-				// Assuming client.get returns the data payload directly or { data: ... }
-				// We'll check both. If it's a list, take the first item.
-				let info = res.data || res;
-				if (Array.isArray(info)) {
-					info = info[0];
-				} else if (info && Array.isArray(info.data)) {
-					// Pagination wrapper check
-					info = info.data[0];
-				}
-
-				this.itemCache[item.ItemID] = info;
-				return { ...item, info };
-			} catch (e) {
-				console.error(`Failed to load item ${item.ItemID}`, e);
-				return { ...item, info: null };
-			}
-		});
-
-		return Promise.all(promises);
-	}
+	// loadCostItems는 StatsViewModelBase로 이동(공통). getCostItemId만 위에서 구현.
 }

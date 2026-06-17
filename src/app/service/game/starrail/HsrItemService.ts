@@ -1,22 +1,6 @@
-import client from '../../api/client';
-
-export class HsrItemService {
-	// 아이템 리스트 조회
-	async getItemList(originalId: string, gameId: string) {
-		const params = {
-			originalId: originalId,
-			gameId: gameId
-		};
-		return await client.get('/api/v0/item/list', { params });
-	}
-	// 아이템 상세 조회
-	async getItem(itemId: string | number, gameId: string) {
-		const params = {
-			originalId: itemId,
-			gameId: gameId
-		};
-		return await client.get('/api/v0/item/list', { params });
-	}
-}
-
-export const hsrItemService = new HsrItemService();
+// 하위호환 재노출: 실제 구현은 게임 무관이라 공용 GameItemService로 이동했다(redesign-plan E2).
+// 기존 소비처(content 라우트·MainItemView·BuildRecommendationView)는 그대로 import 가능.
+export {
+	GameItemService as HsrItemService,
+	gameItemService as hsrItemService
+} from '../common/GameItemService';
