@@ -321,13 +321,15 @@
 2. ✅ (2026-06-17) JWT payload `console.log` 제거 — `JsonWebToken.ts:31`. (S)
 3. ✅ (2026-06-17) 크롤러 기동 시 stale RUNNING → FAILED sweep(2h 임계) — `index.ts`(`sweepStaleCrawlerLogs`). (B-L3, S)
 
-**나머지 Phase 1:**
-4. DB 연결 실패 시 `process.exit(1)` + 재시도 — `index.ts`. (Critical, M)
-5. graceful shutdown(SIGTERM/SIGINT) 핸들러 추가. (M)
-6. `asyncHandler` 래퍼 도입 후 라우트 점진 이전. (M)
-7. console.* → logger 일괄 이전 + sanitize 유틸. (M)
-8. JWT DB 재검증(민감 라우트) 또는 token_version 무효화 설계. (B-S6, M)
-9. `/health` 엔드포인트 + docker-compose healthcheck. (M)
+**나머지 Phase 1:** (전부 2026-06-17 완료 ✅)
+4. ✅ DB 연결 실패 시 `process.exit(1)` + 재시도(5회, listen 전 연결) — `index.ts`. (Critical, M)
+5. ✅ graceful shutdown(SIGTERM/SIGINT, 30s 강제 타임아웃) — `index.ts`. (M)
+6. ✅ `asyncHandler` 래퍼 도입(`utils/asyncHandler.ts`) + 공개 라우터 7종 적용. (M)
+7. ✅ console.* → logger 일괄 이전(100건/20파일). sanitize는 불필요(민감 로그 없음 확인). (M)
+8. ✅ JWT DB 재검증 — `authorize(roles, { recheckDb })` 옵션 + 어드민 라우트 적용. (B-S6, M)
+9. ✅ `/health`(DB ping) + docker-compose healthcheck. (M)
+
+> Phase 1 전체 완료. `tsc --noEmit` 0, 서버 기동/`/health` 200/미인증 video 401 스모크 통과.
 
 ### Phase 2 — 핵심 설계 (단일 진실원 확립)
 
