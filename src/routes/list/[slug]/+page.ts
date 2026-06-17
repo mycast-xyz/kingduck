@@ -1,18 +1,8 @@
-import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { get } from 'svelte/store';
-import client, { getApiBaseUrl } from '../../../app/service/api/client';
 import { browser } from '$app/environment';
 import { toastStore } from '../../../app/service/ToastService';
-
-// 유틸
-import { MobileUtils } from '../../../utils/mobile/MobileUtils';
-import type {
-	CharacterType,
-	ElementType,
-	GameType,
-	ResultCodeType
-} from '../../../app/model/api/api';
+import type { ElementType } from '../../../app/model/api/api';
 
 // 캐릭터 리스트 서비스
 import {
@@ -20,60 +10,14 @@ import {
 	characterList
 } from '../../../app/service/character/CharacterListService';
 
-// 게임 초기화
-import { GameSettingInitService } from '../../../app/service/game/GameSettingService';
-
-// 게임 초기화 모델 — slug → Init은 GameRegistry가 단일 관리
-import { getGameInit } from '../../../app/model/game/GameRegistry';
+// 게임 라우트 공통 로드 (모바일 감지 + 게임정보 조회 + 설정 주입)
+import { loadGameContext } from '../../../app/service/game/loadGameContext';
 
 // 캐릭터 목록 서비스
-export const load: PageLoad = async ({ params, url }) => {
-	let isMobile = false;
-	let gameInfo: GameType | undefined;
-	let gameType: ElementType[] | undefined;
-	let setInit;
+export const load: PageLoad = async ({ params }) => {
+	const { isMobile, gameInfo, url } = await loadGameContext(params.slug);
+	const gameType: ElementType[] | undefined = undefined;
 
-	if (browser) {
-		isMobile = MobileUtils.isMobile();
-	}
-
-	const gameInfoConfig = {
-		params: {
-			//en: params.slug
-		}
-	};
-
-	let fetchFailed = false;
-
-	await client
-		.get<GameType>('/api/v0/game/' + params.slug, gameInfoConfig)
-		.then((res) => {
-			if (res.status === 200) {
-				gameInfo = res.data;
-			} else {
-				console.error('게임 정보 조회 실패: 서버 코드', res.status);
-				fetchFailed = true;
-			}
-		})
-		.catch((err) => {
-			console.error('게임 정보 조회 실패:', err);
-			fetchFailed = true;
-		});
-
-	// 네트워크/서버 장애를 "게임 없음(404)"으로 위장하지 않는다 (F-A3).
-	if (fetchFailed) {
-		throw error(503, '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
-	}
-	// CharacterListService의 메서드 호출 전에 gameInfo가 있는지 확인
-	if (!gameInfo) {
-		throw error(404, 'Game not found');
-	}
-
-	// 게임 설정 주입 (slug → Init은 GameRegistry가 단일 관리)
-	const gameInit = getGameInit(params.slug);
-	if (gameInit) {
-		GameSettingInitService.updateGameInit(gameInit);
-	}
 	CharacterListService.clearCharacterConfig();
 	CharacterListService.getCharacterListConfig(gameInfo.id, '', '');
 	const listStatus = await CharacterListService.getCharacterList(params.slug);
@@ -88,7 +32,7 @@ export const load: PageLoad = async ({ params, url }) => {
 
 	return {
 		params: params.slug,
-		url: getApiBaseUrl(),
+		url,
 		isMobile: !!isMobile,
 		info: gameInfo,
 		list: characterListData,
