@@ -12,8 +12,10 @@ export interface GameInitConfig {
 			name: string;
 			isWhite: boolean;
 			isTwoRow: boolean;
-			apiPoint: string;
-			apiType: string;
+			// 일부 게임(예: nikke·GirlsFrontline2)은 필터가 API 파라미터에 매핑되지 않아 생략한다.
+			// 소비처(ListFilterMenu)는 `?.apiPoint || key` 식으로 undefined를 이미 처리한다.
+			apiPoint?: string;
+			apiType?: string;
 			isMenuOpen: boolean;
 			cols?: number; // 필터 목록의 열 개수 (기본값: 자동 또는 CSS 지정값)
 			list?: Record<string, string>;

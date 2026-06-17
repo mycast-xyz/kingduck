@@ -23,13 +23,8 @@ import {
 // 게임 초기화
 import { GameSettingInitService } from '../../../app/service/game/GameSettingService';
 
-// 게임 초기화 모델
-import { HonkaiStarRailInit } from '../../../app/model/game/HonkaiStarRailInit';
-import { GirlsFrontline2Init } from '../../../app/model/game/GirlsFrontline2Init';
-import { nikkeInit } from '../../../app/model/game/nikkeInit';
-import { Reverse1999Init } from '../../../app/model/game/Reverse1999Init';
-import { WutheringWavesInit } from '../../../app/model/game/WutheringWavesInit';
-import { EndfieldInit } from '../../../app/model/game/EndfieldInit';
+// 게임 초기화 모델 — slug → Init은 GameRegistry가 단일 관리
+import { getGameInit } from '../../../app/model/game/GameRegistry';
 
 // 캐릭터 목록 서비스
 export const load: PageLoad = async ({ params, url }) => {
@@ -74,28 +69,10 @@ export const load: PageLoad = async ({ params, url }) => {
 		throw error(404, 'Game not found');
 	}
 
-	// 추후에 init를 들고 오면 처리 구현이 틀려짐
-	switch (params.slug) {
-		case 'starrail':
-			GameSettingInitService.updateGameInit(new HonkaiStarRailInit().setInit());
-			break;
-		case 'GirlsFrontline2Exilium':
-			GameSettingInitService.updateGameInit(new GirlsFrontline2Init().setInit());
-			break;
-		case 'nikke':
-			GameSettingInitService.updateGameInit(new nikkeInit().setInit());
-			break;
-		case 'reverse1999':
-			GameSettingInitService.updateGameInit(new Reverse1999Init().setInit());
-			break;
-		case 'wutheringwaves':
-			GameSettingInitService.updateGameInit(new WutheringWavesInit().setInit());
-			break;
-		case 'endfield':
-			GameSettingInitService.updateGameInit(new EndfieldInit().setInit());
-			break;
-		default:
-			break;
+	// 게임 설정 주입 (slug → Init은 GameRegistry가 단일 관리)
+	const gameInit = getGameInit(params.slug);
+	if (gameInit) {
+		GameSettingInitService.updateGameInit(gameInit);
 	}
 	CharacterListService.clearCharacterConfig();
 	CharacterListService.getCharacterListConfig(gameInfo.id, '', '');

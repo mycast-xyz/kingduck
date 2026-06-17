@@ -3,13 +3,8 @@ import type { PageLoad } from './$types';
 import client, { getApiBaseUrl } from '../../../../app/service/api/client';
 import { browser } from '$app/environment';
 import { MobileUtils } from '../../../../utils/mobile/MobileUtils';
-import { GirlsFrontline2Init } from '../../../../app/model/game/GirlsFrontline2Init';
-import { HonkaiStarRailInit } from '../../../../app/model/game/HonkaiStarRailInit';
 import { GameSettingInitService } from '../../../../app/service/game/GameSettingService';
-import { nikkeInit } from '../../../../app/model/game/nikkeInit';
-import { Reverse1999Init } from '../../../../app/model/game/Reverse1999Init';
-import { WutheringWavesInit } from '../../../../app/model/game/WutheringWavesInit';
-import { EndfieldInit } from '../../../../app/model/game/EndfieldInit';
+import { getGameInit } from '../../../../app/model/game/GameRegistry';
 import { hsrItemService } from '../../../../app/service/game/starrail/HsrItemService';
 // import { CharacterListService } from '../../../../app/service/character/CharacterListService';
 import type { CharacterType, GameType, ResultCodeType } from '../../../../app/model/api/api';
@@ -25,34 +20,8 @@ export const load: PageLoad = async ({ params, url }) => {
 	// CharacterListService.clearCharacterConfig(); // 필요한 경우 초기화
 	// await CharacterListService.getCharacterList(params.gameEnName);
 
-	// 추후에 init를 들고 오면 처리 구현이 틀려짐
-	let gameInitConfig;
-	switch (params.gameEnName) {
-		case 'HonkaiStarRail':
-		case 'starrail':
-			gameInitConfig = new HonkaiStarRailInit().setInit();
-			break;
-		case 'GirlsFrontline2Exilium':
-			gameInitConfig = new GirlsFrontline2Init().setInit();
-			break;
-		case 'nikke':
-			gameInitConfig = new nikkeInit().setInit();
-			break;
-		case 'reverse1999':
-			gameInitConfig = new Reverse1999Init().setInit();
-			break;
-		case 'wutheringwaves':
-		case 'WutheringWaves':
-			gameInitConfig = new WutheringWavesInit().setInit();
-			break;
-		case 'endfield':
-			gameInitConfig = new EndfieldInit().setInit();
-			break;
-		default:
-			break;
-	}
-
-	// Legacy support: still update service for any components outside of this flow
+	// 게임 설정 주입 (slug/레거시 별칭 → Init은 GameRegistry가 단일 관리)
+	const gameInitConfig = getGameInit(params.gameEnName);
 	if (gameInitConfig) {
 		GameSettingInitService.updateGameInit(gameInitConfig);
 	}
