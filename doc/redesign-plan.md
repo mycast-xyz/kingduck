@@ -336,7 +336,7 @@
 **Quick wins:**
 1. `ResponseBuilder` + 통합 응답 봉투 도입(우선 신규/admin list부터). (Critical B-M1, L) — 클라 단일 파서 전제.
 2. ✅ (2026-06-17) `GameRegistry.ts` 신설 후 6개 라우트 switch 제거(43 case→0). `GameInitConfig.apiPoint/apiType` 옵셔널화. (High)
-3. `GameInitConfig.gameId` slug 통일 + `GameSlug` 유니온. (F-B3, M)
+3. ✅ (2026-06-17) `GameInitConfig.gameId` slug 통일 + `GameSlug` 유니온. 6개 뷰 분기 정규화, 죽은 숫자 비교 제거, EquipmentItemView 이미지 경로 버그 부수 수정. (F-B3)
 
 **나머지 Phase 2:**
 4. EventScraper throw 통일 + PARTIAL 상태 흐름 + sync `{success,partial,errors}` 계약. (B-H6, M)
