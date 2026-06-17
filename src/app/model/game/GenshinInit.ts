@@ -154,6 +154,11 @@ export class GenshinInit {
 					dataKey: 'recommendedArtifacts',
 					props: { title: '추천 성유물' }
 				},
+				{
+					component: 'TeamRecommendationView',
+					dataKey: 'teams',
+					props: { title: '추천 파티' }
+				},
 				{ component: 'MainItemView', dataKey: 'ascension', props: { title: '돌파 재료' } },
 				{
 					component: 'SkillTreeView',
