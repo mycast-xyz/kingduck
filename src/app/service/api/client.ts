@@ -51,7 +51,8 @@ client.interceptors.response.use(
 			typeof body === 'object' &&
 			'resultCode' in body &&
 			'data' in body;
-		if (isEnvelope && !url.includes('/admin/')) {
+		// admin 그룹(/api/v0/admin/)만 제외. `/character/admin/:id` 같은 공개 경로는 unwrap 대상.
+		if (isEnvelope && !url.includes('/api/v0/admin/')) {
 			response.data = body.data;
 		}
 		return response;
