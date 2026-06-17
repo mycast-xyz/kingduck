@@ -350,13 +350,13 @@
 ### Phase 3 — 정리 / 타입 / 중복 제거
 
 **Quick wins:**
-1. ContentManualModal 데드코드 삭제, 빈 effect 제거, config JSON 데드코드 제거. (S)
+1. ✅(2026-06-17 부분) ContentManualModal 데드코드 삭제, 빈 effect 제거. (config JSON 데드코드는 백엔드, 미처리) (S)
 2. `[gameEnName]` → `[slug]` 리네임. (S)
 3. Element 유니크/reviewedBy 인덱스 추가, item 타입 강제. (S)
 
 **나머지 Phase 3:**
 4. 게임별 metadata 타입 정의 → `CharacterType<T>`/`ItemType<T>` 특화로 `any` 290+ 제거. (F-T4, XL)
-5. `StatsViewModelBase`/`GameItemService` 추상화로 viewmodel 60% 중복 제거 + cross-game import 정리. (L)
+5. ✅(2026-06-17) `StatsViewModelBase`/`GameItemService` 추상화로 viewmodel 중복 제거 + cross-game import 정리. **추가**: 게임 라우트 공통 로드를 `loadGameContext()`로 모듈화(list·tier-list 적용). (L)
 6. 뷰 레이어 `.subscribe()` 통일 + 구독 cleanup($effect) + `$state<any>` 구체화. (M)
 7. Desktop/Mobile 6파일 중복 통합 + 모달 셸 패턴 통일. (L)
 8. 컴포넌트 레지스트리, metadata 런타임(Zod) 검증, axios 재시도/백오프, deep-merge, pool 모니터링 등 잔여 백로그. (M~S)
