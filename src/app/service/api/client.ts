@@ -40,6 +40,20 @@ client.interceptors.request.use(
 // deferred until the backend refresh endpoint is confirmed and coordinated with kingduck-server.
 client.interceptors.response.use(
 	(response) => {
+		// 응답 봉투 unwrap (B-M1): 백엔드 공개 엔드포인트가 표준 봉투
+		// `{ resultCode, resultMsg, data }`로 전환되면, 공개 소비처가 기존처럼 raw 페이로드를
+		// 읽도록 여기서 data를 꺼낸다 → 소비처 코드 무변경 + 엔드포인트별 점진 마이그레이션 안전.
+		// admin(/admin/)은 소비처가 봉투를 직접 읽으므로 unwrap하지 않는다.
+		const url = response.config?.url ?? '';
+		const body = response.data;
+		const isEnvelope =
+			body &&
+			typeof body === 'object' &&
+			'resultCode' in body &&
+			'data' in body;
+		if (isEnvelope && !url.includes('/admin/')) {
+			response.data = body.data;
+		}
 		return response;
 	},
 	(error) => {
