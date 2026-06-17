@@ -335,7 +335,7 @@
 
 **Quick wins:**
 1. `ResponseBuilder` + 통합 응답 봉투 도입(우선 신규/admin list부터). (Critical B-M1, L) — 클라 단일 파서 전제.
-2. `GameRegistry.ts` 신설 후 6~7 라우트 switch 제거. (High, L)
+2. ✅ (2026-06-17) `GameRegistry.ts` 신설 후 6개 라우트 switch 제거(43 case→0). `GameInitConfig.apiPoint/apiType` 옵셔널화. (High)
 3. `GameInitConfig.gameId` slug 통일 + `GameSlug` 유니온. (F-B3, M)
 
 **나머지 Phase 2:**
