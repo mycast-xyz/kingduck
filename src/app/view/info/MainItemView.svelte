@@ -33,13 +33,40 @@
 		if (gameInit) {
 			rarityService = new CharacterRarityService(gameInit);
 
-			// HSR 전용 데이터 로드 (gameId는 slug로 통일, URL 별칭은 resolve)
-			if (gameInit.gameId === 'starrail' || resolveGameSlug($page.params.gameEnName) === 'starrail') {
+			// gameId는 slug로 통일, URL 별칭은 resolve
+			const slug = gameInit.gameId || resolveGameSlug($page.params.gameEnName);
+			if (slug === 'starrail') {
 				loadHsrItems();
+			} else if (slug === 'genshin') {
+				loadGenshinItems();
 			}
 		}
 	});
 	onDestroy(_unsubShowList);
+
+	// 원신 돌파(레벨업) 재료 로드. ascension은 { 재료ID: 수량 } 객체 → ID 배열로 변환해 조회.
+	async function loadGenshinItems() {
+		try {
+			const ids = Array.isArray(itemData)
+				? itemData
+				: Object.keys(itemData || {});
+			if (ids.length > 0) {
+				const promises = ids.map(async (id: string | number) => {
+					try {
+						const res = await hsrItemService.getItemList(String(id), 'genshin');
+						return res.data;
+					} catch (err) {
+						console.error(`Failed to fetch genshin item ${id}`, err);
+						return null;
+					}
+				});
+				const results = await Promise.all(promises);
+				fetchedItems = results.filter((r) => r).flat();
+			}
+		} catch (e) {
+			console.error('Genshin Item Fetch Error', e);
+		}
+	}
 
 	async function loadHsrItems() {
 		try {

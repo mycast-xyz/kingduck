@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { HsrRankListViewModel } from '../../service/game/starrail/HsrRankListViewModel.svelte';
+	import { GenshinRankListViewModel } from '../../service/game/genshin/GenshinRankListViewModel.svelte';
 	import { WwRankListViewModel } from '../../service/game/wutheringwaves/WwRankListViewModel.svelte';
 	import { EndfieldRankListViewModel } from '../../service/game/endfield/EndfieldRankListViewModel.svelte';
 	import { EndfieldPotentialViewModel } from '../../service/game/endfield/EndfieldPotentialViewModel.svelte';
@@ -23,6 +24,8 @@
 		switch (gameSlug) {
 			case 'starrail':
 				return new HsrRankListViewModel(listData, gameSlug, currentUrl);
+			case 'genshin':
+				return new GenshinRankListViewModel(listData, gameSlug, currentUrl);
 			case 'wutheringwaves':
 				return new WwRankListViewModel(listData, gameSlug, currentUrl);
 			case 'endfield':

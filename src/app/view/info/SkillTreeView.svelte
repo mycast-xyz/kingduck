@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { HsrSkillTreeViewModel } from '../../service/game/starrail/HsrSkillTreeViewModel.svelte';
+	import { GenshinSkillTreeViewModel } from '../../service/game/genshin/GenshinSkillTreeViewModel.svelte';
 	import { WwSkillTreeViewModel } from '../../service/game/wutheringwaves/WwSkillTreeViewModel.svelte';
 	import { EndfieldSkillViewModel } from '../../service/game/endfield/EndfieldSkillViewModel.svelte';
 	import { EndfieldPassiveViewModel } from '../../service/game/endfield/EndfieldPassiveViewModel.svelte';
@@ -32,6 +33,8 @@
 
 		if (slug === 'starrail') {
 			return new HsrSkillTreeViewModel(data, currentUrl, { initData });
+		} else if (slug === 'genshin') {
+			return new GenshinSkillTreeViewModel(data, currentUrl, { initData });
 		} else if (slug === 'wutheringwaves') {
 			return new WwSkillTreeViewModel(data, currentUrl, { initData });
 		} else if (slug === 'endfield') {

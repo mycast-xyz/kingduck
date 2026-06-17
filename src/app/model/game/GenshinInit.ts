@@ -123,10 +123,40 @@ export class GenshinInit {
 					corp: false
 				},
 				releaseDate: true,
-				info: {}
+				info: {
+					mainItem: {
+						name: '돌파 재료',
+						view: true
+					},
+					skill: {
+						name: '캐릭터 스킬',
+						view: true,
+						level: true
+					},
+					gacha: {
+						name: '별자리',
+						view: true,
+						color: '#3a3a5a',
+						level: false
+					}
+				}
 			},
-			// 스킬/별자리/스탯 섹션은 genshin 전용 뷰모델 도입 후 추가 예정.
-			layout: [],
+			// starrail과 동일한 틀: 돌파 재료(MainItemView) / 스킬(SkillTreeView) / 별자리(RankListView).
+			// 기초 스탯(StatsView)은 원신 성장 곡선 계산이 필요해 후속.
+			layout: [
+				{ component: 'MainItemView', dataKey: 'ascension', props: { title: '돌파 재료' } },
+				{
+					component: 'SkillTreeView',
+					dataKey: 'skills',
+					props: { title: '캐릭터 스킬' }
+				},
+				{
+					component: 'RankListView',
+					dataKey: 'ranks_raw',
+					initDataKey: 'gacha',
+					props: { title: '별자리' }
+				}
+			],
 			coupon: {
 				name: '리딤코드'
 			}
