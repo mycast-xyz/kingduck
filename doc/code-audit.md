@@ -161,6 +161,16 @@
   정정, 기존 `+layout.ts` 컨벤션과 일치). 잔존 `console.*`는 catch 블록의 정당한 `console.error`(69)·
   `console.warn`(3)뿐. `pnpm run check` 0 errors. 중복 파일은 이전 세션에서 이미 삭제됨. ✅
 
+### 2026-06-17 · 백엔드 안정성·성능 일괄 (Phase 1 + 후속)
+
+> 상세 설계/로드맵은 `redesign-plan.md` 참고. 아래는 `kingduck-server`에 적용 완료된 항목.
+
+- **Phase 1**: B-S8(비디오 엔드포인트 authorize+rate limit)·B-L1(DB fail-fast `process.exit(1)`+재시도, listen 전 연결)·graceful shutdown(SIGTERM/SIGINT)·B-L3(기동 시 stale RUNNING sweep)·B-S9(JWT payload 로그 제거 + console→winston 100건)·B-S6(어드민 authorize `recheckDb`)·asyncHandler 도입(공개 라우터 7종)·`/health`+compose healthcheck. ✅
+- **B-H5** N+1 제거: `AdminController.getGameList`(count×3N → groupBy 4쿼리)·`CrawlerController.getStatus`((game,type)별 findFirst → 로그 1회+Map)·`DataSyncService.syncCharacters`(element/path find 2×N → 선로딩 캐시 리졸버). 실DB 대조 검증. ✅
+- **B-H6** 크롤러 실패 은폐 수정: starrail/ww EventScraper가 에러를 []로 삼켜 SUCCESS/0 기록하던 것 → throw로 표면화(정상 빈 결과는 유지). ✅
+- **B-M7** 데드 config 제거: `application.{dev,prod}.json`의 db_server(Sequelize 잔재)·redis_server 삭제. ✅
+- **starrail 크롤러**: hakush→starrailstation 마이그레이션(과제1) + endfield item fix(과제2) — `CRAWLER_SOURCE_MIGRATION_PLAN.md` 참고. ✅
+
 ---
 
 ## 1. 백엔드 — 보안 (`kingduck-server`)
