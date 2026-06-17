@@ -12,6 +12,7 @@
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { GameInitConfig } from '../../model/game/GameInitConfig';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
+	import { localizedName } from '../../model/game/localizedName';
 
 	const { listData, currentUrl, isMobile, initData, title } = $props<{
 		listData: any;
@@ -54,30 +55,11 @@
 	};
 
 	// 이름 변수 처리를 위한 구문
-	const getFormattedName = (item: any) => {
-		// 한국어 이름이 있는 경우
-		if (item.name?.kr) {
-			return item.name.kr.replace(/<[^>]*>/g, '');
-		}
-
-		// Name 속성이 있는 경우
-		if (item.name?.Name) {
-			return item.name.Name;
-		}
-
-		// title 속성이 있는 경우
-		if (item.title) {
-			return item.title;
-		}
-
-		// name이 문자열인 경우
-		if (typeof item.name === 'string') {
-			return item.name;
-		}
-
-		// 기본값
-		return '';
-	};
+	const getFormattedName = (item: any) =>
+		localizedName(item.name) ||
+		item.title ||
+		(typeof item.name === 'string' ? item.name : '') ||
+		'';
 	const getFormattedDescription = (item: any, selectedLevel: number) => {
 		if (item?.info) {
 			let description = item.info;

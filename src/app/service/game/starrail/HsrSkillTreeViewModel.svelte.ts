@@ -1,5 +1,6 @@
 import { SkillTreeViewModel, type SkillItem } from '../SkillTreeViewModel';
 import { hsrSkillService } from './HsrSkillService';
+import { localizedName } from '../../../model/game/localizedName';
 
 export class HsrSkillTreeViewModel extends SkillTreeViewModel {
 	get items(): SkillItem[] {
@@ -25,9 +26,12 @@ export class HsrSkillTreeViewModel extends SkillTreeViewModel {
 		}));
 	}
 
-	private getFormattedName(item: any) {
-		if (item.name?.kr) return item.name.kr.replace(/<[^>]*>/g, '');
-		return item.name || '';
+	private getFormattedName(item: any): string {
+		return (
+			localizedName(item.name) ||
+			(typeof item.name === 'string' ? item.name : '') ||
+			''
+		);
 	}
 
 	getFormattedDescription(item: SkillItem, level: number): string {

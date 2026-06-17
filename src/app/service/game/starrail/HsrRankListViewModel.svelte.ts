@@ -1,5 +1,6 @@
 import { RankListViewModel, type RankItem } from '../RankListViewModel';
 import { hsrSkillService } from './HsrSkillService';
+import { localizedName } from '../../../model/game/localizedName';
 
 export class HsrRankListViewModel extends RankListViewModel {
 	get items(): RankItem[] {
@@ -16,13 +17,15 @@ export class HsrRankListViewModel extends RankListViewModel {
 		}));
 	}
 
-	private getFormattedName(item: any) {
-		if (item.name?.kr) return item.name.kr.replace(/<[^>]*>/g, '');
-		if (item.name?.Name) return item.name.Name;
-		if (item.Name) return item.Name;
-		if (item.title) return item.title;
-		if (typeof item.name === 'string') return item.name;
-		return '';
+	private getFormattedName(item: any): string {
+		// name 객체(kr/Name) → sibling(Name/title) → name 문자열 순(기존 동작 보존)
+		return (
+			localizedName(item.name) ||
+			item.Name ||
+			item.title ||
+			(typeof item.name === 'string' ? item.name : '') ||
+			''
+		);
 	}
 
 	private getFormattedImage(item: any) {

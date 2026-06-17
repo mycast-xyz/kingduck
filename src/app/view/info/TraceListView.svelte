@@ -3,6 +3,7 @@
 	import { EndfieldFactoryViewModel } from '../../service/game/endfield/EndfieldFactoryViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
+	import { localizedName } from '../../model/game/localizedName';
 
 	const {
 		listData,
@@ -73,14 +74,12 @@
 		}));
 	});
 
-	const getFormattedName = (item: any) => {
-		if (item.name?.kr) return item.name.kr.replace(/<[^>]*>/g, '');
-		if (item.name?.Name) return item.name.Name;
-		if (item.PropertyNodeTitle) return item.PropertyNodeTitle;
-		if (item.title) return item.title;
-		if (typeof item.name === 'string') return item.name;
-		return '';
-	};
+	const getFormattedName = (item: any) =>
+		localizedName(item.name) ||
+		item.PropertyNodeTitle ||
+		item.title ||
+		(typeof item.name === 'string' ? item.name : '') ||
+		'';
 
 	const getFormattedImage = (item: any) => {
 		return item.Icon || item.PropertyNodeIcon
