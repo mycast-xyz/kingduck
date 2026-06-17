@@ -8,6 +8,7 @@
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { GameInitConfig } from '../../model/game/GameInitConfig';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { itemData, propertyBase, currentUrl, isMobile, contentColor, title, initData } = $props<{
 		itemData: any;
@@ -16,7 +17,7 @@
 		isMobile: boolean;
 		contentColor: string;
 		title?: string;
-		initData?: any;
+		initData?: ViewInitData;
 	}>();
 
 	let gameInit = $state<GameInitConfig | null>(null);

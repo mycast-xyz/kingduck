@@ -2,13 +2,14 @@
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { hsrItemService } from '../../service/game/starrail/HsrItemService';
 	import { sanitizeHtml } from '../../util/sanitize';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { listData, currentUrl, isMobile, gameId, initData, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
 		gameId?: number;
-		initData: any;
+		initData: ViewInitData;
 		title?: string;
 	}>();
 

@@ -6,12 +6,13 @@
 	import { EndfieldPotentialViewModel } from '../../service/game/endfield/EndfieldPotentialViewModel.svelte';
 	import { Reverse1999RankListViewModel } from '../../service/game/reverse1999/Reverse1999RankListViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { listData, currentUrl, gameSlug, initData, vmType, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
-		initData: any;
+		initData: ViewInitData;
 		gameSlug: string;
 		vmType?: string;
 		title?: string;

@@ -4,6 +4,7 @@
 	import ContentLayer from '../../view-framework/content/ContentLayer.svelte';
 	import TeamMember from './TeamMember.svelte';
 	import { Reverse1999TeamViewModel } from '../../service/game/reverse1999/Reverse1999TeamViewModel.svelte';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	// Props
 	interface TeamData {
@@ -21,7 +22,7 @@
 		currentUrl?: string;
 		isMobile?: boolean;
 		gameId?: number;
-		initData?: any;
+		initData?: ViewInitData;
 		gameSlug?: string; // Passed from parent
 		title?: string;
 	}>();

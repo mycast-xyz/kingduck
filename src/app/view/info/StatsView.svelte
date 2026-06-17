@@ -5,12 +5,13 @@
 	import { EndfieldStatsViewModel } from '../../service/game/endfield/EndfieldStatsViewModel.svelte';
 	import { Reverse1999StatsViewModel } from '../../service/game/reverse1999/Reverse1999StatsViewModel.svelte';
 	import { getCardBgStyle } from '../../util/StyleUtils';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { listData, currentUrl, isMobile, initData, gameId, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
-		initData: any;
+		initData: ViewInitData;
 		gameId: string;
 		title?: string;
 	}>();

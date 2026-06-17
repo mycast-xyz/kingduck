@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { listData, currentUrl, isMobile, initData, title } = $props<{
 		listData: any; // Character level/skill data needed for calculation
 		currentUrl: string;
 		isMobile: boolean;
-		initData: any;
+		initData: ViewInitData;
 		title?: string;
 	}>();
 

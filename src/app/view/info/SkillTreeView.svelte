@@ -6,12 +6,13 @@
 	import { EndfieldPassiveViewModel } from '../../service/game/endfield/EndfieldPassiveViewModel.svelte';
 	import { Reverse1999SkillViewModel } from '../../service/game/reverse1999/Reverse1999SkillViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { listData, currentUrl, initData, extraData, gameId, gameSlug, title, vmType } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
-		initData: any;
+		initData: ViewInitData;
 		extraData?: any;
 		gameId?: any;
 		gameSlug?: string;

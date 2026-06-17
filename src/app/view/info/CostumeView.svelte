@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const { listData, currentUrl, isMobile, initData, title } = $props<{
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
-		initData: any;
+		initData: ViewInitData;
 		title?: string;
 	}>();
 

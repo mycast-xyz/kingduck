@@ -4,6 +4,7 @@
 	import type { CharacterType } from '../../model/api/api';
 	import { CharacterRarityService } from '../../service/character/CharacterRarityService';
 	import { getCardBgStyle as getGradientStyle } from '../../util/StyleUtils';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const {
 		originalId,
@@ -16,7 +17,7 @@
 		originalId: number | string;
 		gameId: number;
 		currentUrl?: string;
-		initData?: any;
+		initData?: ViewInitData;
 		isMain?: boolean;
 		isMobile?: boolean;
 	}>();

@@ -2,6 +2,7 @@
 	import Layer from '../../view-framework/content/ContentLayer.svelte';
 	import { EndfieldFactoryViewModel } from '../../service/game/endfield/EndfieldFactoryViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
+	import type { ViewInitData } from '../../model/game/ViewInitData';
 
 	const {
 		listData,
@@ -16,7 +17,7 @@
 		listData: any;
 		currentUrl: string;
 		isMobile: boolean;
-		initData: any;
+		initData: ViewInitData;
 		title?: string;
 		cols?: number;
 		gameId?: any;
