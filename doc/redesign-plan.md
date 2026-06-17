@@ -2,7 +2,28 @@
 
 > 대상: 프론트엔드 `kingduck` (SvelteKit / Svelte 5 runes) + 백엔드 `kingduck-server` (Express / Prisma / PostgreSQL)
 > 목적: 전체 코드베이스 리팩터를 앞두고 "무엇을 어떻게 고칠지"를 우선순위와 함께 정리한 실행 로드맵.
-> 작성일: 2026-06-17
+> 작성일: 2026-06-17 · 최종 갱신: 2026-06-17
+
+---
+
+## 진행 현황 (2026-06-17 세션)
+
+대부분의 안전~중위험 항목을 처리 완료(전부 커밋·push, tsc/check green). 상세는 각 항목의 ✅ 표시와
+`code-audit.md`의 Changelog 참고.
+
+**✅ 완료**
+- 백엔드: starrail 크롤러 hakush→starrailstation 마이그레이션 · Phase 1 전부(비디오 인증·DB fail-fast·
+  graceful shutdown·stale sweep·JWT·asyncHandler·/health·console→logger) · B-H5(N+1) · B-H6(실패 은폐) ·
+  B-M5(Element 유니크) · B-M7(데드 config) · A5/B-H7(HTTP 재시도) · **B-H4b(originalId 컬럼/유니크, 마이그레이션)** ·
+  **B-M1(응답 봉투 통일 + URL-aware unwrap 인터셉터, 브라우저 E2E 검증)** · CORP 이미지 허용 · B2(페이지네이션 clamp 통합)
+- 프론트: **Phase 2 전부**(A1 GameRegistry, F-B3 gameId slug 통일) · Phase 3 대부분(E4 죽은코드, E2 viewmodel
+  중복제거+GameItemService, loadGameContext, F-T4 부분[gameInit/initData/metadata 인터페이스], F-B1/B2 구독누수 14곳)
+
+**⏳ 남음 (저ROI 또는 리스크 — 별도 판단)**
+- **F-T4 적용 확대**: 게임별 metadata 타입을 소비처에 강제 적용(`item.name?.kr` 등 느슨한 데이터에서 연쇄 에러 → 케이스별 핸들링 필요). 인터페이스 토대는 마련됨.
+- **B-H3 공개 페이지네이션**: `game/service` 무제한 등 — 공개 응답을 페이지네이션하면 프론트 계약 변경 리스크.
+- **크롤러 A4(작업 mutex)**: 중복실행 가드(RUNNING 로그)가 이미 부분 처리 중. 추가 견고화 여지.
+- Desktop/Mobile 통합: **보류 확정**(사용자 결정, 레이아웃 깨짐 위험).
 
 ---
 
