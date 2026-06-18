@@ -1,16 +1,61 @@
 <script lang="ts">
-	import client from '../../../service/api/client';
+	import client, { getApiBaseUrl } from '../../../service/api/client';
 	import { onMount } from 'svelte';
 	import { WindowService } from '../../../service/WindowService';
+	import { toastStore } from '../../../service/ToastService';
+	import { authTokenService } from '../../../service/auth/AuthTokenService';
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 
 	let gameList: any = $state([]);
+	let uploadingSlug = $state<string | null>(null);
 
 	onMount(async () => {
 		await getGameList();
 	});
+
+	// 파일 선택 → 아이콘 업로드.
+	function onPickIcon(game: any, e: Event) {
+		const input = e.currentTarget as HTMLInputElement;
+		const file = input.files?.[0];
+		if (file) uploadIcon(game, file);
+		input.value = ''; // 같은 파일 재선택 허용
+	}
+
+	async function uploadIcon(game: any, file: File) {
+		if (!file.type.startsWith('image/')) {
+			toastStore.error('이미지 파일만 업로드할 수 있습니다.');
+			return;
+		}
+		uploadingSlug = game.slug;
+		try {
+			const form = new FormData();
+			form.append('file', file);
+			// FormData는 fetch로 보내 multipart boundary가 자동 설정되게 한다(인증 토큰 수동 첨부).
+			const res = await fetch(`${getApiBaseUrl()}/api/v0/admin/game/${game.slug}/icon`, {
+				method: 'POST',
+				headers: { Authorization: `Bearer ${authTokenService.getToken()}` },
+				body: form
+			});
+			const json = await res.json();
+			if (res.ok && json?.data?.iconUrl) {
+				const newIcon = json.data.iconUrl;
+				// 캐시버스팅 포함된 새 iconUrl로 교체 → 즉시 미리보기 갱신.
+				gameList = gameList.map((g: any) =>
+					g.slug === game.slug ? { ...g, iconUrl: newIcon } : g
+				);
+				toastStore.success(`${game.name} 아이콘이 변경되었습니다.`);
+			} else {
+				toastStore.error(json?.resultMsg || '아이콘 업로드에 실패했습니다.');
+			}
+		} catch (err) {
+			console.error('아이콘 업로드 오류:', err);
+			toastStore.error('아이콘 업로드에 실패했습니다.');
+		} finally {
+			uploadingSlug = null;
+		}
+	}
 
 	async function getGameList() {
 		try {
@@ -71,11 +116,32 @@
 					<tr class="border-b bg-white hover:bg-gray-50">
 						<td class="px-6 py-4 font-medium text-gray-900">
 							<div class="flex items-center">
-								<img
-									src={data.url + '/' + game.iconUrl}
-									alt={game.name}
-									class="mr-3 h-10 w-10 rounded-full"
-								/>
+								<!-- 클릭/호버로 아이콘 업로드 -->
+								<label
+									class="group relative mr-3 h-10 w-10 cursor-pointer"
+									title="아이콘 변경 (클릭하여 이미지 업로드)"
+								>
+									<img
+										src={data.url + '/' + game.iconUrl}
+										alt={game.name}
+										class="h-10 w-10 rounded-full object-cover"
+									/>
+									<span
+										class="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity group-hover:opacity-100"
+									>
+										{#if uploadingSlug === game.slug}
+											<i class="ri-loader-4-line animate-spin"></i>
+										{:else}
+											<i class="ri-camera-line"></i>
+										{/if}
+									</span>
+									<input
+										type="file"
+										accept="image/*"
+										class="hidden"
+										onchange={(e) => onPickIcon(game, e)}
+									/>
+								</label>
 
 								<div>
 									<div class="text-sm font-medium">{game.name}</div>
