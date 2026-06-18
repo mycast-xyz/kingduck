@@ -121,7 +121,8 @@ export interface ComponentLayout {
 		| 'ProfileView'
 		| 'StoryView'
 		| 'VoiceView'
-		| 'EndfieldProfileView';
+		| 'EndfieldProfileView'
+		| 'Reverse1999ProfileView';
 	dataKey: string;
 	initDataKey?: string;
 	props?: Record<string, any>;

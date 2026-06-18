@@ -201,7 +201,8 @@ export class Reverse1999Init {
 					dataKey: 'costume',
 					initDataKey: 'costume',
 					props: { title: '스킨정보' }
-				}
+				},
+				{ component: 'Reverse1999ProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } }
 			]
 		};
 	}
