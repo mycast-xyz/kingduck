@@ -108,3 +108,41 @@
 > 깨진 이미지는 **배포에 니케 미크롤**(로컬 정상) → 서버 크롤로 해결. blablalink는 **공식 한국어 API 소스**라 매력적이나
 > **API 공개 여부 스파이크** 선행. L2D는 Nikke-db가 **Spine(.skel/.atlas)** 포맷 → `pixi-spine`로 렌더 가능, 단
 > 저작권·용량·런타임버전을 PoC로 검증 후 진행.
+
+---
+
+# 업데이트 (2026-06-19) — 에이전트 조사 결과 반영
+
+## A. blablalink 데이터 구조 (실측 확정)
+- **리스트**: SPA가 받는 단일 JSON(`sg-tools-cdn .../*.json`, 해시 URL → response 가로채기)에 192캐릭 전원
+  `original_rare, class, corporation, use_burst_skill, element_id.element.element, shot_id.element.weapon_type, name_localkey.name, id, resource_id` 완비(누락 0). DOM 카드 순서 == JSON 순서라 이미지(webp)는 인덱스 조인.
+  → **이미 스크래퍼 구현**(`BlablalinkImageScraper`): image_url + metadata.bl{Class,Corp,Burst,Element,Weapon} 보강(168캐릭).
+- **상세**(`?nikke=<resource_id>`): SPA가 캐릭터별 JSON fetch(해시 URL, body에 `skill1_detail`) — **전부 한국어**:
+  - `description_localkey`(스토리/소개), `skill1_detail`/`skill2_detail`/`ulti_skill_detail`(스킬: name_localkey+description_localkey+icon, `{description_value_NN}` 치환 필요),
+    `cv_localkey`(CV: 이명호/노토 마미코), `character_costume_list`/`additional_skins`(코스튬: 오피스 테라피 등),
+    `critical_ratio/critical_damage` + 레벨별 atk/def/hp 스탯, `squad`.
+
+## B. 상세 데이터 활용 방안 (권장)
+blablalink 상세를 2차 스크래퍼로 긁어 **fandom+Inven을 대체**(더 정확한 공식 한국어):
+1. **스킬**(최우선): Inven 스킬 → blablalink 스킬로 교체. 한글 스킬명+설명+아이콘 보유.
+   단 설명의 `{description_value_NN}` 플레이스홀더는 `skillN_table`(레벨별 값)로 치환 필요 → 레벨 슬라이더까지 가능(다른 게임 SkillTreeView와 동일).
+2. **스토리/소개**: `description_localkey` → 니케 프로필에 소개 섹션 추가(현재 없음).
+3. **코스튬**: `character_costume_list` 이미지 → 코스튬 갤러리 섹션(신규).
+4. **스탯**: 레벨별 atk/def/hp + 크리 → 기초 스탯 섹션(다른 게임처럼).
+5. **CV/스쿼드**: 프로필 보강(이미 일부 있음).
+- 구현: `nikke/image` enrichment처럼 **상세 enrichment 크롤러**(resource_id 순회 → 상세 JSON 가로채기 → metadata 보강). 헤드리스라 무겁다(190캐릭 × 렌더) → 배치/캐시.
+
+## C. L2D(Spine) — 확정 (에이전트 실측)
+- 포맷: **Spine 4.0 + 4.1 혼재**(.skel 헤더 실측: c010=4.0.47, c014=4.1.20). 4.1 런타임으로 4.0 로드 시 깨짐 → **버전별 런타임 둘 다 필요**.
+- 버전표: Nikke-db `js/json/l2d.json` = `[{name(영문), id:"cXXX", version?:4.1}]`(version 없으면 4.0).
+- 패키지: **`@esotericsoftware/spine-player`** 듀얼 별칭(pnpm):
+  `spine-player-40→@…/spine-player@4.0.31`, `spine-player-41→@…/spine-player@4.1.20`. (pixi-spine는 pixi 의존성 때문에 비채택.)
+- 컴포넌트: `NikkeL2dView.svelte` — version별 동적 import → `new SpinePlayer(host,{skelUrl,atlasUrl,animation:'idle',premultipliedAlpha:true,alpha:true,showControls:false})`, onDestroy dispose. .png는 atlas가 참조해 자동 로드.
+- 에셋: raw.githubusercontent **CORS 열림(실측)** → PoC 핫링크 OK. 캐릭당 ~4–5MB(png 2048²) → **지연 로드 필수**, 운영은 R2/자체호스팅 권장.
+- 매핑: **크롤러가 `metadata.nikkeId`(cXXX)+`spineVersion` 저장**(blablalink 재소싱 시 함께) → 프론트는 metadata만 읽음(매핑테이블 유지보수 불필요).
+- PoC: c010(4.0)·c014(4.1) 두 캐릭으로 검증 후 화이트리스트 확대.
+
+## D. (별도 기획 필요) 서버 ↔ 로컬 데이터 불일치
+- 증상: `172.30.1.20:8080/content/genshin/276` vs `localhost:4173/content/genshin/614` — **같은 캐릭터인데 id도 정보도 다름**.
+- 추정 원인: 서버/로컬 DB가 **서로 다른 크롤로 채워져** auto-increment id가 어긋나고(같은 캐릭 다른 id), 크롤 시점·소스 차이로 metadata 내용도 달라짐. (static 이미지가 머신로컬인 것과 같은 뿌리 — 데이터가 머신별로 갈라짐.)
+- 해결 방향(후속 기획): ① 캐릭터 식별을 auto-id가 아닌 **originalId(소스 고유키) 기준**으로 일원화, ② 서버를 단일 소스로(서버에서만 크롤) 하거나 DB 동기화 절차 수립, ③ 프론트 링크/참조도 originalId 기반으로. → **별도 문서로 상세화 예정.**
