@@ -144,8 +144,21 @@
 		return `${seconds}초`;
 	}
 
-	function viewDetails(logId: string) {
-		toastStore.info(`로그 상세 정보 기능은 준비 중입니다. (ID: ${logId})`);
+	// 선택된 로그(상세 모달). getLogs가 이미 전체 필드(metadata/errorMsg/endTime 등)를 주므로
+	// 추가 요청 없이 목록의 log 객체를 그대로 모달에 띄운다.
+	let selectedLog = $state<any>(null);
+
+	function viewDetails(log: any) {
+		selectedLog = log;
+	}
+
+	function prettyMeta(meta: any): string {
+		if (meta == null) return '';
+		try {
+			return typeof meta === 'string' ? meta : JSON.stringify(meta, null, 2);
+		} catch {
+			return String(meta);
+		}
 	}
 
 	function handleSearch() {
@@ -250,7 +263,7 @@
 							</td>
 							<td class="px-6 py-4 text-right">
 								<button
-									onclick={() => viewDetails(log.id)}
+									onclick={() => viewDetails(log)}
 									class="rounded-lg px-3 py-2 text-sm font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
 								>
 									<i class="ri-eye-line mr-1"></i>
@@ -284,3 +297,54 @@
 		</div>
 	{/if}
 </div>
+
+<!-- 로그 상세 모달 -->
+{#if selectedLog}
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+		onclick={() => (selectedLog = null)}
+		role="presentation"
+	>
+		<div
+			class="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl"
+			onclick={(e) => e.stopPropagation()}
+			role="presentation"
+		>
+			<div class="mb-4 flex items-center justify-between">
+				<h3 class="text-lg font-bold text-gray-900">크롤러 로그 상세 #{selectedLog.id}</h3>
+				<button
+					aria-label="닫기"
+					class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+					onclick={() => (selectedLog = null)}
+				>
+					<i class="ri-close-line text-2xl"></i>
+				</button>
+			</div>
+
+			<dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+				<div><dt class="text-gray-500">게임</dt><dd class="font-medium">{selectedLog.game?.name || '-'} ({selectedLog.game?.slug || '-'})</dd></div>
+				<div><dt class="text-gray-500">크롤러 타입</dt><dd class="font-medium">{selectedLog.crawlerType}</dd></div>
+				<div><dt class="text-gray-500">상태</dt><dd><span class="rounded-full px-2 py-1 text-xs font-medium {getStatusBadge(selectedLog.status)}">{getStatusText(selectedLog.status)}</span></dd></div>
+				<div><dt class="text-gray-500">수집 건수</dt><dd class="font-medium">{selectedLog.itemsFound ?? 0}개</dd></div>
+				<div><dt class="text-gray-500">시작</dt><dd class="font-medium">{formatDateTime(selectedLog.startTime)}</dd></div>
+				<div><dt class="text-gray-500">종료</dt><dd class="font-medium">{selectedLog.endTime ? formatDateTime(selectedLog.endTime) : '-'}</dd></div>
+				<div><dt class="text-gray-500">소요 시간</dt><dd class="font-medium">{calculateDuration(selectedLog.startTime, selectedLog.endTime)}</dd></div>
+				<div><dt class="text-gray-500">기록 시각</dt><dd class="font-medium">{selectedLog.createdAt ? formatDateTime(selectedLog.createdAt) : '-'}</dd></div>
+			</dl>
+
+			{#if selectedLog.errorMsg}
+				<div class="mt-4">
+					<div class="mb-1 text-sm font-medium text-red-700">메시지 / 에러</div>
+					<pre class="max-h-48 overflow-auto whitespace-pre-wrap rounded bg-red-50 p-3 text-xs text-red-800">{selectedLog.errorMsg}</pre>
+				</div>
+			{/if}
+
+			{#if selectedLog.metadata != null}
+				<div class="mt-4">
+					<div class="mb-1 text-sm font-medium text-gray-700">메타데이터</div>
+					<pre class="max-h-64 overflow-auto whitespace-pre-wrap rounded bg-gray-50 p-3 text-xs text-gray-800">{prettyMeta(selectedLog.metadata)}</pre>
+				</div>
+			{/if}
+		</div>
+	</div>
+{/if}
