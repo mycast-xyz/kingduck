@@ -9,9 +9,9 @@ export const getApiBaseUrl = (): string => {
 		return PUBLIC_API_BASE_URL;
 	}
 	if (typeof window !== 'undefined') {
-		return `${window.location.protocol}//${window.location.hostname}:3000`;
+		return `${window.location.protocol}//${window.location.hostname}:3100`;
 	}
-	return 'http://localhost:3000';
+	return 'http://127.0.0.1:3100';
 };
 
 const client = axios.create({

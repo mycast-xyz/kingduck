@@ -9,7 +9,7 @@
 캐릭터/이벤트/캘린더/티어리스트/쿠폰 정보를 한 플랫폼에서 제공하는 비공식 정보 사이트.
 
 - **이 저장소 = 프론트엔드만.** SvelteKit(Svelte 5 runes) + TypeScript + TailwindCSS.
-- **백엔드는 별도 저장소 `kingduck-server`** (Node/Express + Prisma + PostgreSQL), 포트 `3000`.
+- **백엔드는 별도 저장소 `kingduck-server`** (Node/Express + Prisma + PostgreSQL), 포트 `3100`.
   이 repo에는 없다. API는 전부 `/api/v0/...` REST.
 - **배포**: `adapter-static` 기반 **CSR/SPA** (`fallback: index.html`). 서버 렌더링 없음.
 
@@ -17,7 +17,7 @@
 
 ```bash
 pnpm install
-pnpm run dev          # 개발 서버 (http://localhost:5173). 백엔드 3000번이 떠 있어야 데이터가 보인다
+pnpm run dev          # 개발 서버 (http://localhost:4173, strictPort). 백엔드 3100번이 떠 있어야 데이터가 보인다
 pnpm run build        # 정적 빌드
 pnpm run preview      # 빌드 결과 미리보기
 pnpm run check        # svelte-kit sync && svelte-check (타입 검사) — 변경 후 항상 실행
@@ -26,8 +26,11 @@ pnpm run format       # prettier --write
 pnpm run test         # vitest --run
 ```
 
-> 백엔드 URL은 `.env`의 `PUBLIC_API_BASE_URL`(기본 `http://localhost:3000`). 단, `client.ts`는
-> 브라우저에서 `window.location.hostname:3000`을 우선 사용한다(아래 주의점 참고).
+> 백엔드 URL은 `.env`의 `PUBLIC_API_BASE_URL`(기본 `http://127.0.0.1:3100`). `localhost`가 아닌
+> `127.0.0.1`을 쓰는 이유: 같은 머신의 다른 프로젝트가 IPv6(`::1`)로 포트를 점유 중일 때
+> `localhost`→`::1` 해석으로 SSR(node fetch)가 엉뚱한 서버에 붙는 사고를 막기 위함. `client.ts`는
+> `PUBLIC_API_BASE_URL`이 없을 때만 브라우저에서 `window.location.hostname:3100`을 폴백으로 쓴다.
+> 포트: 프론트 `4173`(strictPort), 백엔드 `3100`. (5173/3000 및 5xxx 인근은 다른 프로젝트가 사용)
 
 ## 아키텍처 핵심 (이것만은 알고 시작)
 
@@ -69,8 +72,9 @@ pnpm run test         # vitest --run
 
 ## 주의점 (Gotchas)
 
-- **API base URL 이원화**: `client.ts`는 브라우저에서 `window.location` 기반 `:3000`을 우선 쓴다.
-  배포 시 백엔드가 같은 호스트 3000이 아니면 이 로직을 손봐야 한다(`PUBLIC_API_BASE_URL`만 바꾼다고 안 됨).
+- **API base URL 이원화**: `PUBLIC_API_BASE_URL`이 설정돼 있으면 그것을 쓰고(현재 `.env`엔 설정됨),
+  없을 때만 `client.ts`가 브라우저에서 `window.location` 기반 `:3100` 폴백을 쓴다.
+  배포 시 백엔드가 같은 호스트 3100이 아니면 이 폴백 로직도 손봐야 한다.
 - **CSR 전용**: `browser` 가드 없는 `window`/`localStorage` 접근 주의. prerender 안 함.
 - **관리자 가드가 클라이언트 전용**: 진짜 권한 검증은 백엔드 책임. 프론트 가드는 UX용.
 - **서비스 위치**: 모든 서비스는 `src/app/service/`에 있다. (옛 `src/service/` 잔재 폴더는 제거됨 — `doc/code-audit.md` F-T2.)
