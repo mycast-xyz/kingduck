@@ -94,26 +94,16 @@
 						style={cardStyle || undefined}
 					>
 						<div
-							class="rounded-t-lg {data.params === 'endfield'
-								? 'flex h-[166px] justify-center overflow-hidden'
-								: ''}"
+							class="flex h-[166px] justify-center overflow-hidden rounded-t-lg"
 							style={cardStyle || undefined}
 						>
-							{#if data.params === 'endfield'}
-								<img
-									src="{currentUrl}/{item.imageUrl}"
-									alt={item.name}
-									loading="lazy"
-									class="h-full w-auto object-cover"
-								/>
-							{:else}
-								<img
-									src="{currentUrl}/{item.imageUrl}"
-									alt={item.name}
-									loading="lazy"
-									width="100%"
-								/>
-							{/if}
+							<!-- 전 게임 통일: 고정 박스 + object-cover(상단 정렬)로 균일하게 -->
+							<img
+								src="{currentUrl}/{item.imageUrl}"
+								alt={item.name}
+								loading="lazy"
+								class="h-full w-full object-cover object-top"
+							/>
 						</div>
 						<div
 							class="image-info absolute inset-x-0 bottom-0 px-2 py-2"
@@ -177,26 +167,16 @@
 					style={cardStyle || undefined}
 				>
 					<div
-						class="relative rounded-t-lg {data.params === 'endfield'
-							? 'flex h-[334px] justify-center overflow-hidden'
-							: ''}"
+						class="relative flex h-[334px] justify-center overflow-hidden rounded-t-lg"
 						style={cardStyle || undefined}
 					>
-						{#if data.params === 'endfield'}
-							<img
-								src="{currentUrl}/{item.imageUrl}"
-								alt={item.name}
-								loading="lazy"
-								class="h-full w-auto object-cover"
-							/>
-						{:else}
-							<img
-								src="{currentUrl}/{item.imageUrl}"
-								alt={item.name}
-								loading="lazy"
-								width="100%"
-							/>
-						{/if}
+						<!-- 전 게임 통일: 고정 박스 + object-cover(상단 정렬)로 이미지 크기/비율 제각각이어도 균일하게 -->
+						<img
+							src="{currentUrl}/{item.imageUrl}"
+							alt={item.name}
+							loading="lazy"
+							class="h-full w-full object-cover object-top"
+						/>
 
 						<div
 							class="image-info absolute inset-x-0 bottom-0 h-16 px-4 py-2"
