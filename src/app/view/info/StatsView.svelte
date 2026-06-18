@@ -4,6 +4,7 @@
 	import { WwStatsViewModel } from '../../service/game/wutheringwaves/WwStatsViewModel.svelte';
 	import { EndfieldStatsViewModel } from '../../service/game/endfield/EndfieldStatsViewModel.svelte';
 	import { Reverse1999StatsViewModel } from '../../service/game/reverse1999/Reverse1999StatsViewModel.svelte';
+	import { GenshinStatsViewModel } from '../../service/game/genshin/GenshinStatsViewModel.svelte';
 	import { getCardBgStyle } from '../../util/StyleUtils';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
 
@@ -32,9 +33,13 @@
 		const isWw = gId === 'wutheringwaves';
 		const isEndfield = gId === 'endfield';
 		const isReverse1999 = gId === 'reverse1999';
+		const isGenshin = gId === 'genshin';
 
 		if (isHsr && listData && (listData['0'] || listData[0])) {
 			return new HsrStatsViewModel(listData, String(gId));
+		}
+		if (isGenshin && listData && (listData.prop || listData.promote || listData.stats)) {
+			return new GenshinStatsViewModel(listData, String(gId), currentUrl);
 		}
 		if (isWw && listData && typeof listData === 'object') {
 			return new WwStatsViewModel(listData, String(gId), currentUrl);

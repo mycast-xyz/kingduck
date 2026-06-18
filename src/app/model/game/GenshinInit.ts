@@ -141,8 +141,9 @@ export class GenshinInit {
 					}
 				}
 			},
-			// starrail과 동일한 틀: 돌파 재료(MainItemView) / 스킬(SkillTreeView) / 별자리(RankListView).
-			// 기초 스탯(StatsView)은 원신 성장 곡선 계산이 필요해 후속.
+			// starrail과 동일한 틀: 기초 스탯(StatsView) / 돌파 재료(MainItemView) /
+			// 스킬(SkillTreeView) / 별자리(RankListView).
+			// 기초 스탯은 GenshinStatsViewModel이 Ambr upgrade(prop initValue + 성장곡선 + 돌파 addProps)로 계산.
 			layout: [
 				{
 					component: 'MainItemView',
@@ -159,6 +160,7 @@ export class GenshinInit {
 					dataKey: 'teams',
 					props: { title: '추천 파티' }
 				},
+				{ component: 'StatsView', dataKey: 'stats', props: { title: '기초 스탯' } },
 				{ component: 'MainItemView', dataKey: 'ascension', props: { title: '돌파 재료' } },
 				{
 					component: 'SkillTreeView',
