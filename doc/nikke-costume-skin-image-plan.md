@@ -14,9 +14,18 @@
 - → **CostumeView 그대로 재사용** 가능. 니케 코스튬에 **이미지만 채우면** 됨.
 
 ## 1. 해야 할 일 (핵심 = 코스튬 이미지 크롤)
-1. **블라블라링크에서 코스튬 이미지 URL 수집**:
-   - `BlablalinkDetailScraper`가 코스튬 name/grade/description은 이미 캡처 중. 같은 상세 JSON/렌더에서 **코스튬별 이미지(아트/썸네일) URL**도 캡처.
-   - 스파이크: 코스튬 데이터에 이미지 필드가 있는지(있으면 `sg-tools-cdn` webp). 없으면 코스튬 탭 렌더 시 이미지 src 수집.
+
+### 1-0. 스파이크 실측 결과 (중요 — 이미지가 JSON에 없음)
+- `BlablalinkDetailScraper`가 캡처하는 상세 JSON의 `character_costume_list[]` 항목 키(엠마 res=90 실측):
+  `id(예 30016), costume_theme_group_id(3000), resource_id(90=캐릭), costume_index, additional_skins, costume_grade_id("Event"), costume_name_locale, costume_description_locale, costume_shop_type, costume_shop_price_id, is_hidden`
+- **→ 코스튬 JSON에 직접 이미지 URL 필드가 없다.** 이름/등급/설명 + 각종 id만 있음.
+- 참고: 캐릭터 **포트레이트도 JSON이 아니라 렌더된 카드 DOM의 `<img>` src**(`sg-tools-cdn ...webp`)에서 인덱스 조인으로 얻고 있음(BlablalinkCharacterScraper 방식).
+- 단순 CDN 경로 추측(`.../si_c090_01_s.png` 등)은 404 → **패턴 미상**.
+
+### 1-1. 코스튬 이미지 획득 방식 (스파이크로 택1 — 이게 관건)
+1. **상세 페이지 DOM 렌더 추출**(유력): 캐릭터 상세에서 코스튬 탭/섹션을 렌더하면 코스튬 썸네일 `<img>`가 DOM에 뜨는지 확인 → src 수집(포트레이트와 동일 발상). 코스튬 순서 == `character_costume_list` 순서면 인덱스 조인.
+2. **CDN 자산 패턴 역설계**: 코스튬 `id`/`resource_id`+`costume_index`/`costume_theme_group_id` ↔ 실제 `sg-tools-cdn` webp 경로 매핑 규칙을 네트워크 응답에서 역추적(실제 로딩되는 코스튬 이미지 URL을 가로채 id와 대조).
+3. 둘 다 실패 시: 공식/다른 경로 보류(이미지 없이 텍스트 유지).
 2. **이미지 다운로드**: `ImageDownloader.downloadAndSave(url, 'nikke', 'costume', fileName)` → static 저장(webp). 캐릭별·코스튬별 파일명.
 3. **metadata 포맷 정리**: 코스튬을 `{ name, image, desc }` 형태로(현재 `description` → `desc`, `image` 추가). grade는 desc에 합치거나 별도 유지.
 4. **NikkeInit layout에 CostumeView 추가**: `{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } }`.
