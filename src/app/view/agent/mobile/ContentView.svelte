@@ -28,7 +28,6 @@
 	import Reverse1999ProfileView from '../../info/Reverse1999ProfileView.svelte';
 	import NikkeProfileView from '../../info/NikkeProfileView.svelte';
 	import ZzzProfileView from '../../info/ZzzProfileView.svelte';
-	import NikkeL2dView from '../../info/NikkeL2dView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 및 모달 초기화
@@ -329,15 +328,6 @@
 									/>
 								{:else if section.component === 'ZzzProfileView'}
 									<ZzzProfileView
-										listData={meta}
-										{currentUrl}
-										{isMobile}
-										{gameId}
-										initData={getInitData(section)}
-										{...section.props}
-									/>
-								{:else if section.component === 'NikkeL2dView'}
-									<NikkeL2dView
 										listData={meta}
 										{currentUrl}
 										{isMobile}

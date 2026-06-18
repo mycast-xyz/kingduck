@@ -56,20 +56,6 @@ export interface WwCharacterMeta extends BaseCharacterMeta {
 	WeaponTypeName?: string;
 }
 
-/** 승리의 여신: 니케 */
-export interface NikkeCharacterMeta extends BaseCharacterMeta {
-	class?: string; // attacker / defender / supporter
-	burst?: string | number; // 1 | 2 | 3
-	manufacturer?: string; // elysion / missilis / tetra / pilgrim / abnormal
-	squad?: string; // 소속 분대명
-	weaponName?: string; // 무기 이름
-	cv?: Record<string, string>; // 성우 { kor, jpn, eng }
-	/** Nikke-db.github.io l2d/<id>/ 폴더의 스켈레톤 id (예: "c010"). 크롤러가 채운다. */
-	nikkeId?: string;
-	/** Spine 런타임 버전 ("4.0" | "4.1"). 없으면 4.0 기본값. */
-	spineVersion?: string;
-}
-
 /** Arknights: Endfield */
 export interface EndfieldCharacterMeta extends BaseCharacterMeta {
 	charId?: string;

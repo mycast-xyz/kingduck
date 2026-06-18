@@ -125,8 +125,7 @@ export interface ComponentLayout {
 		| 'EndfieldProfileView'
 		| 'Reverse1999ProfileView'
 		| 'NikkeProfileView'
-		| 'ZzzProfileView'
-		| 'NikkeL2dView';
+		| 'ZzzProfileView';
 	dataKey: string;
 	initDataKey?: string;
 	props?: Record<string, any>;

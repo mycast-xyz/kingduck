@@ -154,8 +154,7 @@ export class nikkeInit {
 			},
 			layout: [
 				{ component: 'NikkeProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
-				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } },
-				{ component: 'NikkeL2dView', dataKey: 'metadata', props: { title: 'L2D' } }
+				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } }
 			]
 		};
 	}
