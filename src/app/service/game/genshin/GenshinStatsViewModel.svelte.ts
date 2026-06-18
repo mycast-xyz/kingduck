@@ -122,12 +122,8 @@ export class GenshinStatsViewModel extends StatsViewModelBase {
 			const display = meta.percent
 				? (v * 100).toFixed(1) + '%'
 				: Math.round(v).toLocaleString();
-			rows.push({
-				key: k.replace('FIGHT_PROP_', '').slice(0, 3),
-				name: meta.name,
-				value: display,
-				icon: ''
-			});
+			// 특수 스탯은 아이콘 원 안 약어를 비움(HP/ATK/DEF만 약어 노출).
+			rows.push({ key: '', name: meta.name, value: display, icon: '' });
 		}
 
 		return rows;
