@@ -103,10 +103,16 @@
 								<img
 									src="{currentUrl}/{item.imageUrl}"
 									alt={item.name}
+									loading="lazy"
 									class="h-full w-auto object-cover"
 								/>
 							{:else}
-								<img src="{currentUrl}/{item.imageUrl}" alt={item.name} width="100%" />
+								<img
+									src="{currentUrl}/{item.imageUrl}"
+									alt={item.name}
+									loading="lazy"
+									width="100%"
+								/>
 							{/if}
 						</div>
 						<div
@@ -180,10 +186,16 @@
 							<img
 								src="{currentUrl}/{item.imageUrl}"
 								alt={item.name}
+								loading="lazy"
 								class="h-full w-auto object-cover"
 							/>
 						{:else}
-							<img src="{currentUrl}/{item.imageUrl}" alt={item.name} width="100%" />
+							<img
+								src="{currentUrl}/{item.imageUrl}"
+								alt={item.name}
+								loading="lazy"
+								width="100%"
+							/>
 						{/if}
 
 						<div

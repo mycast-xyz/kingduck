@@ -42,10 +42,24 @@ class CharacterListServiceInit {
 	// 마지막으로 요청한 slug. 빠른 네비게이션 시 stale 응답을 가려낸다 (F-B2).
 	private _activeSlug = '';
 
+	// 세션 내 게임별 리스트 캐시 — 같은 게임 리스트 재진입(뒤로가기 등) 시 네트워크 생략.
+	// raw 리스트만 캐시하고 필터는 매번 applyFilter로 재적용한다. TTL 내에서만 유효.
+	private _listCache = new Map<string, { data: CharacterType[]; at: number }>();
+	private readonly LIST_CACHE_TTL = 5 * 60 * 1000;
+
 	// 'ok'/'error'는 호출부(load)가 장애를 표면화하는 데 쓰고 (F-A3),
 	// 'stale'은 superseded된 응답이라 현재 게임 데이터를 건드리지 않는다 (F-B2).
 	public async getCharacterList(slug: string): Promise<'ok' | 'error' | 'stale'> {
 		this._activeSlug = slug;
+
+		// 캐시 적중(TTL 내) → 네트워크 없이 즉시 렌더.
+		const cached = this._listCache.get(slug);
+		if (cached && Date.now() - cached.at < this.LIST_CACHE_TTL) {
+			this._allCharacters = cached.data;
+			this.applyFilter();
+			return 'ok';
+		}
+
 		try {
 			// Always fetch fresh data on initial load of the page/component call
 			const response = await client.get<CharacterType[]>(`/api/v0/character/${slug}/list`);
@@ -55,6 +69,7 @@ class CharacterListServiceInit {
 
 			if (response.data) {
 				this._allCharacters = response.data || [];
+				this._listCache.set(slug, { data: this._allCharacters, at: Date.now() });
 				this.applyFilter();
 				return 'ok';
 			}
