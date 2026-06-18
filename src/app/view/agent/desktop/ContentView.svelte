@@ -23,6 +23,7 @@
 	import EndfieldProfileView from '../../info/EndfieldProfileView.svelte';
 	import Reverse1999ProfileView from '../../info/Reverse1999ProfileView.svelte';
 	import NikkeProfileView from '../../info/NikkeProfileView.svelte';
+	import ZzzProfileView from '../../info/ZzzProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 가져오기
@@ -103,7 +104,8 @@
 		VoiceView: '음성',
 		EndfieldProfileView: '정보',
 		Reverse1999ProfileView: '정보',
-		NikkeProfileView: '정보'
+		NikkeProfileView: '정보',
+		ZzzProfileView: '정보'
 	};
 
 	const scrollToSection = (id: string) => {
@@ -310,6 +312,15 @@
 								/>
 							{:else if section.component === 'NikkeProfileView'}
 								<NikkeProfileView
+									listData={meta}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'ZzzProfileView'}
+								<ZzzProfileView
 									listData={meta}
 									{currentUrl}
 									{isMobile}

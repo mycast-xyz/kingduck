@@ -6,6 +6,7 @@ import { nikkeInit } from './nikkeInit';
 import { Reverse1999Init } from './Reverse1999Init';
 import { WutheringWavesInit } from './WutheringWavesInit';
 import { EndfieldInit } from './EndfieldInit';
+import { ZzzInit } from './ZzzInit';
 
 /**
  * 게임 레지스트리 — slug → GameInitConfig 팩토리의 단일 진실원.
@@ -29,7 +30,8 @@ const GAME_INIT_FACTORIES: Record<string, () => GameInitConfig> = {
 	nikke: () => new nikkeInit().setInit() as unknown as GameInitConfig,
 	reverse1999: () => new Reverse1999Init().setInit(),
 	wutheringwaves: () => new WutheringWavesInit().setInit(),
-	endfield: () => new EndfieldInit().setInit()
+	endfield: () => new EndfieldInit().setInit(),
+	zzz: () => new ZzzInit().setInit()
 };
 
 /**
