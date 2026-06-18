@@ -152,8 +152,10 @@ export class nikkeInit {
 					}
 				}
 			},
-			// 스킬 데이터는 아직 미스크랩(fandom Skill table 파싱은 후속) → 캐릭터 정보부터 노출.
-			layout: [{ component: 'NikkeProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } }]
+			layout: [
+				{ component: 'NikkeProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
+				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } }
+			]
 		};
 	}
 
