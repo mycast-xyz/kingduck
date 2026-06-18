@@ -53,6 +53,14 @@ export async function loadGameContext(slug: string): Promise<GameContext> {
 	// 게임 설정 주입 (slug → Init은 GameRegistry가 단일 관리)
 	const gameInit = getGameInit(slug);
 	if (gameInit) {
+		// DB에 저장된 등급 색상이 있으면 코드 기본값 위에 덮어쓴다(어드민 편집 반영).
+		if (gameInit.list?.card) {
+			const card = gameInit.list.card;
+			const dbColors = (gameInfo as { rarityColors?: typeof card.rarityColors }).rarityColors;
+			if (dbColors) {
+				card.rarityColors = { ...card.rarityColors, ...dbColors };
+			}
+		}
 		GameSettingInitService.updateGameInit(gameInit);
 	}
 

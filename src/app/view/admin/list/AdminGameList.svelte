@@ -4,12 +4,14 @@
 	import { WindowService } from '../../../service/WindowService';
 	import { toastStore } from '../../../service/ToastService';
 	import { authTokenService } from '../../../service/auth/AuthTokenService';
+	import AdminRarityColorEditor from './AdminRarityColorEditor.svelte';
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
 
 	let gameList: any = $state([]);
 	let uploadingSlug = $state<string | null>(null);
+	let editingColors = $state<{ slug: string; name: string } | null>(null);
 
 	onMount(async () => {
 		await getGameList();
@@ -209,6 +211,16 @@
 							</button>
 							<button
 								type="button"
+								aria-label="등급 색상"
+								title="등급별 카드 색상 편집"
+								onclick={() => (editingColors = { slug: game.slug, name: game.name })}
+								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
+							>
+								<i class="ri-palette-line text-xl"></i>
+								등급 색상
+							</button>
+							<button
+								type="button"
 								aria-label="변수 설정"
 								onclick={() => toastStore.info('변수 설정은 준비 중입니다.')}
 								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
@@ -223,3 +235,11 @@
 		</table>
 	</div>
 </div>
+
+{#if editingColors}
+	<AdminRarityColorEditor
+		slug={editingColors.slug}
+		gameName={editingColors.name}
+		onClose={() => (editingColors = null)}
+	/>
+{/if}
