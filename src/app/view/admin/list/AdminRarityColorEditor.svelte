@@ -1,7 +1,8 @@
 <script lang="ts">
-	import client from '../../../service/api/client';
+	import client, { getApiBaseUrl } from '../../../service/api/client';
 	import { onMount } from 'svelte';
 	import { toastStore } from '../../../service/ToastService';
+	import { authTokenService } from '../../../service/auth/AuthTokenService';
 	import { getGameInit } from '../../../model/game/GameRegistry';
 
 	const { slug, gameName, onClose } = $props<{
@@ -12,8 +13,15 @@
 
 	// {tier: {border, background, text, gradient:{from,to,stop}}}
 	let colors = $state<Record<string, any>>({});
+	// 등급 표시 방식: stars(별 반복) | image(티어별 이미지)
+	let display = $state<{ mode: string; images: Record<string, string> }>({
+		mode: 'stars',
+		images: {}
+	});
 	let loading = $state(true);
 	let saving = $state(false);
+	let uploadingTier = $state<string | null>(null);
+	const currentUrl = getApiBaseUrl();
 
 	onMount(async () => {
 		// 1) 코드 기본값(등급 구성 + 기본 색)
@@ -24,6 +32,8 @@
 			const r = await client.get(`/api/v0/game/${slug}`);
 			const db = r.data?.rarityColors;
 			if (db) merged = { ...merged, ...JSON.parse(JSON.stringify(db)) };
+			const rd = r.data?.rarityDisplay;
+			if (rd) display = { mode: rd.mode || 'stars', images: rd.images || {} };
 		} catch (e) {
 			console.error('게임 정보 조회 오류:', e);
 		}
@@ -43,6 +53,57 @@
 			return `background: linear-gradient(180deg, ${g.from}, ${c.background} ${g.stop}); border: 2px solid ${c.border};`;
 		}
 		return `background: ${c.background}; border: 2px solid ${c.border};`;
+	}
+
+	// 표시 방식(모드) 저장.
+	async function saveDisplayMode(mode: string) {
+		display.mode = mode;
+		try {
+			await client.put(`/api/v0/admin/game/${slug}/rarity-display`, {
+				rarityDisplay: { mode: display.mode, images: display.images }
+			});
+			toastStore.success(`등급 표시: ${mode === 'image' ? '이미지' : '별 반복'} (목록 재진입 시 반영)`);
+		} catch (e) {
+			console.error('표시 방식 저장 오류:', e);
+			toastStore.error('표시 방식 저장에 실패했습니다.');
+		}
+	}
+
+	// 티어 이미지 업로드 → 서버가 rarity_display.images[tier] 갱신.
+	async function uploadTierImage(tier: string, e: Event) {
+		const input = e.currentTarget as HTMLInputElement;
+		const file = input.files?.[0];
+		input.value = '';
+		if (!file) return;
+		if (!file.type.startsWith('image/')) {
+			toastStore.error('이미지 파일만 업로드할 수 있습니다.');
+			return;
+		}
+		uploadingTier = tier;
+		try {
+			const form = new FormData();
+			form.append('file', file);
+			const res = await fetch(`${currentUrl}/api/v0/admin/game/${slug}/rarity-image/${tier}`, {
+				method: 'POST',
+				headers: { Authorization: `Bearer ${authTokenService.getToken()}` },
+				body: form
+			});
+			const json = await res.json();
+			if (res.ok && json?.data?.rarityDisplay) {
+				display = {
+					mode: json.data.rarityDisplay.mode || 'image',
+					images: json.data.rarityDisplay.images || {}
+				};
+				toastStore.success(`★${tier} 등급 이미지가 업로드되었습니다.`);
+			} else {
+				toastStore.error(json?.resultMsg || '이미지 업로드에 실패했습니다.');
+			}
+		} catch (err) {
+			console.error('등급 이미지 업로드 오류:', err);
+			toastStore.error('이미지 업로드에 실패했습니다.');
+		} finally {
+			uploadingTier = null;
+		}
 	}
 
 	async function save() {
@@ -96,6 +157,66 @@
 		{:else if tiers.length === 0}
 			<div class="py-12 text-center text-gray-500">이 게임에는 등급 색상 설정이 없습니다.</div>
 		{:else}
+			<!-- 등급 표시 방식 -->
+			<div class="mb-4 rounded-lg border border-gray-100 p-3">
+				<div class="mb-2 text-sm font-semibold text-gray-700">등급 표시 방식</div>
+				<div class="flex gap-4 text-sm">
+					<label class="flex items-center gap-1">
+						<input
+							type="radio"
+							checked={display.mode !== 'image'}
+							onchange={() => saveDisplayMode('stars')}
+						/> 별 반복 (아이콘 N개)
+					</label>
+					<label class="flex items-center gap-1">
+						<input
+							type="radio"
+							checked={display.mode === 'image'}
+							onchange={() => saveDisplayMode('image')}
+						/> 티어별 이미지 (예: 니케 SSR)
+					</label>
+				</div>
+				{#if display.mode === 'image'}
+					<div class="mt-3 flex flex-wrap gap-3">
+						{#each tiers as tier}
+							<div class="flex flex-col items-center gap-1">
+								<label class="group relative h-12 w-12 cursor-pointer" title="클릭하여 이미지 업로드">
+									{#if display.images[tier]}
+										<img
+											src="{currentUrl}/{display.images[tier]}"
+											alt="★{tier}"
+											class="h-12 w-12 rounded border border-gray-200 bg-gray-50 object-contain p-1"
+										/>
+									{:else}
+										<div
+											class="flex h-12 w-12 items-center justify-center rounded border border-dashed border-gray-300 bg-gray-50 text-gray-300"
+										>
+											<i class="ri-image-add-line"></i>
+										</div>
+									{/if}
+									<span
+										class="absolute inset-0 flex items-center justify-center rounded bg-black/50 text-white opacity-0 transition-opacity group-hover:opacity-100"
+									>
+										{#if uploadingTier === tier}
+											<i class="ri-loader-4-line animate-spin"></i>
+										{:else}
+											<i class="ri-camera-line"></i>
+										{/if}
+									</span>
+									<input
+										type="file"
+										accept="image/*"
+										class="hidden"
+										onchange={(e) => uploadTierImage(tier, e)}
+									/>
+								</label>
+								<span class="text-xs font-bold text-gray-600">★{tier}</span>
+							</div>
+						{/each}
+					</div>
+				{/if}
+			</div>
+
 			<div class="space-y-4">
 				{#each tiers as tier}
 					<div class="flex items-start gap-4 rounded-lg border border-gray-100 p-3">

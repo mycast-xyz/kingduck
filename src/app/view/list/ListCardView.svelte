@@ -61,6 +61,15 @@
 		return colors || null;
 	};
 
+	// 등급 표시방식이 'image'면 해당 티어 이미지 URL을 반환(없으면 null → 별/숫자 폴백).
+	const rarityImageUrl = (rarity: any): string | null => {
+		const rd = gameInit?.list?.card?.rarityDisplay;
+		if (!rd || rd.mode !== 'image' || !rd.images || !rarityService) return null;
+		const tier = rarityService.rarityData(rarity);
+		const url = rd.images[String(tier)];
+		return url ? `${currentUrl}/${url}` : null;
+	};
+
 	// 카드 배경 스타일 생성 (반응형)
 	const getCardStyle = (rarity: any) => {
 		const colors = getRarityColor(rarity);
@@ -119,7 +128,9 @@
 							</h3>
 							<div class="flex w-full justify-start">
 								<div class="rating-info-img flex w-auto justify-start">
-									{#if rarityService?.rarityType(item.rarity) === 'number'}
+									{#if rarityImageUrl(item.rarity)}
+										<img src={rarityImageUrl(item.rarity)} class="h-6 w-auto" alt="등급" />
+									{:else if rarityService?.rarityType(item.rarity) === 'number'}
 										{#each { length: item.rarity } as i}
 											<div class="icon h-5 w-3 py-1">
 												{#if gameInit?.list?.card?.rarityIcon}
@@ -202,7 +213,9 @@
 
 						<div class="flex w-full justify-start">
 							<div class="rating-info-img flex w-auto justify-start">
-								{#if rarityService?.rarityType(item.rarity) === 'number'}
+								{#if rarityImageUrl(item.rarity)}
+									<img src={rarityImageUrl(item.rarity)} class="h-8 w-auto" alt="등급" />
+								{:else if rarityService?.rarityType(item.rarity) === 'number'}
 									{#each { length: item.rarity } as i}
 										<div class="icon h-8 w-5 py-1">
 											{#if gameInit?.list?.card?.rarityIcon}
