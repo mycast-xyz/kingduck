@@ -117,7 +117,8 @@ export interface ComponentLayout {
 		| 'StatsView'
 		| 'CostumeView'
 		| 'CalculatorView'
-		| 'TeamRecommendationView';
+		| 'TeamRecommendationView'
+		| 'ProfileView';
 	dataKey: string;
 	initDataKey?: string;
 	props?: Record<string, any>;

@@ -145,6 +145,7 @@ export class GenshinInit {
 			// 스킬(SkillTreeView) / 별자리(RankListView).
 			// 기초 스탯은 GenshinStatsViewModel이 Ambr upgrade(prop initValue + 성장곡선 + 돌파 addProps)로 계산.
 			layout: [
+				{ component: 'ProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
 				{
 					component: 'MainItemView',
 					dataKey: 'recommendedWeapons',

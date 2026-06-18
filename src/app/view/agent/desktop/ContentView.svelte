@@ -17,6 +17,7 @@
 	import CostumeView from '../../info/CostumeView.svelte';
 	import CalculatorView from '../../info/CalculatorView.svelte';
 	import TeamRecommendationView from '../../info/TeamRecommendationView.svelte';
+	import ProfileView from '../../info/ProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 가져오기
@@ -91,7 +92,8 @@
 		StatsView: '기초 속성',
 		CostumeView: '스킨',
 		CalculatorView: '계산기',
-		TeamRecommendationView: '추천 조합'
+		TeamRecommendationView: '추천 조합',
+		ProfileView: '정보'
 	};
 
 	const scrollToSection = (id: string) => {
@@ -245,6 +247,15 @@
 							{:else if section.component === 'TeamRecommendationView'}
 								<TeamRecommendationView
 									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'ProfileView'}
+								<ProfileView
+									listData={meta}
 									{currentUrl}
 									{isMobile}
 									{gameId}
