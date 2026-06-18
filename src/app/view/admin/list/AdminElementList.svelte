@@ -82,6 +82,24 @@
 		}
 	}
 
+	// 원색(틴트) 저장. 빈 값이면 해제(null).
+	async function saveColor(el: any, value: string) {
+		const v = (value || '').trim();
+		if ((el.color || '') === v) return;
+		try {
+			const r = await client.put(`/api/v0/admin/element/${el.id}`, { color: v });
+			if (r.data.resultCode === 200) {
+				elements = elements.map((x) => (x.id === el.id ? { ...x, color: r.data.data.color } : x));
+				toastStore.success(`${el.name} 색상이 ${v ? '저장' : '해제'}되었습니다.`);
+			} else {
+				toastStore.error(r.data.resultMsg || '색상 저장에 실패했습니다.');
+			}
+		} catch (e) {
+			console.error('색상 저장 오류:', e);
+			toastStore.error('색상 저장에 실패했습니다.');
+		}
+	}
+
 	function onPickIcon(el: any, e: Event) {
 		const input = e.currentTarget as HTMLInputElement;
 		const file = input.files?.[0];
@@ -155,11 +173,23 @@
 								title="클릭하여 아이콘 업로드"
 							>
 								{#if el.iconUrl}
-									<img
-										src={currentUrl + '/' + el.iconUrl}
-										alt={el.name}
-										class="h-16 w-16 rounded-lg border border-gray-200 bg-gray-50 object-contain p-1"
-									/>
+									<div
+										class="flex h-16 w-16 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-1"
+									>
+										{#if el.color}
+											<!-- 원색 틴트: 아이콘 알파를 mask로, background-color로 색을 입힘 -->
+											<span
+												class="h-full w-full"
+												style="-webkit-mask:url('{currentUrl}/{el.iconUrl}') center/contain no-repeat; mask:url('{currentUrl}/{el.iconUrl}') center/contain no-repeat; background-color:{el.color};"
+											></span>
+										{:else}
+											<img
+												src={currentUrl + '/' + el.iconUrl}
+												alt={el.name}
+												class="h-full w-full object-contain"
+											/>
+										{/if}
+									</div>
 								{:else}
 									<div
 										class="flex h-16 w-16 items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-50 text-gray-300"
@@ -196,6 +226,26 @@
 								/>
 								<div class="mt-0.5 truncate text-[10px] text-gray-400" title={el.name}>
 									{el.name}
+								</div>
+								<!-- 원색(틴트) — 흰색/단색 아이콘에 입힐 색 -->
+								<div class="mt-1 flex items-center justify-center gap-1">
+									<input
+										type="color"
+										class="h-5 w-5 cursor-pointer rounded border border-gray-200 p-0"
+										value={el.color || '#888888'}
+										title="원색 틴트 (변경 시 저장)"
+										onchange={(e) => saveColor(el, (e.currentTarget as HTMLInputElement).value)}
+									/>
+									{#if el.color}
+										<button
+											type="button"
+											class="text-[10px] text-gray-400 hover:text-red-500"
+											title="틴트 해제"
+											onclick={() => saveColor(el, '')}
+										>
+											해제
+										</button>
+									{/if}
 								</div>
 							</div>
 						</div>
