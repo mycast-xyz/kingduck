@@ -203,6 +203,7 @@ export class HonkaiStarRailInit {
 				{ component: 'TraceListView', dataKey: 'skill_tree', props: { title: '행적' } },
 				{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } },
 				{ component: 'StoryView', dataKey: 'stories', props: { title: '캐릭터 스토리' } },
+				{ component: 'VoiceView', dataKey: 'voiceLines', props: { title: '음성 대사' } },
 				{ component: 'CalculatorView', dataKey: 'calculator', props: { title: '재화 계산기' } }
 			],
 			coupon: {

@@ -23,6 +23,7 @@
 	import TeamRecommendationView from '../../info/TeamRecommendationView.svelte';
 	import ProfileView from '../../info/ProfileView.svelte';
 	import StoryView from '../../info/StoryView.svelte';
+	import VoiceView from '../../info/VoiceView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 및 모달 초기화
@@ -278,6 +279,15 @@
 									/>
 								{:else if section.component === 'StoryView'}
 									<StoryView
+										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'VoiceView'}
+									<VoiceView
 										listData={meta[section.dataKey] || []}
 										{currentUrl}
 										{isMobile}

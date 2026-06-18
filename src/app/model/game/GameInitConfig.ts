@@ -119,7 +119,8 @@ export interface ComponentLayout {
 		| 'CalculatorView'
 		| 'TeamRecommendationView'
 		| 'ProfileView'
-		| 'StoryView';
+		| 'StoryView'
+		| 'VoiceView';
 	dataKey: string;
 	initDataKey?: string;
 	props?: Record<string, any>;
