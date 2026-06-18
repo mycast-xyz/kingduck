@@ -85,6 +85,30 @@ export class nikkeInit {
 							rarity: true // 등급 정보
 						}
 					}
+				},
+				// 카드 표시 설정 — 니케 등급 색상(SSR 금 / SR 보라 / R 파랑)
+				card: {
+					path: { display: false },
+					rarityColors: {
+						'5': {
+							border: '#fcba49',
+							background: '#fcba49',
+							text: '#fcba49',
+							gradient: { from: '#885550', to: '#c9a36a', stop: '53%' }
+						},
+						'4': {
+							border: '#9f66c8',
+							background: '#9f66c8',
+							text: '#9f66c8',
+							gradient: { from: '#343659', to: '#8a5fcc', stop: '53%' }
+						},
+						'3': {
+							border: '#4175bb',
+							background: '#4175bb',
+							text: '#4175bb',
+							gradient: { from: '#303051', to: '#4175bb', stop: '53%' }
+						}
+					}
 				}
 			},
 			// 상세 내용 표시 설정
