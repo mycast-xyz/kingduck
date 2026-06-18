@@ -39,8 +39,11 @@ export class CharacterRarityService {
 		} else {
 			rarity.type = setting.type;
 			const rarityList = setting.list;
+			// list는 { '5':'SSR', '4':'SR' }(키=숫자, 값=라벨) 형태.
+			// DB rarity가 라벨('SSR')로 오면 value 매칭, 숫자(5)로 오면 key 매칭 — 둘 다 허용.
+			// (nikke/zzz는 DB에 숫자로 저장돼 기존엔 value 비교만 해서 매칭 실패 → 색/등급 미적용 버그)
 			for (const [key, value] of Object.entries(rarityList)) {
-				if (value === item) {
+				if (value === item || key === String(item)) {
 					rarity.data = parseInt(key);
 					break;
 				}
