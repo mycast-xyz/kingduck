@@ -31,13 +31,16 @@ export class Reverse1999RankListViewModel extends RankListViewModel {
 
 		if (!Array.isArray(rawItems)) return [];
 
-		return rawItems.map((item: any, index: number) => ({
-			id: String(item.index ?? index + 1),
-			index: item.index ?? index + 1,
-			name: item.name || `형상 ${index + 1}`,
-			description: item.description || '',
-			image: item.iconUrl || item.image || '',
-			params: item
-		}));
+		// null/빈 엔트리 방어(일부 캐릭터의 rank 배열에 null이 섞여 있음).
+		return rawItems
+			.filter((item: any) => item != null)
+			.map((item: any, index: number) => ({
+				id: String(item.index ?? index + 1),
+				index: item.index ?? index + 1,
+				name: item.name || `형상 ${index + 1}`,
+				description: item.description || '',
+				image: item.iconUrl || item.image || '',
+				params: item
+			}));
 	}
 }
