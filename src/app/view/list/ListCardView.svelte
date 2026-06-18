@@ -45,8 +45,14 @@
 	const shouldShowPath = $derived(gameInit?.list?.card?.path?.display ?? false);
 
 	// 등급별 색상 가져오기 (반응형)
+	// rarityColors/rarityDisplay는 안정적인 data.info(GET /game 응답)를 우선 사용한다.
+	// gameInit(showList 스토어)는 재방출 시 DB 머지가 사라질 수 있어(SSR 뱃지→숫자 깜빡임 버그) 폴백으로만.
+	const rarityColorsSrc = () => data.info?.rarityColors || gameInit?.list?.card?.rarityColors;
+	const rarityDisplaySrc = () => data.info?.rarityDisplay || gameInit?.list?.card?.rarityDisplay;
+
 	const getRarityColor = (rarity: any) => {
-		if (!gameInit?.list?.card?.rarityColors || !rarityService) {
+		const rarityColors = rarityColorsSrc();
+		if (!rarityColors || !rarityService) {
 			return null;
 		}
 
@@ -57,13 +63,13 @@
 		}
 
 		const colorKey = rarityData.toString();
-		const colors = gameInit.list.card.rarityColors[colorKey];
+		const colors = rarityColors[colorKey];
 		return colors || null;
 	};
 
 	// 등급 표시방식이 'image'면 해당 티어 이미지 URL을 반환(없으면 null → 별/숫자 폴백).
 	const rarityImageUrl = (rarity: any): string | null => {
-		const rd = gameInit?.list?.card?.rarityDisplay;
+		const rd = rarityDisplaySrc();
 		if (!rd || rd.mode !== 'image' || !rd.images || !rarityService) return null;
 		const tier = rarityService.rarityData(rarity);
 		const url = rd.images[String(tier)];
