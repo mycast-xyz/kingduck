@@ -24,6 +24,7 @@
 	import ProfileView from '../../info/ProfileView.svelte';
 	import StoryView from '../../info/StoryView.svelte';
 	import VoiceView from '../../info/VoiceView.svelte';
+	import EndfieldProfileView from '../../info/EndfieldProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 및 모달 초기화
@@ -289,6 +290,15 @@
 								{:else if section.component === 'VoiceView'}
 									<VoiceView
 										listData={meta[section.dataKey] || []}
+										{currentUrl}
+										{isMobile}
+										{gameId}
+										initData={getInitData(section)}
+										{...section.props}
+									/>
+								{:else if section.component === 'EndfieldProfileView'}
+									<EndfieldProfileView
+										listData={meta}
 										{currentUrl}
 										{isMobile}
 										{gameId}

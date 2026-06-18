@@ -215,7 +215,8 @@ export class EndfieldInit {
 					dataKey: 'recommendations',
 					props: { title: '추천 세팅' }
 				},
-				{ component: 'CalculatorView', dataKey: 'talentNodeMap', props: { title: '성장 계산기' } } // XP/Ascension Calc
+				{ component: 'CalculatorView', dataKey: 'talentNodeMap', props: { title: '성장 계산기' } }, // XP/Ascension Calc
+				{ component: 'EndfieldProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } }
 			]
 		};
 	}

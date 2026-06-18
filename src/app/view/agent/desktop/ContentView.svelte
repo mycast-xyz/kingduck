@@ -20,6 +20,7 @@
 	import ProfileView from '../../info/ProfileView.svelte';
 	import StoryView from '../../info/StoryView.svelte';
 	import VoiceView from '../../info/VoiceView.svelte';
+	import EndfieldProfileView from '../../info/EndfieldProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 가져오기
@@ -97,7 +98,8 @@
 		TeamRecommendationView: '추천 조합',
 		ProfileView: '정보',
 		StoryView: '스토리',
-		VoiceView: '음성'
+		VoiceView: '음성',
+		EndfieldProfileView: '정보'
 	};
 
 	const scrollToSection = (id: string) => {
@@ -278,6 +280,15 @@
 							{:else if section.component === 'VoiceView'}
 								<VoiceView
 									listData={meta[section.dataKey] || []}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'EndfieldProfileView'}
+								<EndfieldProfileView
+									listData={meta}
 									{currentUrl}
 									{isMobile}
 									{gameId}
