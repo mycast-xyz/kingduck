@@ -6,6 +6,7 @@
 	import { EndfieldRankListViewModel } from '../../service/game/endfield/EndfieldRankListViewModel.svelte';
 	import { EndfieldPotentialViewModel } from '../../service/game/endfield/EndfieldPotentialViewModel.svelte';
 	import { Reverse1999RankListViewModel } from '../../service/game/reverse1999/Reverse1999RankListViewModel.svelte';
+	import { ZzzRankListViewModel } from '../../service/game/zzz/ZzzRankListViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
 
@@ -35,6 +36,8 @@
 				return new EndfieldRankListViewModel(listData, gameSlug, currentUrl, initData);
 			case 'reverse1999':
 				return new Reverse1999RankListViewModel(listData, gameSlug, currentUrl);
+			case 'zzz':
+				return new ZzzRankListViewModel(listData, gameSlug, currentUrl);
 			default:
 				return null;
 		}

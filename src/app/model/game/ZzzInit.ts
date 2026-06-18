@@ -114,7 +114,9 @@ export class ZzzInit {
 				info: {}
 			},
 			layout: [
-				{ component: 'ZzzProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } }
+				{ component: 'ZzzProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
+				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } },
+				{ component: 'RankListView', dataKey: 'talents', props: { title: '심상 영식' } }
 			],
 			coupon: {
 				name: '리딤코드'

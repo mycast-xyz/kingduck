@@ -6,6 +6,7 @@
 	import { EndfieldSkillViewModel } from '../../service/game/endfield/EndfieldSkillViewModel.svelte';
 	import { EndfieldPassiveViewModel } from '../../service/game/endfield/EndfieldPassiveViewModel.svelte';
 	import { Reverse1999SkillViewModel } from '../../service/game/reverse1999/Reverse1999SkillViewModel.svelte';
+	import { ZzzSkillTreeViewModel } from '../../service/game/zzz/ZzzSkillTreeViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
 
@@ -44,6 +45,8 @@
 			return new EndfieldSkillViewModel(data, currentUrl, { initData, extraData });
 		} else if (slug === 'reverse1999') {
 			return new Reverse1999SkillViewModel(data, currentUrl, { initData });
+		} else if (slug === 'zzz') {
+			return new ZzzSkillTreeViewModel(data, currentUrl, { initData });
 		}
 		return null;
 	});
