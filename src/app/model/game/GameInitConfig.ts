@@ -122,7 +122,8 @@ export interface ComponentLayout {
 		| 'StoryView'
 		| 'VoiceView'
 		| 'EndfieldProfileView'
-		| 'Reverse1999ProfileView';
+		| 'Reverse1999ProfileView'
+		| 'NikkeProfileView';
 	dataKey: string;
 	initDataKey?: string;
 	props?: Record<string, any>;
