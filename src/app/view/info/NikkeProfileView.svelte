@@ -87,12 +87,10 @@
 		return r;
 	});
 
-	let costumes = $derived(Array.isArray(meta.costumes) ? meta.costumes.filter((c: any) => c?.name) : []);
 	let lore = $derived(String(meta.lore || '').trim());
 
-	let hasData = $derived(
-		rows.length > 0 || cvRows.length > 0 || statRows.length > 0 || !!lore || costumes.length > 0
-	);
+	// 코스튬은 별도 CostumeView(스킨 이미지)에서 표시한다.
+	let hasData = $derived(rows.length > 0 || cvRows.length > 0 || statRows.length > 0 || !!lore);
 </script>
 
 <Layer title={title || '캐릭터 정보'}>
@@ -162,33 +160,6 @@
 				</div>
 			{/if}
 
-			{#if costumes.length > 0}
-				<div>
-					<h4 class="mb-2 text-xs font-bold text-gray-500 dark:text-gray-400">코스튬</h4>
-					<div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-						{#each costumes as cos}
-							<div
-								class="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 dark:border-gray-700/50 dark:bg-[#1d1e2e]"
-							>
-								<div class="flex items-center gap-2">
-									<span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{cos.name}</span>
-									{#if cos.grade}
-										<span
-											class="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] font-bold text-gray-600 dark:bg-gray-700 dark:text-gray-300"
-											>{cos.grade}</span
-										>
-									{/if}
-								</div>
-								{#if cos.description}
-									<p class="mt-1 whitespace-pre-line break-keep text-xs text-gray-500 dark:text-gray-400">
-										{cos.description}
-									</p>
-								{/if}
-							</div>
-						{/each}
-					</div>
-				</div>
-			{/if}
 		</div>
 	{/if}
 </Layer>

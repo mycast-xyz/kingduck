@@ -200,7 +200,8 @@ export class nikkeInit {
 			},
 			layout: [
 				{ component: 'NikkeProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
-				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } }
+				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } },
+				{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } }
 			]
 		};
 	}
