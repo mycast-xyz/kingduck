@@ -16,7 +16,11 @@
 	let stories = $derived.by(() => {
 		const raw = Array.isArray(listData) ? listData : [];
 		return raw
-			.map((s: any) => ({ title: s.title || s.Title || '', text: s.text || s.Text || '' }))
+			.map((s: any) => ({
+				title: s.title || s.Title || '',
+				// starrail: text / wutheringwaves: Content
+				text: s.text || s.Text || s.Content || ''
+			}))
 			.filter((s: { text: string }) => s.text);
 	});
 

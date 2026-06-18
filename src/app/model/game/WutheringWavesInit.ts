@@ -169,7 +169,8 @@ export class WutheringWavesInit {
 					dataKey: 'recommendation',
 					props: { title: '추천 세팅' }
 				},
-				{ component: 'CostumeView', dataKey: 'Skins', props: { title: '코스튬' } }
+				{ component: 'CostumeView', dataKey: 'Skins', props: { title: '코스튬' } },
+				{ component: 'StoryView', dataKey: 'Stories', props: { title: '캐릭터 스토리' } }
 			]
 		};
 	}
