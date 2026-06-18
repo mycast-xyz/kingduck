@@ -62,6 +62,26 @@
 		loadElements();
 	}
 
+	// 한글 표시명 저장(영문 키 → 한글 매핑). 변경 없으면 무시.
+	async function saveName(el: any, value: string) {
+		const v = value.trim();
+		if ((el.displayName || '') === v) return;
+		try {
+			const r = await client.put(`/api/v0/admin/element/${el.id}`, { displayName: v });
+			if (r.data.resultCode === 200) {
+				elements = elements.map((x) =>
+					x.id === el.id ? { ...x, displayName: r.data.data.displayName } : x
+				);
+				toastStore.success(`${el.name} 한글명이 저장되었습니다.`);
+			} else {
+				toastStore.error(r.data.resultMsg || '한글명 저장에 실패했습니다.');
+			}
+		} catch (e) {
+			console.error('한글명 저장 오류:', e);
+			toastStore.error('한글명 저장에 실패했습니다.');
+		}
+	}
+
 	function onPickIcon(el: any, e: Event) {
 		const input = e.currentTarget as HTMLInputElement;
 		const file = input.files?.[0];
@@ -163,9 +183,21 @@
 									onchange={(e) => onPickIcon(el, e)}
 								/>
 							</label>
-							<span class="w-full truncate text-xs font-medium text-gray-700" title={el.name}>
-								{el.name}
-							</span>
+							<div class="w-full">
+								<input
+									class="w-full rounded border border-gray-200 px-1 py-0.5 text-center text-xs font-medium text-gray-800 focus:border-orange-400 focus:outline-none"
+									value={el.displayName || ''}
+									placeholder={el.name}
+									title="한글 표시명 (Enter 또는 포커스 해제 시 저장)"
+									onblur={(e) => saveName(el, (e.currentTarget as HTMLInputElement).value)}
+									onkeydown={(e) => {
+										if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+									}}
+								/>
+								<div class="mt-0.5 truncate text-[10px] text-gray-400" title={el.name}>
+									{el.name}
+								</div>
+							</div>
 						</div>
 					{/each}
 				</div>

@@ -163,6 +163,8 @@
 							{/if}
 							<span class="text-sm font-medium">
 								{(() => {
+									// 우선순위: DB 한글명(displayName) → Init 번역맵 → 영문 원본.
+									if (item.displayName) return item.displayName;
 									const rawName = typeof item.name === 'object' ? item.name.ko : item.name;
 									const translationMap = gameInit?.type?.[key]?.list;
 									if (translationMap && typeof rawName === 'string' && translationMap[rawName]) {
