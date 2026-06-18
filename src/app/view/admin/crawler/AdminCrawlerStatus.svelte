@@ -35,6 +35,7 @@
 	// 모달 상태
 	let showRunModal = $state(false);
 	let selectedCrawlerForRun: Crawler | null = $state(null);
+	let runningAllSlug: string | null = $state(null);
 
 	onMount(async () => {
 		await loadCrawlerStatus();
@@ -201,6 +202,30 @@
 		}
 	}
 
+	// 게임의 모든 크롤러 타입을 한 번에 실행 요청(백엔드에서 각자 백그라운드 실행).
+	async function runAllForGame(group: CrawlerGroup) {
+		if (!group.crawlers.length) return;
+		if (!confirm(`${group.gameName}의 크롤러 ${group.crawlers.length}개를 전체 실행할까요?`)) return;
+		runningAllSlug = group.gameSlug;
+		let ok = 0;
+		let fail = 0;
+		for (const c of group.crawlers) {
+			try {
+				await client.post('/api/v0/admin/crawler/run', {
+					gameSlug: group.gameSlug,
+					crawlerType: c.type
+				});
+				ok++;
+			} catch (e) {
+				console.error(`크롤러 실행 실패 (${group.gameSlug}/${c.type}):`, e);
+				fail++;
+			}
+		}
+		runningAllSlug = null;
+		toastStore.success(`${group.gameName} 전체 실행 요청: ${ok}개${fail ? `, 실패 ${fail}` : ''}`);
+		await loadCrawlerStatus();
+	}
+
 	function viewLogs(crawlerId: string) {
 		toastStore.info(`로그 보기 기능은 하단 탭을 이용해주세요.`);
 		// TODO: 로그 탭으로 이동 or 모달
@@ -211,11 +236,19 @@
 	{#each groupedCrawlers as group}
 		<div class="overflow-hidden rounded-lg bg-white shadow-md">
 			<!-- 게임 헤더 -->
-			<div class="border-b bg-gray-50 px-6 py-4">
+			<div class="flex items-center justify-between border-b bg-gray-50 px-6 py-4">
 				<h3 class="flex items-center gap-2 text-lg font-bold text-gray-900">
 					<i class="ri-gamepad-line text-orange-500"></i>
 					{group.gameName}
 				</h3>
+				<button
+					onclick={() => runAllForGame(group)}
+					disabled={runningAllSlug === group.gameSlug}
+					class="rounded-lg bg-orange-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+				>
+					<i class="ri-play-list-2-line mr-1"></i>
+					{runningAllSlug === group.gameSlug ? '요청 중…' : '전체 실행'}
+				</button>
 			</div>
 
 			<!-- 크롤러 리스트 -->
