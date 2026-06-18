@@ -183,8 +183,10 @@ export class HonkaiStarRailInit {
 				}
 			},
 			layout: [
-				{ component: 'MainItemView', dataKey: 'lightcones', props: { title: '광추' } },
-				{ component: 'BuildRecommendationView', dataKey: 'relics', props: { title: '유물' } },
+				// 추천 빌드(genshin.gg/star-rail 큐레이션) — 백엔드 StarRailBuildScraper가 채운다.
+				// metadata.lightcones(광추 originalId 배열) / relics({Set4IDList,Set2IDList}) / teams.
+				{ component: 'MainItemView', dataKey: 'lightcones', props: { title: '추천 광추' } },
+				{ component: 'BuildRecommendationView', dataKey: 'relics', props: { title: '추천 유물' } },
 				{ component: 'TeamRecommendationView', dataKey: 'teams', props: { title: '추천 파티' } },
 				{ component: 'StatsView', dataKey: 'stats', props: { title: '기초 속성' } },
 				{
