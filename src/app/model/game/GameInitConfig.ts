@@ -29,6 +29,8 @@ export interface GameInitConfig {
 			// 소비처(ListFilterMenu)는 `?.apiPoint || key` 식으로 undefined를 이미 처리한다.
 			apiPoint?: string;
 			apiType?: string;
+			// clientFilter=true이면 DB elements 대신 Init.list 키로 옵션을 생성하고 applyFilter로 클라이언트 필터.
+			clientFilter?: boolean;
 			isMenuOpen: boolean;
 			cols?: number; // 필터 목록의 열 개수 (기본값: 자동 또는 CSS 지정값)
 			list?: Record<string, string>;

@@ -120,6 +120,10 @@ class CharacterListServiceInit {
 					if (k === 'weaponType') {
 						return char.weaponType == v || char.metadata?.weaponType == v;
 					}
+					// 니케 metadata 투영 필드 — 백엔드가 JSON path로 추출해 최상위 필드로 제공.
+					if (k === 'class') return char.class === v;
+					if (k === 'corp') return char.corp === v;
+					if (k === 'burst') return char.burst === v;
 					// Default fallback check?
 					return true;
 				});

@@ -90,6 +90,22 @@
 	// Helper to get element list for a specific filter key
 	const getTypeList = (key: string) => {
 		const apiType = gameInit?.type?.[key]?.apiType;
+		const clientFilter = gameInit?.type?.[key]?.clientFilter;
+		const apiPoint = gameInit?.type?.[key]?.apiPoint || key;
+
+		// clientFilter=true: DB elements 대신 Init.list 키로 옵션 생성.
+		// 아이콘은 game.attrIcons[apiPoint][enumKey] 경로를 사용(없으면 빈 문자열 → 아이콘 미표시).
+		if (clientFilter) {
+			const listMap: Record<string, string> = gameInit?.type?.[key]?.list || {};
+			const attrIcons: any = (data?.info as any)?.attrIcons;
+			return Object.entries(listMap).map(([enumKey, label]) => ({
+				id: enumKey,
+				name: label,
+				iconUrl: attrIcons?.[apiPoint]?.[enumKey] || '',
+				color: null,
+				displayName: null
+			}));
+		}
 
 		if (data?.info?.elements && Array.isArray(data.info.elements)) {
 			return data.info.elements.filter((e: any) => {

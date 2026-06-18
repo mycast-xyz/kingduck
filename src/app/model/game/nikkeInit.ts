@@ -9,9 +9,10 @@ export class nikkeInit {
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'
 			},
-			// 필터 — 서버 list API가 지원하는 elementId/pathId 기준만 둔다(코드·무기).
-			// 클래스/버스트/제조사는 metadata라 서버 필터 불가 → 카드/상세에 표시만(필터 제외).
-			// list 키는 DB Element.name 과 정확히 일치해야 한다(sync가 생성한 영문 키).
+			// 필터 — elementId/pathId 기준(서버 필터)과 metadata 투영 필드(클라이언트 필터) 혼용.
+			// clientFilter:true 타입은 백엔드가 $queryRaw로 metadata->>'key' 3필드를 투영하고
+			// applyFilter()가 char.class/corp/burst 로 메모리 필터한다.
+			// DB Element 기반 필터(elementType/weaponType)의 list 키는 Element.name 과 일치해야 한다.
 			type: {
 				elementType: {
 					// 코드(속성)
@@ -44,6 +45,51 @@ export class nikkeInit {
 						MG: '미니건',
 						RL: '런처',
 						SR: '저격소총'
+					}
+				},
+				classType: {
+					// 클래스 (metadata.class — 클라이언트 필터)
+					name: '클래스',
+					apiPoint: 'class',
+					clientFilter: true,
+					isWhite: false,
+					isTwoRow: false,
+					isMenuOpen: false,
+					list: {
+						Attacker: '화력형',
+						Defender: '방어형',
+						Supporter: '지원형'
+					}
+				},
+				corpType: {
+					// 기업 (metadata.corp — 클라이언트 필터)
+					name: '기업',
+					apiPoint: 'corp',
+					clientFilter: true,
+					isWhite: false,
+					isTwoRow: false,
+					isMenuOpen: false,
+					list: {
+						ELYSION: '엘리시온',
+						MISSILIS: '미실리스',
+						TETRA: '테트라',
+						PILGRIM: '필그림',
+						ABNORMAL: '어비스'
+					}
+				},
+				burstType: {
+					// 버스트 단계 (metadata.burst — 클라이언트 필터)
+					name: '버스트',
+					apiPoint: 'burst',
+					clientFilter: true,
+					isWhite: false,
+					isTwoRow: true,
+					isMenuOpen: false,
+					list: {
+						Step1: 'Ⅰ',
+						Step2: 'Ⅱ',
+						Step3: 'Ⅲ',
+						AllStep: '전단계'
 					}
 				}
 			},
