@@ -153,12 +153,14 @@
 							class:active={$selectedTypeOption[key] === item.id}
 							class="flex items-center rounded-full border border-gray-200 px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600"
 						>
-							<img
-								class="mr-1 h-6 w-6 object-contain"
-								style={gameInit?.type[key]?.isWhite ? 'filter: brightness(0) invert(0.75);' : ''}
-								src="{currentUrl}/{item.iconUrl}"
-								alt={typeof item.name === 'string' ? item.name : item.name.ko}
-							/>
+							{#if item.iconUrl}
+								<img
+									class="mr-1 h-6 w-6 object-contain"
+									style={gameInit?.type[key]?.isWhite ? 'filter: brightness(0) invert(0.75);' : ''}
+									src="{currentUrl}/{item.iconUrl}"
+									alt={typeof item.name === 'string' ? item.name : item.name.ko}
+								/>
+							{/if}
 							<span class="text-sm font-medium">
 								{(() => {
 									const rawName = typeof item.name === 'object' ? item.name.ko : item.name;

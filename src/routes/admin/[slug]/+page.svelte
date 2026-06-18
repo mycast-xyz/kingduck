@@ -6,6 +6,7 @@
 	import AdminKanban from '../../../app/view/admin/AdminKanban.svelte';
 	import AdminGameList from '../../../app/view/admin/list/AdminGameList.svelte';
 	import AdminCharacterList from '../../../app/view/admin/list/AdminCharacterList.svelte';
+	import AdminElementList from '../../../app/view/admin/list/AdminElementList.svelte';
 
 	// 모달 관리
 	import DesktopModal from '../../../app/view/modal/DesktopModal.svelte';
@@ -36,6 +37,12 @@
 				ContentComponent = AdminCharacterList;
 				ContentTitle = '캐릭터 관리';
 				ContentInfoText = '캐릭터 관리 페이지 입니다.';
+				break;
+
+			case 'type':
+				ContentComponent = AdminElementList;
+				ContentTitle = '속성/특성 아이콘 관리';
+				ContentInfoText = '게임별 속성·특성 필터 아이콘을 업로드/관리합니다.';
 				break;
 
 			default:
