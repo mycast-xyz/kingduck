@@ -82,9 +82,17 @@
 		}
 	}
 
-	// 원색(틴트) 저장. 빈 값이면 해제(null).
+	// 원색(틴트) 저장. 빈 값이면 해제(null). 16진수 입력(#붙이기·소문자 정규화, 형식 검증).
 	async function saveColor(el: any, value: string) {
-		const v = (value || '').trim();
+		let v = (value || '').trim();
+		if (v) {
+			if (!v.startsWith('#')) v = '#' + v;
+			v = v.toLowerCase();
+			if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/.test(v)) {
+				toastStore.error('16진수 색상 형식이 아닙니다. 예: #e0533d');
+				return;
+			}
+		}
 		if ((el.color || '') === v) return;
 		try {
 			const r = await client.put(`/api/v0/admin/element/${el.id}`, { color: v });
@@ -227,14 +235,22 @@
 								<div class="mt-0.5 truncate text-[10px] text-gray-400" title={el.name}>
 									{el.name}
 								</div>
-								<!-- 원색(틴트) — 흰색/단색 아이콘에 입힐 색 -->
+								<!-- 원색(틴트) — 흰색/단색 아이콘에 입힐 16진수 색(#코드 직접 입력) -->
 								<div class="mt-1 flex items-center justify-center gap-1">
+									<span
+										class="h-4 w-4 flex-shrink-0 rounded border border-gray-200"
+										style="background-color:{el.color || 'transparent'}"
+									></span>
 									<input
-										type="color"
-										class="h-5 w-5 cursor-pointer rounded border border-gray-200 p-0"
-										value={el.color || '#888888'}
-										title="원색 틴트 (변경 시 저장)"
-										onchange={(e) => saveColor(el, (e.currentTarget as HTMLInputElement).value)}
+										type="text"
+										class="w-16 rounded border border-gray-200 px-1 py-0.5 text-center text-[10px] focus:border-orange-400 focus:outline-none"
+										value={el.color || ''}
+										placeholder="#e0533d"
+										title="원색 16진수 (Enter 또는 포커스 해제 시 저장)"
+										onblur={(e) => saveColor(el, (e.currentTarget as HTMLInputElement).value)}
+										onkeydown={(e) => {
+											if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+										}}
 									/>
 									{#if el.color}
 										<button
