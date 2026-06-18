@@ -9,42 +9,42 @@ export class nikkeInit {
 				authorEmail: '@gmail.com',
 				authorName: 'KingDuck'
 			},
-			// 속성 정보
+			// 필터 — 서버 list API가 지원하는 elementId/pathId 기준만 둔다(코드·무기).
+			// 클래스/버스트/제조사는 metadata라 서버 필터 불가 → 카드/상세에 표시만(필터 제외).
+			// list 키는 DB Element.name 과 정확히 일치해야 한다(sync가 생성한 영문 키).
 			type: {
-				manufacturerType: {
-					// 소속 속성
-					name: '기업소속',
-					isWhite: true,
-					isTwoRow: true,
-					isMenuOpen: false
-				},
-				weaponType: {
-					// 무기 속성
-					name: '무기',
-					isWhite: false,
-					isTwoRow: true,
-					isMenuOpen: false
-				},
 				elementType: {
-					// 속성 타입
+					// 코드(속성)
 					name: '코드',
+					apiPoint: 'elementId',
+					apiType: 'DamageType',
 					isWhite: false,
 					isTwoRow: false,
-					isMenuOpen: false
+					isMenuOpen: false,
+					list: {
+						Fire: '작열',
+						Water: '수냉',
+						Wind: '풍압',
+						Iron: '철갑',
+						Electric: '전격'
+					}
 				},
-				classType: {
-					// 속성 타입
-					name: '클래스',
+				weaponType: {
+					// 무기
+					name: '무기',
+					apiPoint: 'pathId',
+					apiType: 'Path',
 					isWhite: true,
 					isTwoRow: true,
-					isMenuOpen: false
-				},
-				burstType: {
-					// 속성 타입
-					name: '버스트',
-					isWhite: true,
-					isTwoRow: true,
-					isMenuOpen: false
+					isMenuOpen: false,
+					list: {
+						AR: '돌격소총',
+						SMG: '기관단총',
+						SG: '샷건',
+						MG: '미니건',
+						RL: '런처',
+						SR: '저격소총'
+					}
 				}
 			},
 			// 등급 정보
