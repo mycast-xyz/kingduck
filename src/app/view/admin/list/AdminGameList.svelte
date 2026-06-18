@@ -136,6 +136,7 @@
 										{/if}
 									</span>
 									<input
+										id="icon-input-{game.slug}"
 										type="file"
 										accept="image/*"
 										class="hidden"
@@ -197,15 +198,19 @@
 						</td>
 						<td class="px-6 py-4 text-right">
 							<button
-								aria-label="편집"
-								id="tooltip-default"
+								type="button"
+								aria-label="아이콘 변경"
+								title="이미지를 업로드해 아이콘을 교체합니다"
+								onclick={() => document.getElementById(`icon-input-${game.slug}`)?.click()}
 								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
 							>
-								<i class="ri-edit-box-line text-xl"></i>
-								편집
+								<i class="ri-image-edit-line text-xl"></i>
+								아이콘 변경
 							</button>
 							<button
+								type="button"
 								aria-label="변수 설정"
+								onclick={() => toastStore.info('변수 설정은 준비 중입니다.')}
 								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
 							>
 								<i class="ri-code-box-line text-xl"></i>
