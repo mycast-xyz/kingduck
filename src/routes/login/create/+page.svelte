@@ -82,7 +82,9 @@
 		return true;
 	};
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (e: Event) => {
+		// 네이티브 폼 제출(GET) 차단 — 자격증명 URL 노출·페이지 리로드로 인한 fetch 중단 방지.
+		e.preventDefault();
 		const formData = new FormData(document.getElementById('createForm') as HTMLFormElement);
 		const data = Object.fromEntries(formData.entries());
 

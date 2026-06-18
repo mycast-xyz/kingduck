@@ -16,7 +16,10 @@
 	let isPasswordValid = $state(false);
 	let passwordError = $state('');
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (e: Event) => {
+		// 네이티브 폼 제출(GET) 차단 — 안 하면 자격증명이 URL 쿼리로 노출되고
+		// 페이지가 리로드되며 아래 fetch(POST)·토큰 저장이 중단된다(세션 유지 실패).
+		e.preventDefault();
 		const formData = new FormData(document.getElementById('createForm') as HTMLFormElement);
 		const data = Object.fromEntries(formData.entries());
 		// 서버 요청
