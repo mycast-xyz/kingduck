@@ -134,10 +134,20 @@
 			};
 		});
 	});
+
+	// 입력 데이터 유무(동기). 비어 있으면 빈 박스 대신 안내 문구 표시(여행자 등 추천 없는 캐릭터).
+	// cards가 아닌 itemData 기준이라 비동기 로딩 중 깜빡임이 없다.
+	let hasData = $derived.by(() => {
+		if (Array.isArray(itemData)) return itemData.length > 0;
+		if (itemData && typeof itemData === 'object') return Object.keys(itemData).length > 0;
+		return !!itemData;
+	});
 </script>
 
 <Layer title={title || gameInit?.content?.info?.mainItem?.name || '추천'}>
-	{#if !isMobile}
+	{#if !hasData}
+		<div class="py-6 text-center text-sm text-gray-500">데이터가 없습니다.</div>
+	{:else if !isMobile}
 		<swiper-container
 			bind:this={swiperInstance}
 			slides-per-view="auto"

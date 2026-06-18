@@ -120,6 +120,9 @@
 		}
 		return listData?.stats?.sub || [];
 	});
+
+	// 추천 데이터 유무. 모두 비면 빈 박스 대신 안내 문구 표시(여행자 등 추천 없는 캐릭터).
+	let hasData = $derived(relics.length > 0 || mainStats.length > 0 || subStats.length > 0);
 	let hoveredRelic = $state<{
 		visible: boolean;
 		x: number;
@@ -195,6 +198,9 @@
 </script>
 
 <Layer title={title || initData?.name || '추천 세팅'}>
+	{#if !hasData}
+		<div class="py-6 text-center text-sm text-gray-500">데이터가 없습니다.</div>
+	{/if}
 	<div class="p-4 space-y-6">
 		<!-- 유물 추천 -->
 		{#if relics.length > 0}
