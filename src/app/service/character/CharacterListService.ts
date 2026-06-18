@@ -140,7 +140,41 @@ class CharacterListServiceInit {
 			);
 		}
 
-		characterList.set(filtered);
+		characterList.set(this.groupMc(this._activeSlug, filtered));
+	}
+
+	// 주인공(MC)은 원소·성별로 여러 행이라 리스트를 비대하게 만든다 → 1장으로 묶는다.
+	// 이름 기반(정확/접두). "방랑자"는 게임마다 의미가 달라(원신=스카라무슈≠MC) 게임별로 명시한다.
+	private MC_GROUP: Record<string, { match: string; mode: 'exact' | 'prefix'; label: string }> = {
+		genshin: { match: '여행자', mode: 'exact', label: '여행자' }, // 방랑자(스카라무슈)는 제외
+		starrail: { match: '개척자', mode: 'exact', label: '개척자' },
+		wutheringwaves: { match: '방랑자', mode: 'prefix', label: '방랑자' } // 방랑자 · 회절 등
+	};
+
+	// 매칭되는 MC 변형들을 대표 1장으로 접고 변형 수(_variantCount)를 표시한다.
+	// 필터된 결과 집합에 적용 → 원소 필터가 걸려 있어도 해당 변형만 묶일 뿐 누락되지 않는다.
+	private groupMc(slug: string, list: CharacterType[]): CharacterType[] {
+		const cfg = this.MC_GROUP[slug];
+		if (!cfg) return list;
+		const isMc = (c: CharacterType) =>
+			cfg.mode === 'exact' ? c.name === cfg.match : c.name.startsWith(cfg.match);
+
+		const result: CharacterType[] = [];
+		let rep: CharacterType | null = null;
+		let count = 0;
+		for (const c of list) {
+			if (isMc(c)) {
+				count++;
+				if (!rep) {
+					rep = { ...c, name: cfg.label };
+					result.push(rep);
+				}
+			} else {
+				result.push(c);
+			}
+		}
+		if (rep && count > 1) (rep as unknown as { _variantCount: number })._variantCount = count;
+		return result;
 	}
 }
 

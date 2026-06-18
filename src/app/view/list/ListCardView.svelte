@@ -112,6 +112,10 @@
 							<h5 class="break-keep pb-1 text-base font-extrabold"></h5>
 							<h3 class="break-keep pb-1 text-base font-extrabold drop-shadow-md">
 								{item.name}
+								{#if item._variantCount}<span
+										class="ml-1 align-middle rounded-full bg-white/25 px-1.5 py-0.5 text-[10px] font-semibold"
+										>{item._variantCount}종</span
+									>{/if}
 							</h3>
 							<div class="flex w-full justify-start">
 								<div class="rating-info-img flex w-auto justify-start">
@@ -188,7 +192,13 @@
 						style={cardBgStyle || undefined}
 					>
 						<h5 class="break-keep pb-1 text-base font-extrabold"></h5>
-						<h3 class="break-keep pb-1 text-xl font-extrabold drop-shadow-md">{item.name}</h3>
+						<h3 class="break-keep pb-1 text-xl font-extrabold drop-shadow-md">
+						{item.name}
+						{#if item._variantCount}<span
+								class="ml-1 align-middle rounded-full bg-white/25 px-1.5 py-0.5 text-xs font-semibold"
+								>{item._variantCount}종</span
+							>{/if}
+					</h3>
 
 						<div class="flex w-full justify-start">
 							<div class="rating-info-img flex w-auto justify-start">
