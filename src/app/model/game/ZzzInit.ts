@@ -76,7 +76,7 @@ export class ZzzInit {
 					}
 				},
 				item: {
-					view: false,
+					view: true,
 					search: { text: true, attribute: {} }
 				},
 				// 카드 등급 색상(S 금 / A 보라)
@@ -101,7 +101,7 @@ export class ZzzInit {
 			// 상세 표시 — 속성/특성은 헤더, 공격타입/소속은 캐릭터 정보 섹션.
 			content: {
 				image: {
-					video: false,
+					video: true,
 					image: true
 				},
 				name: true,
@@ -115,6 +115,19 @@ export class ZzzInit {
 			},
 			layout: [
 				{ component: 'ZzzProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
+				// 추천 빌드(genshin.gg/zzz 큐레이션) — 백엔드 ZzzBuildScraper가 채운다.
+				// W-엔진(무기 자리)=MainItemView, 드라이브 디스크(유물 자리)=BuildRecommendationView, 팀.
+				{
+					component: 'MainItemView',
+					dataKey: 'recommendedWEngines',
+					props: { title: '추천 W-엔진' }
+				},
+				{
+					component: 'BuildRecommendationView',
+					dataKey: 'driveDiscs',
+					props: { title: '추천 드라이브 디스크' }
+				},
+				{ component: 'TeamRecommendationView', dataKey: 'teams', props: { title: '추천 파티' } },
 				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } },
 				{ component: 'RankListView', dataKey: 'talents', props: { title: '심상 영식' } }
 			],

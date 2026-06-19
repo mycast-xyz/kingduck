@@ -35,7 +35,8 @@
 
 			// gameId는 slug로 통일, URL 별칭은 resolve
 			const slug = gameInit.gameId || resolveGameSlug($page.params.gameEnName);
-			if (slug === 'starrail') {
+			if (slug === 'starrail' || slug === 'zzz') {
+				// zzz도 originalId 배열(W-엔진)을 게임 슬러그로 조회 — 공용 로더 재사용.
 				loadHsrItems();
 			} else if (slug === 'genshin') {
 				loadGenshinItems();
