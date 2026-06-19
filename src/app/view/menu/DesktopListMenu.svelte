@@ -3,6 +3,7 @@
 	import RarityFilterMenu from './filter/RarityFilterMenu.svelte';
 	import ListFilterMenu from './filter/ListFilterMenu.svelte';
 	import { CharacterListService } from '../../service/character/CharacterListService';
+	import { hasItemTabs } from '../../model/game/itemTabs';
 
 	import { page } from '$app/stores';
 
@@ -79,6 +80,19 @@
 						>캐릭터</span
 					>
 				</a>
+				{#if hasItemTabs($page.params.slug)}
+					<a
+						id="menu-item"
+						class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300 dark:hover:bg-gray-800"
+						href={`/item/${$page.params.slug}`}
+					>
+						<i class="ri-sword-line h-8 w-8 text-2xl"></i>
+						<span
+							class="ml-2 text-base font-medium transition-all delay-300 duration-200 ease-in-out"
+							>아이템</span
+						>
+					</a>
+				{/if}
 				<a
 					id="menu-item"
 					class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300 dark:hover:bg-gray-800"
