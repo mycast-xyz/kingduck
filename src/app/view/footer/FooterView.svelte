@@ -24,6 +24,10 @@
 				<p>{gameInit.copyright.description}</p>
 			{/if}
 			<p class="mt-2">
+				<a href="/about" class="hover:text-gray-900 hover:underline dark:hover:text-white">소개</a>
+				<span class="mx-2 text-gray-300">|</span>
+				<a href="/contact" class="hover:text-gray-900 hover:underline dark:hover:text-white">문의</a>
+				<span class="mx-2 text-gray-300">|</span>
 				<a href="/privacy" class="hover:text-gray-900 hover:underline dark:hover:text-white"
 					>개인정보처리방침</a
 				>

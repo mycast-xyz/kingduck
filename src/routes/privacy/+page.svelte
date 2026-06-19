@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FooterView from '../../app/view/footer/FooterView.svelte';
 	// 연락 이메일 — 운영자 메일로 교체 가능.
-	const CONTACT = 'contact@kingduck.xyz';
+	const CONTACT = 'w2story@naver.com';
 	const EFFECTIVE = '2026-06-19';
 </script>
 
