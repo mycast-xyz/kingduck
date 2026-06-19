@@ -4,6 +4,7 @@
 	// 컴포넌트 가져오기
 	import { WindowService } from '../../../service/WindowService';
 	import MobileModal from '../../modal/MobileModal.svelte';
+	import MobileGameNav from '../../menu/MobileGameNav.svelte';
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
@@ -11,6 +12,7 @@
 
 <MobileModal {data} />
 <div class=" mt-7 w-screen overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800">
+	<MobileGameNav />
 	<article
 		id="search-bar"
 		class="relative flex h-auto w-full items-center justify-between px-4 pt-12"

@@ -3,6 +3,7 @@
 	import ItemCardView from '../../item/ItemCardView.svelte';
 	import ItemDetailModal from '../../item/ItemDetailModal.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
+	import MobileGameNav from '../../menu/MobileGameNav.svelte';
 	import { ItemListService, itemList } from '../../../service/item/ItemListService';
 	import type { ItemType } from '../../../model/api/api';
 
@@ -23,6 +24,7 @@
 </script>
 
 <div class="mt-7 w-screen overflow-x-hidden bg-gray-100 dark:bg-gray-800">
+	<MobileGameNav />
 	<article class="relative flex h-auto w-full items-center px-4 pt-12">
 		<div class="flex w-full items-center rounded-lg border border-gray-200 bg-white px-3 py-1">
 			<i class="ri-search-line mr-2 text-xl text-gray-400"></i>
