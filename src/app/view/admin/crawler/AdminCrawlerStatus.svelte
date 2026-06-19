@@ -212,9 +212,11 @@
 	}
 
 	// 게임의 모든 크롤러 타입을 한 번에 실행 요청(백엔드에서 각자 백그라운드 실행).
-	async function runAllForGame(group: CrawlerGroup) {
+	// mode='force'면 전부 강제 새로고침(이미지·아이콘 재다운로드, 추천 보존). purge는 전체에선 미지원(파괴적).
+	async function runAllForGame(group: CrawlerGroup, mode: 'normal' | 'force' = 'normal') {
 		if (!group.crawlers.length) return;
-		if (!confirm(`${group.gameName}의 크롤러 ${group.crawlers.length}개를 전체 실행할까요?`)) return;
+		const label = mode === 'force' ? '전체 강제 새로고침' : '전체 실행';
+		if (!confirm(`${group.gameName}의 크롤러 ${group.crawlers.length}개를 ${label}할까요?`)) return;
 		runningAllSlug = group.gameSlug;
 		let ok = 0;
 		let fail = 0;
@@ -222,7 +224,8 @@
 			try {
 				await client.post('/api/v0/admin/crawler/run', {
 					gameSlug: group.gameSlug,
-					crawlerType: c.type
+					crawlerType: c.type,
+					mode
 				});
 				ok++;
 			} catch (e) {
@@ -231,7 +234,7 @@
 			}
 		}
 		runningAllSlug = null;
-		toastStore.success(`${group.gameName} 전체 실행 요청: ${ok}개${fail ? `, 실패 ${fail}` : ''}`);
+		toastStore.success(`${group.gameName} ${label} 요청: ${ok}개${fail ? `, 실패 ${fail}` : ''}`);
 		await loadCrawlerStatus();
 	}
 
@@ -250,14 +253,25 @@
 					<i class="ri-gamepad-line text-orange-500"></i>
 					{group.gameName}
 				</h3>
-				<button
-					onclick={() => runAllForGame(group)}
-					disabled={runningAllSlug === group.gameSlug}
-					class="rounded-lg bg-orange-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
-				>
-					<i class="ri-play-list-2-line mr-1"></i>
-					{runningAllSlug === group.gameSlug ? '요청 중…' : '전체 실행'}
-				</button>
+				<div class="flex gap-2">
+					<button
+						onclick={() => runAllForGame(group)}
+						disabled={runningAllSlug === group.gameSlug}
+						class="rounded-lg bg-orange-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+					>
+						<i class="ri-play-list-2-line mr-1"></i>
+						{runningAllSlug === group.gameSlug ? '요청 중…' : '전체 실행'}
+					</button>
+					<button
+						onclick={() => runAllForGame(group, 'force')}
+						disabled={runningAllSlug === group.gameSlug}
+						title="이미지·아이콘을 이미 있어도 다시 받아 덮어씀(추천 보존)"
+						class="rounded-lg border border-orange-500 px-3 py-1.5 text-sm font-medium text-orange-600 hover:bg-orange-50 disabled:opacity-50"
+					>
+						<i class="ri-refresh-line mr-1"></i>
+						전체 강제
+					</button>
+				</div>
 			</div>
 
 			<!-- 크롤러 리스트 -->
