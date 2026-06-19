@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { toastStore } from '../../../service/ToastService';
 	import type { GameType } from '../../../model/api/api';
 	import client from '../../../service/api/client';
@@ -38,10 +38,55 @@
 	// 실행 모드: normal(일반) | force(강제 새로고침: 이미지·아이콘 재다운로드, 추천 보존) | purge(완전 재구축)
 	let runMode: 'normal' | 'force' | 'purge' = $state('normal');
 	let runningAllSlug: string | null = $state(null);
+	// 실시간 진행: key(`game:type`) → { processed, total, current }
+	let progressRuns = $state<Record<string, { processed: number; total: number; current: string }>>(
+		{}
+	);
+	let progressTimer: ReturnType<typeof setInterval> | null = null;
 
 	onMount(async () => {
 		await loadCrawlerStatus();
+		await pollProgress();
+		// 실행 중 상태/진행을 주기적으로 갱신(완료 시 RUNNING→SUCCESS 반영).
+		progressTimer = setInterval(() => {
+			pollProgress();
+			loadCrawlerStatus();
+		}, 2500);
 	});
+
+	onDestroy(() => {
+		if (progressTimer) clearInterval(progressTimer);
+	});
+
+	async function pollProgress() {
+		try {
+			const res = await client.get('/api/v0/admin/crawler/progress');
+			const runs = res.data?.runs ?? res.data?.data?.runs ?? [];
+			const map: Record<string, any> = {};
+			for (const r of runs) map[r.key] = r;
+			progressRuns = map;
+		} catch {
+			/* 무시 */
+		}
+	}
+
+	function progressOf(crawler: any) {
+		return progressRuns[`${crawler.gameSlug}:${crawler.type}`];
+	}
+
+	async function stopCrawler(crawler: any) {
+		if (!confirm(`${crawler.name} 크롤을 중단할까요? (진행 중인 항목 이후 멈춤)`)) return;
+		try {
+			const res = await client.post('/api/v0/admin/crawler/stop', {
+				gameSlug: crawler.gameSlug,
+				crawlerType: crawler.type
+			});
+			toastStore.success(res.data?.message || res.data?.resultMsg || '중단 요청됨');
+		} catch (e) {
+			console.error('중단 실패:', e);
+			toastStore.error('중단 요청에 실패했습니다.');
+		}
+	}
 
 	async function loadCrawlerStatus() {
 		try {
@@ -305,20 +350,28 @@
 							</div>
 						</div>
 
-						<!-- 진행률 (실행중일 때 - API 지원 시 활성화) -->
-						{#if crawler.status === 'RUNNING' && crawler.progress > 0}
-							<div class="mb-4">
-								<div class="mb-1 flex justify-between text-xs">
-									<span class="text-gray-600">진행률</span>
-									<span class="font-medium text-blue-600">{crawler.progress}%</span>
+						<!-- 실시간 진행률 (실행 중 + 스크래퍼가 진행 보고 시) -->
+						{#if crawler.status === 'RUNNING'}
+							{@const prog = progressOf(crawler)}
+							{#if prog && prog.total > 0}
+								{@const pct = Math.round((prog.processed / prog.total) * 100)}
+								<div class="mb-4">
+									<div class="mb-1 flex justify-between gap-2 text-xs">
+										<span class="truncate text-gray-600"
+											>진행 {prog.processed}/{prog.total}{prog.current ? ` · ${prog.current}` : ''}</span
+										>
+										<span class="shrink-0 font-medium text-blue-600">{pct}%</span>
+									</div>
+									<div class="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+										<div
+											class="h-full rounded-full bg-blue-500 transition-all duration-500"
+											style="width: {pct}%"
+										></div>
+									</div>
 								</div>
-								<div class="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
-									<div
-										class="h-full rounded-full bg-blue-500 transition-all duration-500"
-										style="width: {crawler.progress}%"
-									></div>
-								</div>
-							</div>
+							{:else}
+								<div class="mb-4 text-xs text-gray-400">실행 중… (진행 정보 대기)</div>
+							{/if}
 						{/if}
 
 						<!-- 에러 메시지 -->
@@ -331,14 +384,23 @@
 
 						<!-- 액션 버튼 -->
 						<div class="flex gap-2">
-							<button
-								onclick={() => openRunConfirm(crawler)}
-								class="flex-1 rounded-md bg-orange-50 px-3 py-2 text-sm font-medium text-orange-700 transition-colors hover:bg-orange-100 disabled:cursor-not-allowed disabled:opacity-50"
-								disabled={crawler.status === 'RUNNING'}
-							>
-								<i class="ri-play-circle-line mr-1"></i>
-								{crawler.status === 'RUNNING' ? '실행중' : '실행'}
-							</button>
+							{#if crawler.status === 'RUNNING'}
+								<button
+									onclick={() => stopCrawler(crawler)}
+									class="flex-1 rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100"
+								>
+									<i class="ri-stop-circle-line mr-1"></i>
+									정지
+								</button>
+							{:else}
+								<button
+									onclick={() => openRunConfirm(crawler)}
+									class="flex-1 rounded-md bg-orange-50 px-3 py-2 text-sm font-medium text-orange-700 transition-colors hover:bg-orange-100 disabled:cursor-not-allowed disabled:opacity-50"
+								>
+									<i class="ri-play-circle-line mr-1"></i>
+									실행
+								</button>
+							{/if}
 							<button
 								onclick={() => viewLogs(crawler.id)}
 								class="flex-1 rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900"
