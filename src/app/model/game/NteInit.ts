@@ -106,7 +106,7 @@ export class NteInit {
 			// 상세 표시 — 속성/형질은 헤더, 진영/생일/이능력은 정보 섹션.
 			content: {
 				image: {
-					video: false,
+					video: true,
 					image: true
 				},
 				name: true,
