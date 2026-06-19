@@ -3,6 +3,7 @@
 	import FooterView from '../../../app/view/footer/FooterView.svelte';
 	// 컴포넌트 임포트
 	import Layer from '../../../app/view-framework/content/ContentLayer.svelte';
+	import SeoHead from '../../../app/view/SeoHead.svelte';
 
 	let { data } = $props();
 
@@ -25,6 +26,8 @@
 		}
 	}
 </script>
+
+<SeoHead title={data.title} description={data.meta?.description} />
 
 <div class="h-screen w-screen min-w-[1700px] overflow-hidden bg-gray-100 dark:bg-gray-800">
 	<article

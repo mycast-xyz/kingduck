@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import DesktopListMenu from '../../../app/view/menu/DesktopListMenu.svelte';
 	import FooterView from '../../../app/view/footer/FooterView.svelte';
+	import SeoHead from '../../../app/view/SeoHead.svelte';
 
 	// Weather Components
 	import GameWeatherHeader from '../../../app/view/calendar/game/GameWeatherHeader.svelte';
@@ -17,6 +18,8 @@
 	let weatherAlert = $derived(data.weatherAlert);
 	let game = $derived(data.game);
 </script>
+
+<SeoHead title={data.title} description={data.meta?.description} />
 
 <div class="h-screen w-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
 	<article

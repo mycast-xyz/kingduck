@@ -2,15 +2,12 @@
 	import type { PageData } from './$types';
 	import DesktopView from '../../../app/view/agent/desktop/ListView.svelte';
 	import MobileView from '../../../app/view/agent/mobile/ListView.svelte';
+	import SeoHead from '../../../app/view/SeoHead.svelte';
 
 	export let data: PageData;
 </script>
 
-<svelte:head>
-	<title>{data.title}</title>
-	<meta name="description" content={data.meta.description} />
-	<meta name="keywords" content={data.meta.keywords} />
-</svelte:head>
+<SeoHead title={data.title} description={data.meta?.description} keywords={data.meta?.keywords} />
 
 <article>
 	{#if data.isMobile}

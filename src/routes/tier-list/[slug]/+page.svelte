@@ -6,6 +6,7 @@
 	import { characterList } from '../../../app/service/character/CharacterListService';
 	import DesktopListMenu from '../../../app/view/menu/DesktopListMenu.svelte';
 	import FooterView from '../../../app/view/footer/FooterView.svelte';
+	import SeoHead from '../../../app/view/SeoHead.svelte';
 	import { GameSettingInitService } from '../../../app/service/game/GameSettingService';
 	import { CharacterRarityService } from '../../../app/service/character/CharacterRarityService';
 	import { getCardBgStyle } from '../../../app/util/StyleUtils';
@@ -366,6 +367,11 @@
 		}, 3000);
 	}
 </script>
+
+<SeoHead
+	title={data.info?.name ? `${data.info.name} 티어 리스트` : '티어 리스트'}
+	description={data.info?.name ? `${data.info.name} 캐릭터 티어 리스트를 만들고 공유하세요.` : ''}
+/>
 
 <div class="h-screen w-screen min-w-[1700px] overflow-hidden bg-gray-100 dark:bg-gray-800">
 	<article
