@@ -25,6 +25,8 @@
 						<img
 							src="{currentUrl}/{costume.image}"
 							alt={costume.name}
+							loading="lazy"
+							decoding="async"
 							class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 						/>
 					{:else}

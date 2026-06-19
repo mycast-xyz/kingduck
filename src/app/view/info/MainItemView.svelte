@@ -167,6 +167,8 @@
 							class="h-auto min-w-36 max-w-52"
 							src="{currentUrl}/{card._formattedImage}"
 							height="110%"
+							loading="lazy"
+							decoding="async"
 							alt=""
 						/>
 						<div class="rating-info flex w-auto justify-center p-2 pb-0">
@@ -222,6 +224,8 @@
 						<img
 							class="h-auto w-full rounded-xl"
 							src="{currentUrl}/{card._formattedImage.replace(/\.webp$/, '')}.webp"
+							loading="lazy"
+							decoding="async"
 							alt=""
 						/>
 						<div class="rating-info flex w-auto justify-center p-2 pb-0">
