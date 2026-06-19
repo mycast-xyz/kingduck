@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import DesktopListMenu from '../../../app/view/menu/DesktopListMenu.svelte';
+	import MobileGameNav from '../../../app/view/menu/MobileGameNav.svelte';
 	import FooterView from '../../../app/view/footer/FooterView.svelte';
 	import SeoHead from '../../../app/view/SeoHead.svelte';
 
@@ -21,42 +22,56 @@
 
 <SeoHead title={data.title} description={data.meta?.description} />
 
-<div class="h-screen w-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
-	<article
-		id="weather-page"
-		class="my-0 ml-[80px] mr-0 flex h-full w-[calc(100%-80px)] overflow-hidden"
-	>
-		<!-- Sidebar Menu -->
-		<DesktopListMenu {data} />
+{#snippet body()}
+	<div class="w-full mx-auto space-y-6 pb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+		{#if weatherAlert && events}
+			<div class="col-span-2">
+				<!-- Weather Header -->
+				<GameWeatherHeader {weatherAlert} {events} />
 
-		<!-- Main Content Area -->
-		<div class="h-screen w-full overflow-y-auto pr-6 pl-4 pt-16">
-			<div class="w-full mx-auto space-y-6 pb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-				{#if weatherAlert && events}
-					<div class="col-span-2">
-						<!-- Weather Header -->
-						<GameWeatherHeader {weatherAlert} {events} />
+				<!-- Timeline (7 Days) -->
+				<WeatherTimeline {events} />
 
-						<!-- Timeline (7 Days) -->
-						<WeatherTimeline {events} />
-
-						<!-- Event List (NEW) -->
-						<EventList {events} />
-					</div>
-					<div class="col-span-1 mt-0">
-						<!-- Gacha Life Index -->
-						<GachaIndexCards {weatherAlert} {events} />
-						<!-- Weekly Forecast (14 Days) -->
-						<WeeklyForecast {events} />
-					</div>
-				{:else}
-					<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-12 text-center">
-						<i class="ri-loader-4-line text-6xl text-gray-400 animate-spin mb-4 block"></i>
-						<p class="text-xl text-gray-600 dark:text-gray-400">기상 데이터를 불러오는 중...</p>
-					</div>
-				{/if}
+				<!-- Event List (NEW) -->
+				<EventList {events} />
 			</div>
-			<FooterView />
+			<div class="col-span-1 mt-0">
+				<!-- Gacha Life Index -->
+				<GachaIndexCards {weatherAlert} {events} />
+				<!-- Weekly Forecast (14 Days) -->
+				<WeeklyForecast {events} />
+			</div>
+		{:else}
+			<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-12 text-center">
+				<i class="ri-loader-4-line text-6xl text-gray-400 animate-spin mb-4 block"></i>
+				<p class="text-xl text-gray-600 dark:text-gray-400">기상 데이터를 불러오는 중...</p>
+			</div>
+		{/if}
+	</div>
+{/snippet}
+
+{#if data.isMobile}
+	<div class="min-h-screen w-full pt-16 bg-gray-100 dark:bg-gray-800">
+		<MobileGameNav />
+		<div class="px-3 pb-16">
+			{@render body()}
 		</div>
-	</article>
-</div>
+		<FooterView />
+	</div>
+{:else}
+	<div class="h-screen w-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
+		<article
+			id="weather-page"
+			class="my-0 ml-[80px] mr-0 flex h-full w-[calc(100%-80px)] overflow-hidden"
+		>
+			<!-- Sidebar Menu -->
+			<DesktopListMenu {data} />
+
+			<!-- Main Content Area -->
+			<div class="h-screen w-full overflow-y-auto pr-6 pl-4 pt-16">
+				{@render body()}
+				<FooterView />
+			</div>
+		</article>
+	</div>
+{/if}

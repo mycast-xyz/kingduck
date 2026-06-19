@@ -5,6 +5,7 @@
 	import LZString from 'lz-string';
 	import { characterList } from '../../../app/service/character/CharacterListService';
 	import DesktopListMenu from '../../../app/view/menu/DesktopListMenu.svelte';
+	import MobileGameNav from '../../../app/view/menu/MobileGameNav.svelte';
 	import FooterView from '../../../app/view/footer/FooterView.svelte';
 	import SeoHead from '../../../app/view/SeoHead.svelte';
 	import { GameSettingInitService } from '../../../app/service/game/GameSettingService';
@@ -373,142 +374,156 @@
 	description={data.info?.name ? `${data.info.name} 캐릭터 티어 리스트를 만들고 공유하세요.` : ''}
 />
 
-<div class="h-screen w-screen min-w-[1700px] overflow-hidden bg-gray-100 dark:bg-gray-800">
-	<article
-		id="list-component"
-		class="my-0 ml-[80px] mr-0 flex h-full w-[calc(100%-80px)] overflow-hidden"
+{#snippet body()}
+	<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+		<h1 class="text-2xl sm:text-3xl font-bold uppercase text-gray-800 dark:text-white">
+			{data.info?.name} Tier List
+		</h1>
+		<div class="flex gap-2">
+			<button
+				class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+				onclick={handleShare}
+			>
+				<i class="ri-share-line mr-1"></i>
+				공유
+			</button>
+			<button
+				class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-gray-800"
+				onclick={() => {
+					// Reset: Move everything back to pool (conceptually)
+					// In practice: Clear tiers, update pool from master list
+
+					// Force pool update from current store value
+					// We can't access $characterList directly easily inside simple function without store get
+					// But `unsub` logic handles store updates.
+					// We can trigger re-sync if we tracked the last list.
+					// Simplest: reload page or just clear tiers visually?
+					// Let's just clear tiers. The reactive pool update will happen if we trigger it.
+					// Actually, simpler:
+					location.reload();
+				}}>Reset</button
+			>
+		</div>
+	</div>
+
+	<!-- Tier List Area -->
+	<div
+		class="flex flex-col gap-2 mb-8 bg-w p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700"
 	>
-		<!-- Sidebar Menu -->
-		<DesktopListMenu {data} />
-
-		<!-- Main Content Area -->
-		<div class="list h-auto w-[calc(100%-100px)] w-[inherit] overflow-y-auto pr-2 pt-16">
-			<div class="mx-auto w-full p-4 min-h-screen">
-				<div class="flex justify-between items-center mb-6">
-					<h1 class="text-3xl font-bold uppercase text-gray-800 dark:text-white">
-						{data.info?.name} Tier List
-					</h1>
-					<div class="space-x-2">
-						<button
-							class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-							onclick={handleShare}
-						>
-							<i class="ri-share-line mr-1"></i>
-							공유
-						</button>
-						<button
-							class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-gray-800"
-							onclick={() => {
-								// Reset: Move everything back to pool (conceptually)
-								// In practice: Clear tiers, update pool from master list
-
-								// Force pool update from current store value
-								// We can't access $characterList directly easily inside simple function without store get
-								// But `unsub` logic handles store updates.
-								// We can trigger re-sync if we tracked the last list.
-								// Simplest: reload page or just clear tiers visually?
-								// Let's just clear tiers. The reactive pool update will happen if we trigger it.
-								// Actually, simpler:
-								location.reload();
-							}}>Reset</button
-						>
-					</div>
-				</div>
-
-				<!-- Tier List Area -->
+		{#each tiers as tier, index}
+			<div
+				class="flex min-h-[120px] bg-gray-200 rounded overflow-hidden border border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+			>
+				<!-- Label -->
 				<div
-					class="flex flex-col gap-2 mb-8 bg-w p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700"
+					class="{tier.color} w-28 flex items-center justify-center text-2xl font-bold text-white shrink-0"
 				>
-					{#each tiers as tier, index}
+					<span contenteditable="true" class="outline-none text-center w-full"
+						>{tier.label}</span
+					>
+				</div>
+				<!-- Drop Area -->
+				<div
+					class="flex-1 p-2 flex flex-wrap gap-2 min-h-full items-center content-start"
+					bind:this={tierRefs[index]}
+				>
+					<!-- Render tier items -->
+					{#each tier.items as char (char.id)}
+						{@const charBgStyle = getCharBgStyle(char.rarity)}
 						<div
-							class="flex min-h-[120px] bg-gray-200 rounded overflow-hidden border border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+							class="w-20 h-20 sm:w-28 sm:h-28 bg-gray-300 rounded-lg overflow-hidden cursor-move relative shrink-0 group hover:ring-2 ring-gray-100 dark:ring-gray-700"
+							style={getCardStyle(char.rarity) || 'background: rgba(0, 0, 0, 0.7);'}
+							data-id={char.id}
 						>
-							<!-- Label -->
+							<img
+								src={getImgUrl(char)}
+								alt={char.name}
+								class="w-full h-full object-cover pointer-events-none"
+							/>
 							<div
-								class="{tier.color} w-28 flex items-center justify-center text-2xl font-bold text-white shrink-0"
+								class="absolute bottom-0 left-0 right-0 text-white text-[14px] text-center truncate px-1 opacity-0 group-hover:opacity-100 transition-opacity"
+								style={charBgStyle || 'background: rgba(0, 0, 0, 0.7);'}
 							>
-								<span contenteditable="true" class="outline-none text-center w-full"
-									>{tier.label}</span
-								>
-							</div>
-							<!-- Drop Area -->
-							<div
-								class="flex-1 p-2 flex flex-wrap gap-2 min-h-full items-center content-start"
-								bind:this={tierRefs[index]}
-							>
-								<!-- Render tier items -->
-								{#each tier.items as char (char.id)}
-									{@const charBgStyle = getCharBgStyle(char.rarity)}
-									<div
-										class="w-28 h-28 bg-gray-300 rounded-lg overflow-hidden cursor-move relative shrink-0 group hover:ring-2 ring-gray-100 dark:ring-gray-700"
-										style={getCardStyle(char.rarity) || 'background: rgba(0, 0, 0, 0.7);'}
-										data-id={char.id}
-									>
-										<img
-											src={getImgUrl(char)}
-											alt={char.name}
-											class="w-full h-full object-cover pointer-events-none"
-										/>
-										<div
-											class="absolute bottom-0 left-0 right-0 text-white text-[14px] text-center truncate px-1 opacity-0 group-hover:opacity-100 transition-opacity"
-											style={charBgStyle || 'background: rgba(0, 0, 0, 0.7);'}
-										>
-											{char.name}
-										</div>
-									</div>
-								{/each}
+								{char.name}
 							</div>
 						</div>
 					{/each}
 				</div>
+			</div>
+		{/each}
+	</div>
 
-				<!-- Character Pool -->
-				<div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md mb-20">
-					<h2
-						class="text-xl font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-200 dark:border-gray-600 pb-2"
+	<!-- Character Pool -->
+	<div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md mb-20">
+		<h2
+			class="text-xl font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-200 dark:border-gray-600 pb-2"
+		>
+			캐릭터 리스트
+		</h2>
+
+		<div class="flex flex-wrap gap-2" bind:this={poolRef}>
+			{#each pool as char (char.id)}
+				{@const charBgStyle = getCharBgStyle(char.rarity)}
+				<div
+					class="w-20 h-20 sm:w-28 sm:h-28 bg-gray-300 rounded-lg overflow-hidden cursor-move relative shrink-0 group hover:ring-2 ring-gray-100"
+					style={getCardStyle(char.rarity) || 'background: rgba(0, 0, 0, 0.7);'}
+					data-id={char.id}
+				>
+					<img
+						src={getImgUrl(char)}
+						alt={char.name}
+						class="w-full h-full object-cover pointer-events-none"
+					/>
+					<div
+						class="absolute bottom-0 left-0 right-0 text-white text-[14px] text-center truncate px-1 opacity-0 group-hover:opacity-100 transition-opacity"
+						style={charBgStyle || 'background: rgba(0, 0, 0, 0.7);'}
 					>
-						캐릭터 리스트
-					</h2>
-
-					<div class="flex flex-wrap gap-2" bind:this={poolRef}>
-						{#each pool as char (char.id)}
-							{@const charBgStyle = getCharBgStyle(char.rarity)}
-							<div
-								class="w-28 h-28 bg-gray-300 rounded-lg overflow-hidden cursor-move relative shrink-0 group hover:ring-2 ring-gray-100"
-								style={getCardStyle(char.rarity) || 'background: rgba(0, 0, 0, 0.7);'}
-								data-id={char.id}
-							>
-								<img
-									src={getImgUrl(char)}
-									alt={char.name}
-									class="w-full h-full object-cover pointer-events-none"
-								/>
-								<div
-									class="absolute bottom-0 left-0 right-0 text-white text-[14px] text-center truncate px-1 opacity-0 group-hover:opacity-100 transition-opacity"
-									style={charBgStyle || 'background: rgba(0, 0, 0, 0.7);'}
-								>
-									{char.name}
-								</div>
-							</div>
-						{/each}
+						{char.name}
 					</div>
 				</div>
-			</div>
-
-			<FooterView />
+			{/each}
 		</div>
-	</article>
+	</div>
+{/snippet}
 
-	<!-- Toast Notification -->
-	{#if showToast}
-		<div
-			class="fixed bottom-8 right-8 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-slide-up z-50"
+{#if data.isMobile}
+	<div class="min-h-screen w-full pt-16 bg-gray-100 dark:bg-gray-800">
+		<MobileGameNav />
+		<div class="mx-auto w-full px-3 pb-16">
+			{@render body()}
+		</div>
+		<FooterView />
+	</div>
+{:else}
+	<div class="h-screen w-screen min-w-[1700px] overflow-hidden bg-gray-100 dark:bg-gray-800">
+		<article
+			id="list-component"
+			class="my-0 ml-[80px] mr-0 flex h-full w-[calc(100%-80px)] overflow-hidden"
 		>
-			<i class="ri-check-line text-green-400 dark:text-green-600 text-xl"></i>
-			<span class="font-medium">{toastMessage}</span>
-		</div>
-	{/if}
-</div>
+			<!-- Sidebar Menu -->
+			<DesktopListMenu {data} />
+
+			<!-- Main Content Area -->
+			<div class="list h-auto w-[calc(100%-100px)] w-[inherit] overflow-y-auto pr-2 pt-16">
+				<div class="mx-auto w-full p-4 min-h-screen">
+					{@render body()}
+				</div>
+
+				<FooterView />
+			</div>
+		</article>
+	</div>
+{/if}
+
+<!-- Toast Notification (fixed, works in both branches) -->
+{#if showToast}
+	<div
+		class="fixed bottom-8 right-8 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-slide-up z-50"
+	>
+		<i class="ri-check-line text-green-400 dark:text-green-600 text-xl"></i>
+		<span class="font-medium">{toastMessage}</span>
+	</div>
+{/if}
 
 <style lang="scss">
 	#list-menu-content {
