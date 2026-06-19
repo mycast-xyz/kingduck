@@ -4,6 +4,7 @@
 	import AdminCrawlerStatus from '../../../app/view/admin/crawler/AdminCrawlerStatus.svelte';
 	import AdminCrawlerLogs from '../../../app/view/admin/crawler/AdminCrawlerLogs.svelte';
 	import AdminPendingData from '../../../app/view/admin/crawler/AdminPendingData.svelte';
+	import AdminDataGaps from '../../../app/view/admin/crawler/AdminDataGaps.svelte';
 
 	const { data } = $props<{ data: any }>();
 
@@ -14,7 +15,7 @@
 	let mainMargin = $derived(isSidebarCollapsed.collapsed ? 'ml-64' : 'ml-20');
 
 	// 탭 상태
-	let activeTab = $state<'status' | 'logs' | 'pending'>('status');
+	let activeTab = $state<'status' | 'logs' | 'pending' | 'gaps'>('status');
 </script>
 
 <main class="ml-64 min-h-screen flex-1 bg-gray-100 p-8">
@@ -57,6 +58,16 @@
 				검토 대기
 				<span class="ml-2 rounded-full bg-orange-500 px-2 py-0.5 text-xs text-white">3</span>
 			</button>
+			<button
+				class="whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition-colors {activeTab ===
+				'gaps'
+					? 'border-orange-500 text-orange-600'
+					: 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+				onclick={() => (activeTab = 'gaps')}
+			>
+				<i class="ri-error-warning-line mr-2"></i>
+				데이터 공백
+			</button>
 		</nav>
 	</div>
 
@@ -68,6 +79,8 @@
 			<AdminCrawlerLogs gameList={data.gameList} />
 		{:else if activeTab === 'pending'}
 			<AdminPendingData />
+		{:else if activeTab === 'gaps'}
+			<AdminDataGaps />
 		{/if}
 	</div>
 </main>
