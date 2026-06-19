@@ -15,7 +15,7 @@
 	<div class="flex justify-center px-6 pb-6">
 		<span class="text-sm font-light text-gray-500 dark:text-gray-400">
 			<p class="text-base font-bold">
-				<a href="https://flowbite.com/" class="text-[#f9822c] hover:underline">KingDuck</a>
+				<a href="/" class="text-[#f9822c] hover:underline">KingDuck</a>
 			</p>
 			{#if gameInit?.copyright?.title}
 				<p>{gameInit.copyright.title}</p>
@@ -23,6 +23,13 @@
 			{#if gameInit?.copyright?.description}
 				<p>{gameInit.copyright.description}</p>
 			{/if}
+			<p class="mt-2">
+				<a href="/privacy" class="hover:text-gray-900 hover:underline dark:hover:text-white"
+					>개인정보처리방침</a
+				>
+				<span class="mx-2 text-gray-300">|</span>
+				<a href="/terms" class="hover:text-gray-900 hover:underline dark:hover:text-white">이용약관</a>
+			</p>
 		</span>
 		<span class="ml-auto mt-4 flex justify-center">
 			<a href="#" class="ms-5 text-gray-500 hover:text-gray-900 dark:hover:text-white">
