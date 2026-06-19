@@ -35,6 +35,8 @@
 	// 모달 상태
 	let showRunModal = $state(false);
 	let selectedCrawlerForRun: Crawler | null = $state(null);
+	// 실행 모드: normal(일반) | force(강제 새로고침: 이미지·아이콘 재다운로드, 추천 보존) | purge(완전 재구축)
+	let runMode: 'normal' | 'force' | 'purge' = $state('normal');
 	let runningAllSlug: string | null = $state(null);
 
 	onMount(async () => {
@@ -173,12 +175,14 @@
 
 	function openRunConfirm(crawler: Crawler) {
 		selectedCrawlerForRun = crawler;
+		runMode = 'normal';
 		showRunModal = true;
 	}
 
 	function closeRunModal() {
 		showRunModal = false;
 		selectedCrawlerForRun = null;
+		runMode = 'normal';
 	}
 
 	async function handleRunConfirm() {
@@ -187,10 +191,15 @@
 		try {
 			await client.post('/api/v0/admin/crawler/run', {
 				gameSlug: selectedCrawlerForRun.gameSlug,
-				crawlerType: selectedCrawlerForRun.type
+				crawlerType: selectedCrawlerForRun.type,
+				mode: runMode
 			});
 
-			toastStore.success(`크롤러 실행 요청이 전송되었습니다: ${selectedCrawlerForRun.name}`);
+			const modeLabel =
+				runMode === 'force' ? ' (강제 새로고침)' : runMode === 'purge' ? ' (완전 재구축)' : '';
+			toastStore.success(
+				`크롤러 실행 요청이 전송되었습니다: ${selectedCrawlerForRun.name}${modeLabel}`
+			);
 
 			// 상태 갱신
 			await loadCrawlerStatus();
@@ -349,9 +358,33 @@
 				<span class="font-semibold text-orange-600">{selectedCrawlerForRun.gameName}</span>의
 				<span class="font-semibold">{selectedCrawlerForRun.name}</span>를 실행하시겠습니까?
 			</p>
-			<p class="mb-6 text-sm text-gray-500">
+			<p class="mb-3 text-sm text-gray-500">
 				크롤러 실행 중에는 시스템 리소스가 사용되며, 중복 실행은 불가능합니다.
 			</p>
+
+			<!-- 실행 모드 선택 -->
+			<div class="mb-4 space-y-2">
+				<label class="flex cursor-pointer items-start gap-2 rounded-lg border p-2 text-sm {runMode === 'normal' ? 'border-orange-400 bg-orange-50' : 'border-gray-200'}">
+					<input type="radio" bind:group={runMode} value="normal" class="mt-0.5" />
+					<span><span class="font-semibold">일반</span> — 변경된 것만 갱신(기본)</span>
+				</label>
+				<label class="flex cursor-pointer items-start gap-2 rounded-lg border p-2 text-sm {runMode === 'force' ? 'border-orange-400 bg-orange-50' : 'border-gray-200'}">
+					<input type="radio" bind:group={runMode} value="force" class="mt-0.5" />
+					<span><span class="font-semibold">강제 새로고침</span> — 이미지·아이콘을 이미 있어도 다시 받아 덮어씀(추천 데이터는 보존)</span>
+				</label>
+				{#if selectedCrawlerForRun.type === 'character'}
+					<label class="flex cursor-pointer items-start gap-2 rounded-lg border p-2 text-sm {runMode === 'purge' ? 'border-red-400 bg-red-50' : 'border-gray-200'}">
+						<input type="radio" bind:group={runMode} value="purge" class="mt-0.5" />
+						<span><span class="font-semibold text-red-600">완전 재구축</span> — 이 게임 캐릭터·영상을 모두 지우고 처음부터 다시 크롤</span>
+					</label>
+				{/if}
+			</div>
+			{#if runMode === 'purge'}
+				<p class="mb-4 rounded-lg bg-red-50 p-3 text-xs text-red-700">
+					⚠️ 캐릭터/영상 데이터를 <b>삭제 후 재구축</b>합니다. 추천·수동 설정 등이 사라질 수 있습니다.
+				</p>
+			{/if}
+
 			<div class="flex justify-end gap-3">
 				<button
 					onclick={closeRunModal}
@@ -361,9 +394,11 @@
 				</button>
 				<button
 					onclick={handleRunConfirm}
-					class="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+					class="rounded-lg px-4 py-2 text-sm font-medium text-white {runMode === 'purge'
+						? 'bg-red-600 hover:bg-red-700'
+						: 'bg-orange-500 hover:bg-orange-600'}"
 				>
-					실행
+					{runMode === 'purge' ? '재구축 실행' : runMode === 'force' ? '강제 실행' : '실행'}
 				</button>
 			</div>
 		</div>
