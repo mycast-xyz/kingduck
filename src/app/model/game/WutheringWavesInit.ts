@@ -164,10 +164,17 @@ export class WutheringWavesInit {
 						title: '스킬'
 					}
 				},
+				// 추천 빌드(wuthering.gg/ko 큐레이션) — 백엔드 WutheringWavesBuildScraper가 채운다.
+				// 무기=MainItemView(originalId 배열), 에코 세트=BuildRecommendationView(relics 카드).
+				{
+					component: 'MainItemView',
+					dataKey: 'recommendedWeapons',
+					props: { title: '추천 무기' }
+				},
 				{
 					component: 'BuildRecommendationView',
-					dataKey: 'recommendation',
-					props: { title: '추천 세팅' }
+					dataKey: 'echoSets',
+					props: { title: '추천 에코 세트' }
 				},
 				{ component: 'CostumeView', dataKey: 'Skins', props: { title: '코스튬' } },
 				{ component: 'StoryView', dataKey: 'Stories', props: { title: '캐릭터 스토리' } }
