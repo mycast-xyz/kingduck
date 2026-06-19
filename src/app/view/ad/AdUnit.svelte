@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { page } from '$app/stores';
-	import { env } from '$env/dynamic/public';
 
-	// 애드센스 광고 슬롯. PUBLIC_ADSENSE_CLIENT가 설정됐을 때만 렌더(승인 전엔 아무것도 안 보임).
+	// 애드센스 수동 광고 슬롯. 애드센스에서 광고 유닛을 만들어 받은 slot ID를 넘겨 배치한다.
+	// 예) <AdUnit slot="1234567890" />. (자동 광고는 app.html 스크립트가 알아서 배치하므로 별도 불필요.)
 	// CSR/SPA라 라우트 전환 시 <ins>를 리마운트(key=path)하고 다시 push해야 새 광고가 채워진다.
 	let {
 		slot,
@@ -12,7 +12,8 @@
 		style = 'display:block'
 	} = $props<{ slot: string; format?: string; responsive?: boolean; style?: string }>();
 
-	const client = env.PUBLIC_ADSENSE_CLIENT;
+	// app.html <head>의 애드센스 스크립트와 동일한 퍼블리셔 ID.
+	const client = 'ca-pub-7085750843275776';
 	const path = $derived($page.url.pathname);
 
 	function pushAd() {

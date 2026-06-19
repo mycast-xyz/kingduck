@@ -17,12 +17,11 @@
 	} = $props<{ data: PageData; children: any; title?: string }>();
 
 	const GA_ID = env.PUBLIC_GA_ID;
-	const ADSENSE_CLIENT = env.PUBLIC_ADSENSE_CLIENT;
 
-	// 분석/광고 스크립트는 env가 설정됐을 때만 로드(미설정 시 아무 영향 없음).
+	// GA4는 env가 설정됐을 때만 로드(미설정 시 영향 없음). 애드센스 스크립트는 app.html <head>에 직접 박음
+	// (SPA라 사이트 확인을 위해 raw HTML에 있어야 안정적).
 	onMount(() => {
 		if (!browser) return;
-		// Google Analytics (GA4)
 		if (GA_ID) {
 			const s = document.createElement('script');
 			s.async = true;
@@ -39,14 +38,6 @@
 			window.gtag('js', new Date());
 			// @ts-expect-error gtag — SPA라 자동 page_view 끄고 네비게이션마다 수동 전송.
 			window.gtag('config', GA_ID, { send_page_view: false });
-		}
-		// Google AdSense
-		if (ADSENSE_CLIENT) {
-			const s = document.createElement('script');
-			s.async = true;
-			s.crossOrigin = 'anonymous';
-			s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
-			document.head.appendChild(s);
 		}
 	});
 
