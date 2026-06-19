@@ -54,6 +54,23 @@
 ---
 
 ### 요약
-> 이미지는 이미 CDN 캐시(양호). 병목은 **읽기 API·HTML이 캐시 안 돼(DYNAMIC) 매번 느린 홈서버(쿼리 1.5s)를 친다**는 것.
-> 최우선은 **읽기 API를 Cloudflare 캐시**(캐시 헤더 + Cache Rule + 크롤 시 퍼지, 또는 서버 인메모리 캐시) → origin 거의 안 거침.
-> 보조로 **리스트 쿼리 인덱스/투영 최적화**, HTML·압축 캐시, 프론트 lazy. 가정용 업링크가 한계라 **CDN 오프로드가 핵심 레버.**
+> 이미지는 이미 CDN 캐시(양호). 병목은 **읽기 API·HTML이 캐시 안 돼(DYNAMIC) 매번 느린 홈서버를 친다**는 것.
+> 최우선은 **읽기 API를 캐시**(서버 인메모리 + Cache-Control + Cloudflare Cache Rule) → origin 거의 안 거침.
+
+---
+
+## 6. 구현 현황 / 추가 측정 (2026-06-19 후속)
+- **쿼리는 병목이 아님(실측)**: 리스트 SQL findMany **1~5ms** + metadata 투영 **17~23ms** = **~25ms**. characters 테이블 **905행/9게임**으로 작고, 인덱스(`game_id`/`element_id`/`path_id`/`(game_id,original_id)`)도 **이미 완비**. → **1.5s TTFB는 쿼리가 아니라 origin(홈서버 하드웨어+네트워크 왕복) 자체.** 쿼리 최적화 불필요.
+- **gzip 압축 이미 적용**(`app.use(compression())`), **리스트 페이로드도 이미 슬림**(무거운 metadata 제외, 1KB/항목).
+- **✅ 구현 완료(코드)**: **서버 인메모리 읽기 캐시 + Cache-Control 헤더**(`src/utils/responseCache.ts`, 읽기 라우터에 `cacheRead(300)`). 4GB RAM 안전(문자열 저장·24MB 예산·LRU·2MB 초과 제외), 크롤 시 `clearAll()` 무효화. 로컬 검증: **HIT 시 TTFB 1.5s→~2.5ms**.
+- **→ 코드 측면 최적화는 사실상 완료.** 남은 큰 레버는 아래 Cloudflare 설정(무료, 대시보드).
+
+### 6-1. 남은 작업 — Cloudflare Cache Rule (무료, 대시보드 설정)
+인메모리 캐시는 origin DB 부하를 줄이지만, **요청은 여전히 홈서버까지 온다**(네트워크 왕복 1.5s). 엣지에서 캐시하면 대부분 사용자가 **홈서버를 안 거친다.** Cloudflare는 기본적으로 `application/json`을 캐시 안 하므로 **Cache Rule을 직접 켜야** 한다(Free 플랜 가능):
+1. Cloudflare 대시보드 → 해당 도메인 → **Caching → Cache Rules → Create rule**.
+2. 조건: `Hostname equals api.kingduck.xyz` AND `URI Path contains /api/v0/` (그리고 `/admin` 제외: AND `URI Path does not contain /admin`).
+3. 동작: **Cache eligibility = Eligible for cache**(Cache Everything), **Edge TTL = "Use cache-control header if present"**(우리가 보내는 `s-maxage=300` 사용) 또는 고정 5분.
+4. (선택) **크롤 후 퍼지**: 어드민/스케줄러가 크롤 끝나면 Cloudflare API로 `purge_cache`(URL prefix) 호출 → 즉시 신선화. 안 하면 `s-maxage`로 5분 내 자연 만료.
+- 검증: `curl -I .../list` 두 번 → `cf-cache-status: MISS`→`HIT`, TTFB↓.
+
+> 결론: 코드로 할 수 있는 건 다 했다(인덱스·슬림·압축·인메모리 캐시·이미지 캐시). **가정용 업링크 한계상 마지막 큰 레버는 Cloudflare Cache Rule(무료 설정)**.
