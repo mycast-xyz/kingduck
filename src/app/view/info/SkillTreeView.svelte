@@ -8,6 +8,7 @@
 	import { Reverse1999SkillViewModel } from '../../service/game/reverse1999/Reverse1999SkillViewModel.svelte';
 	import { ZzzSkillTreeViewModel } from '../../service/game/zzz/ZzzSkillTreeViewModel.svelte';
 	import { NikkeSkillTreeViewModel } from '../../service/game/nikke/NikkeSkillTreeViewModel.svelte';
+	import { NteSkillTreeViewModel } from '../../service/game/nte/NteSkillTreeViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
 
@@ -50,6 +51,8 @@
 			return new ZzzSkillTreeViewModel(data, currentUrl, { initData });
 		} else if (slug === 'nikke') {
 			return new NikkeSkillTreeViewModel(data, currentUrl, { initData });
+		} else if (slug === 'nte') {
+			return new NteSkillTreeViewModel(data, currentUrl, { initData });
 		}
 		return null;
 	});

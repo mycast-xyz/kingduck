@@ -5,7 +5,8 @@ export const GAME_CONFIG: Record<string, { color: string; icon?: string }> = {
 	nikke: { color: 'bg-[#DC0000]' },
 	zzz: { color: 'bg-[#F0780A]' },
 	reverse1999: { color: 'bg-[#AA4628]' },
-	genshin: { color: 'bg-[#141E64]' }
+	genshin: { color: 'bg-[#141E64]' },
+	nte: { color: 'bg-[#5B8DEF]' }
 };
 
 export const CALENDAR_CONFIG = {

@@ -24,6 +24,7 @@
 	import Reverse1999ProfileView from '../../info/Reverse1999ProfileView.svelte';
 	import NikkeProfileView from '../../info/NikkeProfileView.svelte';
 	import ZzzProfileView from '../../info/ZzzProfileView.svelte';
+	import NteProfileView from '../../info/NteProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
 
 	// 페이지 데이터 가져오기
@@ -100,6 +101,7 @@
 		CalculatorView: '계산기',
 		TeamRecommendationView: '추천 조합',
 		ProfileView: '정보',
+		NteProfileView: '정보',
 		StoryView: '스토리',
 		VoiceView: '음성',
 		EndfieldProfileView: '정보',
@@ -321,6 +323,15 @@
 								/>
 							{:else if section.component === 'ZzzProfileView'}
 								<ZzzProfileView
+									listData={meta}
+									{currentUrl}
+									{isMobile}
+									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'NteProfileView'}
+								<NteProfileView
 									listData={meta}
 									{currentUrl}
 									{isMobile}

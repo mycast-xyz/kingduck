@@ -69,6 +69,29 @@ export interface EndfieldCharacterMeta extends BaseCharacterMeta {
 	factorySkills?: unknown;
 }
 
+/** 이환(Neverness to Everness, NTE) — everness.info GraphQL 소스 */
+export interface NteSkill {
+	name: string;
+	type?: string;
+	description?: string;
+	icon?: string;
+}
+export interface NteCharacterMeta extends BaseCharacterMeta {
+	element?: string; // 속성(DamageType, 영문 키: Incantation/Chaos/…)
+	elementIconUrl?: string;
+	elementKo?: string | null; // 게임 내 단일 글자 표기(주/암/령…)
+	path?: string; // 형질(Path, 한글: 고체/액체/플라스마/기체/결합)
+	pathIconUrl?: string;
+	arcsTypeId?: string | null;
+	faction?: string | null; // 진영
+	birthday?: string | null;
+	abilityName?: string | null; // 이능력 명칭
+	avatarImageUrl?: string;
+	skills?: NteSkill[];
+	awaken?: { name: string; type?: string; description?: string }[];
+	resonance?: { name: string; type?: string; description?: string }[];
+}
+
 export interface BaseItemMeta {
 	originalId?: string;
 	type?: string;
@@ -97,6 +120,7 @@ export type HsrCharacter = CharacterType<HsrCharacterMeta>;
 export type Reverse1999Character = CharacterType<Reverse1999CharacterMeta>;
 export type WwCharacter = CharacterType<WwCharacterMeta>;
 export type EndfieldCharacter = CharacterType<EndfieldCharacterMeta>;
+export type NteCharacter = CharacterType<NteCharacterMeta>;
 
 export type HsrLightcone = ItemType<HsrLightconeMeta>;
 export type HsrRelicSet = ItemType<HsrRelicSetMeta>;
