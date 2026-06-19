@@ -124,6 +124,9 @@ class CharacterListServiceInit {
 					if (k === 'class') return char.class === v;
 					if (k === 'corp') return char.corp === v;
 					if (k === 'burst') return char.burst === v;
+					// 블루아카이브 — 역할(role 컬럼) / 학교(metadata 투영 필드).
+					if (k === 'role') return char.role === v;
+					if (k === 'school') return char.school === v;
 					// Default fallback check?
 					return true;
 				});

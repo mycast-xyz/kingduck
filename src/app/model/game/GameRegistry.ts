@@ -8,6 +8,7 @@ import { WutheringWavesInit } from './WutheringWavesInit';
 import { EndfieldInit } from './EndfieldInit';
 import { ZzzInit } from './ZzzInit';
 import { NteInit } from './NteInit';
+import { BlueArchiveInit } from './BlueArchiveInit';
 
 /**
  * 게임 레지스트리 — slug → GameInitConfig 팩토리의 단일 진실원.
@@ -33,7 +34,8 @@ const GAME_INIT_FACTORIES: Record<string, () => GameInitConfig> = {
 	wutheringwaves: () => new WutheringWavesInit().setInit(),
 	endfield: () => new EndfieldInit().setInit(),
 	zzz: () => new ZzzInit().setInit(),
-	nte: () => new NteInit().setInit()
+	nte: () => new NteInit().setInit(),
+	bluearchive: () => new BlueArchiveInit().setInit()
 };
 
 /**

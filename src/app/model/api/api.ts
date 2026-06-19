@@ -37,11 +37,13 @@ export interface CharacterType<T = any> {
 	role?: string;
 	description?: string;
 	imageUrl?: string; // mapped from image_url
-	// 니케 metadata 에서 백엔드가 JSON path 추출로 투영하는 3개 필드.
-	// 다른 게임은 null. applyFilter의 class/corp/burst 분기가 이 필드를 사용한다.
+	// 백엔드가 metadata에서 JSON path 추출로 투영하는 클라이언트 필터 필드.
+	// 해당 게임 외엔 null. applyFilter의 class/corp/burst(니케)·school(블루아카이브) 분기가 사용한다.
+	// (블루아카이브 역할 필터는 role 컬럼을 그대로 쓴다.)
 	class?: string | null;
 	corp?: string | null;
 	burst?: string | null;
+	school?: string | null;
 
 	metadata?: T; // Game-specific data (JSON)
 

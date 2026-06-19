@@ -9,6 +9,7 @@
 	import { ZzzSkillTreeViewModel } from '../../service/game/zzz/ZzzSkillTreeViewModel.svelte';
 	import { NikkeSkillTreeViewModel } from '../../service/game/nikke/NikkeSkillTreeViewModel.svelte';
 	import { NteSkillTreeViewModel } from '../../service/game/nte/NteSkillTreeViewModel.svelte';
+	import { BlueArchiveSkillTreeViewModel } from '../../service/game/bluearchive/BlueArchiveSkillTreeViewModel.svelte';
 	import { sanitizeHtml } from '../../util/sanitize';
 	import type { ViewInitData } from '../../model/game/ViewInitData';
 
@@ -53,6 +54,8 @@
 			return new NikkeSkillTreeViewModel(data, currentUrl, { initData });
 		} else if (slug === 'nte') {
 			return new NteSkillTreeViewModel(data, currentUrl, { initData });
+		} else if (slug === 'bluearchive') {
+			return new BlueArchiveSkillTreeViewModel(data, currentUrl, { initData });
 		}
 		return null;
 	});

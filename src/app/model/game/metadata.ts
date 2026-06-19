@@ -92,6 +92,43 @@ export interface NteCharacterMeta extends BaseCharacterMeta {
 	resonance?: { name: string; type?: string; description?: string }[];
 }
 
+/** 블루 아카이브(Blue Archive) — SchaleDB 소스 */
+export interface BlueArchiveSkill {
+	name: string;
+	type?: string;
+	description?: string;
+	icon?: string;
+}
+export interface BlueArchiveCharacterMeta extends BaseCharacterMeta {
+	element?: string; // 공격속성(BulletType 영문 키: Explosion/Pierce/…)
+	elementIconUrl?: string;
+	elementKo?: string | null; // 공격속성 한글(폭발/관통/…)
+	path?: string; // 방어속성(ArmorType 영문 키: LightArmor/…)
+	pathIconUrl?: string;
+	pathKo?: string | null; // 방어속성 한글(경장갑/…)
+	role?: string; // 역할(TacticRole 영문 키)
+	roleKo?: string | null; // 역할 한글(딜러/탱커/…)
+	school?: string; // 학교(영문 키)
+	schoolKo?: string | null; // 학교 한글
+	club?: string;
+	clubKo?: string | null;
+	squadType?: string;
+	squadTypeKo?: string | null;
+	position?: string | null;
+	weaponType?: string | null;
+	fullName?: string | null;
+	schoolYear?: string | null;
+	age?: string | null;
+	birthday?: string | null;
+	cv?: string | null; // 성우(CharacterVoice)
+	illustrator?: string | null;
+	hobby?: string | null;
+	portraitUrl?: string;
+	iconUrl?: string;
+	stats?: Record<string, number | null>;
+	skills?: BlueArchiveSkill[];
+}
+
 export interface BaseItemMeta {
 	originalId?: string;
 	type?: string;
@@ -121,6 +158,7 @@ export type Reverse1999Character = CharacterType<Reverse1999CharacterMeta>;
 export type WwCharacter = CharacterType<WwCharacterMeta>;
 export type EndfieldCharacter = CharacterType<EndfieldCharacterMeta>;
 export type NteCharacter = CharacterType<NteCharacterMeta>;
+export type BlueArchiveCharacter = CharacterType<BlueArchiveCharacterMeta>;
 
 export type HsrLightcone = ItemType<HsrLightconeMeta>;
 export type HsrRelicSet = ItemType<HsrRelicSetMeta>;

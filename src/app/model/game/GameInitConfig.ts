@@ -9,6 +9,7 @@ export type GameSlug =
 	| 'nikke'
 	| 'zzz'
 	| 'nte'
+	| 'bluearchive'
 	| 'GirlsFrontline2Exilium';
 
 export interface GameInitConfig {
@@ -129,7 +130,8 @@ export interface ComponentLayout {
 		| 'Reverse1999ProfileView'
 		| 'NikkeProfileView'
 		| 'ZzzProfileView'
-		| 'NteProfileView';
+		| 'NteProfileView'
+		| 'BlueArchiveProfileView';
 	dataKey: string;
 	initDataKey?: string;
 	props?: Record<string, any>;
