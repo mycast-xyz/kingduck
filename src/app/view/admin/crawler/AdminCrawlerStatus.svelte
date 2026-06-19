@@ -82,6 +82,9 @@
 				crawlerType: crawler.type
 			});
 			toastStore.success(res.data?.message || res.data?.resultMsg || '중단 요청됨');
+			// 정지 직후 상태/진행 즉시 갱신(2.5초 폴링 기다리지 않음).
+			await pollProgress();
+			await loadCrawlerStatus();
 		} catch (e) {
 			console.error('중단 실패:', e);
 			toastStore.error('중단 요청에 실패했습니다.');
