@@ -125,6 +125,14 @@ export interface BlueArchiveCharacterMeta extends BaseCharacterMeta {
 	hobby?: string | null;
 	portraitUrl?: string;
 	iconUrl?: string;
+	weaponName?: string | null; // 고유무기 이름
+	gearName?: string | null; // 고유장비 이름(있을 때만)
+	equipment?: string[]; // 장비 슬롯(Hat/Hairpin/Watch 등)
+	terrain?: {
+		street?: number | null; // 시가전 적응(0~5)
+		outdoor?: number | null; // 야전
+		indoor?: number | null; // 실내전
+	};
 	stats?: Record<string, number | null>;
 	skills?: BlueArchiveSkill[];
 }
