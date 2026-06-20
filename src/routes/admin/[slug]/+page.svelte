@@ -7,6 +7,7 @@
 	import AdminGameList from '../../../app/view/admin/list/AdminGameList.svelte';
 	import AdminCharacterList from '../../../app/view/admin/list/AdminCharacterList.svelte';
 	import AdminElementList from '../../../app/view/admin/list/AdminElementList.svelte';
+	import AdminItemList from '../../../app/view/admin/list/AdminItemList.svelte';
 
 	// 모달 관리
 	import DesktopModal from '../../../app/view/modal/DesktopModal.svelte';
@@ -43,6 +44,12 @@
 				ContentComponent = AdminElementList;
 				ContentTitle = '속성/특성 아이콘 관리';
 				ContentInfoText = '게임별 속성·특성 필터 아이콘을 업로드/관리합니다.';
+				break;
+
+			case 'item':
+				ContentComponent = AdminItemList;
+				ContentTitle = '아이템 관리';
+				ContentInfoText = '게임별 아이템 정보를 추가/수정합니다.';
 				break;
 
 			default:

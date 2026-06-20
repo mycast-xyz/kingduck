@@ -4,6 +4,7 @@
 	import DesktopModal from '../../view-framework/modal/DesktopModal.svelte';
 	import AddKanban from './kanban/AddKanban.svelte';
 	import AdminEventModal from '../admin/event/AdminEventModal.svelte';
+	import AdminItemModal from '../admin/item/AdminItemModal.svelte';
 
 	// props에서 데이터 가져오기
 	//const { data } = $props<{ data: any }>();
@@ -22,6 +23,11 @@
 			case 'admin-add-event':
 				ModalComponent = AdminEventModal;
 				ModalTitle = '이벤트 추가/수정';
+				ModalSize = 'large';
+				break;
+			case 'admin-add-item':
+				ModalComponent = AdminItemModal;
+				ModalTitle = '아이템 추가/수정';
 				ModalSize = 'large';
 				break;
 			default:
