@@ -220,6 +220,14 @@
 				<i class="ri-pulse-line"></i>
 				<span class="collapsed-hidden">시스템 모니터링</span>
 			</a>
+			<!-- 사이트 설정 -->
+			<a
+				href="/admin/settings"
+				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
+			>
+				<i class="ri-settings-line"></i>
+				<span class="collapsed-hidden">설정</span>
+			</a>
 			<div class="dropdownMenu relative" class:active={dropdownStates.menu2}>
 				<button
 					onclick={() => toggleDropdown('menu2')}

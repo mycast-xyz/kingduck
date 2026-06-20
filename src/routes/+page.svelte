@@ -5,10 +5,21 @@
 
 	const isAuthenticated = authTokenService.isAuthenticated;
 
-	// 1부터 5까지의 랜덤값 생성
+	// 1부터 5까지의 랜덤값 생성 (setting이 'random'일 때 사용)
 	const randomNumber = Math.floor(Math.random() * 5) + 1;
 
 	let { data }: { data: PageData } = $props();
+
+	// homeHeroBackground 값에 따라 실제 img src를 결정하는 헬퍼
+	function heroSrc(bg: string): string {
+		if (!bg || bg === 'random') return `/assets/main/bg_0${randomNumber}.webp`;
+		if (/^bg_0[1-5]$/.test(bg)) return `/assets/main/${bg}.webp`;
+		if (bg.startsWith('http://') || bg.startsWith('https://')) return bg;
+		return `${data.url}/${bg.replace(/^\//, '')}`;
+	}
+
+	const bgSrc = heroSrc(data.setting?.homeHeroBackground ?? 'random');
+	const visibleGames = data.info.slice(0, data.setting?.homeRecentGamesLimit ?? 6);
 
 	const SITE = 'https://www.kingduck.xyz';
 	const homeDescription =
@@ -45,7 +56,7 @@
 			<!-- 배경 이미지 -->
 			<div class="absolute inset-0">
 				<img
-					src="/assets/main/bg_0{randomNumber}.webp"
+					src={bgSrc}
 					alt="Background"
 					class="h-full w-full object-cover object-center"
 				/>
@@ -85,7 +96,7 @@
 				<div class="mb-5 mt-10 flex flex-col pl-2">
 					<h2 class="text-xl font-bold text-white">최근 추가된 게임</h2>
 					<div class="mt-4 flex gap-3">
-						{#each data.info as gameItem}
+						{#each visibleGames as gameItem}
 							<a href="/list/{gameItem.slug}" class="mr-4 flex flex-col items-center">
 								<img src={data.url + '/' + gameItem.iconUrl} alt="Honkai Star Rail" class="w-32" />
 								<p class="mt-2 text-xs font-medium text-white">{gameItem.name}</p>
@@ -105,7 +116,7 @@
 			<!-- 배경 이미지 -->
 			<div class="absolute inset-0">
 				<img
-					src="/assets/main/bg_0{randomNumber}.webp"
+					src={bgSrc}
 					alt="Background"
 					class="h-full w-full object-cover object-center"
 				/>
@@ -145,7 +156,7 @@
 				<div class="absolute bottom-10 left-20 flex flex-col pl-20">
 					<h2 class="text-2xl font-bold text-white">최근 추가된 게임</h2>
 					<div class="mt-4 flex gap-3">
-						{#each data.info as gameItem}
+						{#each visibleGames as gameItem}
 							<a href="/list/{gameItem.slug}" class="mr-4 flex flex-col items-center">
 								<img src={data.url + '/' + gameItem.iconUrl} alt="Honkai Star Rail" class="w-32" />
 								<p class="mt-2 text-xs font-medium text-white">{gameItem.name}</p>
