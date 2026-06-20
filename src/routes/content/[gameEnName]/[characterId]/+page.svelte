@@ -7,7 +7,13 @@
 	export let data: PageData;
 </script>
 
-<SeoHead title={data.title} description={data.meta?.description} keywords={data.meta?.keywords} />
+<SeoHead
+	title={data.title}
+	description={data.meta?.description}
+	keywords={data.meta?.keywords}
+	image={data.meta?.image}
+	jsonLd={data.meta?.jsonLd}
+/>
 
 <article>
 	{#if data.isMobile}

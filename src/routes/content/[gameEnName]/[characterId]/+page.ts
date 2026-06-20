@@ -69,15 +69,50 @@ export const load: PageLoad = async ({ params, url }) => {
 			error(500, { message: '서버 코드 에러' });
 		});
 
+	const apiBase = getApiBaseUrl();
+
+	// 공유/검색 썸네일용 og:image — 큰 카드 이미지 우선, 없으면 캐릭터 아이콘. 절대 URL로.
+	// (InfoMainImageView의 폴백 로직과 동일한 경로 조립)
+	const ogImage = (() => {
+		const u = (data?.metadata as any)?.cardImageUrl || data?.imageUrl;
+		if (!u) return undefined;
+		if (u.startsWith('http')) return u;
+		const hasExtension = /\.[a-z0-9]+$/i.test(u);
+		return `${apiBase}/${u}${hasExtension ? '' : '.webp'}`;
+	})();
+
+	const SITE = 'https://www.kingduck.xyz';
+	const description = `${data?.name}의 상세 정보를 제공합니다.`;
+
+	// 구조화 데이터(JSON-LD) — 캐릭터 상세 페이지를 Article로 표현(구글 리치결과).
+	const jsonLd = data
+		? {
+				'@context': 'https://schema.org',
+				'@type': 'Article',
+				headline: `${data?.name} - ${gameInfo?.name}`,
+				description,
+				...(ogImage ? { image: ogImage } : {}),
+				inLanguage: 'ko',
+				mainEntityOfPage: SITE + url.pathname,
+				publisher: {
+					'@type': 'Organization',
+					name: 'KingDuck',
+					logo: { '@type': 'ImageObject', url: `${SITE}/favicon.png` }
+				}
+			}
+		: undefined;
+
 	return {
 		gameSlug: params.gameEnName,
 		isMobile: isMobile,
-		url: getApiBaseUrl(),
+		url: apiBase,
 		info: data,
 		title: `${data?.name} - ${gameInfo?.name}`,
 		meta: {
-			description: `${data?.name}의 상세 정보를 제공합니다.`,
-			keywords: `${gameInfo?.name}, 게임, 정보, 가이드, ${data?.name}`
+			description,
+			keywords: `${gameInfo?.name}, 게임, 정보, 가이드, ${data?.name}`,
+			image: ogImage,
+			jsonLd
 		},
 		gameInit: gameInitConfig
 	};

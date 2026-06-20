@@ -6,12 +6,28 @@
 		title = '',
 		description = '',
 		keywords = '',
-		image = 'https://www.kingduck.xyz/favicon.png'
-	} = $props<{ title?: string; description?: string; keywords?: string; image?: string }>();
+		image = 'https://www.kingduck.xyz/favicon.png',
+		jsonLd = undefined
+	} = $props<{
+		title?: string;
+		description?: string;
+		keywords?: string;
+		image?: string;
+		jsonLd?: object;
+	}>();
 
 	const SITE = 'https://www.kingduck.xyz';
 	const fullTitle = $derived(title ? `${title} - KingDuck` : 'KingDuck');
 	const url = $derived(SITE + $page.url.pathname);
+
+	// 구조화 데이터(JSON-LD). 태그명을 변수로 조립해 소스에 리터럴 <script> 토큰이 없게 한다
+	// (있으면 Svelte 파서가 두 번째 스크립트 요소로 오인). 내용의 `<`는 <로 이스케이프.
+	const ldTag = 'script';
+	const jsonLdScript = $derived(
+		jsonLd
+			? `<${ldTag} type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</${ldTag}>`
+			: ''
+	);
 </script>
 
 <svelte:head>
@@ -28,4 +44,6 @@
 	<meta name="twitter:title" content={fullTitle} />
 	{#if description}<meta name="twitter:description" content={description} />{/if}
 	<meta name="twitter:image" content={image} />
+
+	{#if jsonLdScript}{@html jsonLdScript}{/if}
 </svelte:head>

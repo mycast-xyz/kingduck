@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { authTokenService } from '../app/service/auth/AuthTokenService';
+	import SeoHead from '../app/view/SeoHead.svelte';
 
 	const isAuthenticated = authTokenService.isAuthenticated;
 
@@ -8,13 +9,34 @@
 	const randomNumber = Math.floor(Math.random() * 5) + 1;
 
 	let { data }: { data: PageData } = $props();
+
+	const SITE = 'https://www.kingduck.xyz';
+	const homeDescription =
+		'킹덕(KingDuck) — 원신, 스타레일, 명조, 니케, 젠레스 존 제로 등 서브컬처 가챠 게임의 캐릭터·이벤트·캘린더·티어리스트·쿠폰 정보를 한곳에서.';
+	// 구조화 데이터(JSON-LD) — 사이트 자체를 WebSite + Organization으로 표현.
+	const homeJsonLd = [
+		{
+			'@context': 'https://schema.org',
+			'@type': 'WebSite',
+			name: 'KingDuck',
+			url: SITE,
+			inLanguage: 'ko'
+		},
+		{
+			'@context': 'https://schema.org',
+			'@type': 'Organization',
+			name: 'KingDuck',
+			url: SITE,
+			logo: `${SITE}/favicon.png`
+		}
+	];
 </script>
 
-<svelte:head>
-	<title>KingDuck</title>
-	<meta name="description" content="킹덕, KingDuck" />
-	<meta name="keywords" content="킹덕, KingDuck" />
-</svelte:head>
+<SeoHead
+	description={homeDescription}
+	keywords="킹덕, KingDuck, 원신, 스타레일, 명조, 니케, 젠레스존제로, 가챠, 티어리스트, 캘린더, 쿠폰"
+	jsonLd={homeJsonLd}
+/>
 
 {#if data.isMobile}
 	<div class="h-screen w-screen overflow-hidden overflow-x-hidden bg-gray-100 dark:bg-gray-800">
