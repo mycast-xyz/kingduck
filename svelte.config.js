@@ -14,7 +14,12 @@ const config = {
 			base: process.env.BASE_PATH || '' // GitHub Pages 경로 설정
 		},
 		prerender: {
-			entries: []
+			// SEO: 정적/법적 페이지·홈·게임 list 랜딩만 빌드 시 실제 HTML로 생성(부분 프리렌더).
+			// 각 라우트가 `export const prerender = true`로 옵트인하고, list/[slug]는 entries()로 slug 열거.
+			// crawl:false — 프리렌더 페이지의 링크를 따라가 비대상(login/calendar/content 등)을
+			// 프리렌더하려다 에러나는 걸 막는다. 캐릭터 상세 등은 기존대로 CSR.
+			entries: ['*'],
+			crawl: false
 		}
 	}
 };

@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
+	import { browser, building } from '$app/environment';
 	import { afterNavigate } from '$app/navigation';
 	import { env } from '$env/dynamic/public';
 	import DesktopMainMenu from '../app/view/agent/desktop//MainMenu.svelte';
@@ -16,7 +16,8 @@
 		title = '게임 정보 사이트'
 	} = $props<{ data: PageData; children: any; title?: string }>();
 
-	const GA_ID = env.PUBLIC_GA_ID;
+	// 프리렌더(빌드 SSR) 중엔 $env/dynamic/public 읽기가 금지되므로 건너뛴다. GA는 브라우저 전용이라 무방.
+	const GA_ID = building ? undefined : env.PUBLIC_GA_ID;
 
 	// GA4는 env가 설정됐을 때만 로드(미설정 시 영향 없음). 애드센스 스크립트는 app.html <head>에 직접 박음
 	// (SPA라 사이트 확인을 위해 raw HTML에 있어야 안정적).
