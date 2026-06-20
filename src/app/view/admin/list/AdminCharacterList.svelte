@@ -1,7 +1,9 @@
 <script lang="ts">
 	import client from '../../../service/api/client';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { WindowService } from '../../../service/WindowService';
+	import { toastStore } from '../../../service/ToastService';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
@@ -24,6 +26,18 @@
 	onMount(async () => {
 		await getGameList();
 		await loadData();
+	});
+
+	// generic admin/[slug] 라우트라 invalidateAll()로는 목록이 갱신되지 않는다.
+	// 캐릭터 추가/수정 모달이 닫히면 다시 불러온다.
+	const modalStore = WindowService.modal;
+	let charModalWasOpen = false;
+	$effect(() => {
+		const open = $modalStore === 'admin-add-character';
+		if (charModalWasOpen && !open) {
+			loadData();
+		}
+		charModalWasOpen = open;
 	});
 
 	async function loadData() {
@@ -94,30 +108,37 @@
 	}
 
 	function updateUrl() {
+		if (!browser) return;
 		const url = new URL(window.location.href);
 		if (selectedGame) url.searchParams.set('gameId', selectedGame);
 		else url.searchParams.delete('gameId');
-		
+
 		if (searchQuery) url.searchParams.set('name', searchQuery);
 		else url.searchParams.delete('name');
 
 		goto(url.toString(), { replaceState: true, keepFocus: true });
 	}
 
-	// 이미지 상태를 체크하는 함수
+	async function handleDelete(item: any) {
+		if (!confirm(`'${item.name}' 캐릭터를 삭제하시겠습니까?`)) return;
+		try {
+			const response = await client.delete(`/api/v0/admin/character/${item.id}`);
+			if (response.data.resultCode === 200) {
+				toastStore.success('캐릭터가 삭제되었습니다.');
+				await loadData();
+			} else {
+				toastStore.error(response.data.resultMsg || '삭제에 실패했습니다.');
+			}
+		} catch (error) {
+			console.error('캐릭터 삭제 중 오류 발생:', error);
+			toastStore.error('캐릭터 삭제에 실패했습니다.');
+		}
+	}
+
+	// 이미지 상태를 체크하는 함수 — imageUrl이 문자열로 존재하면 이미지 있음으로 판정
 	function getImageStatus(imageUrl: any) {
-        // 기존 로직 유지하되 imageUrl이 string인지 object인지 확인 필요. 
-        // 사용자 코드는 item.imageUrl을 전달하고 있었으나, 기존 함수는 imageCount 객체를 기대했음.
-        // 하지만 직전 수정에서 getImageStatus(item.imageUrl)로 호출부만 바꿨고 함수 내부는 imageCount.card 등을 체크하고 있음.
-        // 사용자가 제공한 스니펫에 따르면 item.imageUrl이 쓰이고 있음.
-        // API 응답 구조를 정확히 모르는 상태에서 기존 로직을 최대한 보존하려 노력함.
-        // 다만 imageUrl이 문자열이라면 기존 imageCount 로직(card, art 확인)은 동작하지 않을 것임.
-        // 여기서는 일단 함수 정의는 그대로 두고 호출부와의 부조화는 추후 수정하거나, 
-        // 사용자의 의도(imageUrl 확인)에 맞게 함수를 수정해야 할 수도 있음.
-        // 일단 기존 함수 그대로 둠.
-		if (!imageUrl) return { color: 'bg-gray-500', status: '정보 없음' };
-		// 만약 imageUrl이 객체라면 기존 로직 사용 가능.
-        return { color: 'bg-green-500', status: '완료' }; // 임시
+		if (!imageUrl) return { color: 'bg-gray-400', status: '없음' };
+		return { color: 'bg-green-500', status: '있음' };
 	}
 	// 타입 상태를 체크하는 함수
 	function getTypeStatus(type: any) {
@@ -143,13 +164,11 @@
 		return { color: 'bg-green-500', status: '완료' };
 	}
 
-	// 스킬 상태를 체크하는 함수
-	function getSkillStatus(skillCount: any) {
-		if (!skillCount) return { color: 'bg-red-500', status: '정보 없음' };
-		if (skillCount === 0) {
-			return { color: 'bg-red-500', status: '스킬 누락' };
-		}
-		return { color: 'bg-green-500', status: '완료' };
+	// 메타데이터 상태를 체크하는 함수 — metadata 객체가 비어 있으면 미입력으로 판정
+	function getSkillStatus(metadata: any) {
+		if (!metadata || typeof metadata !== 'object') return { color: 'bg-gray-400', status: '없음' };
+		if (Object.keys(metadata).length === 0) return { color: 'bg-red-500', status: '미입력' };
+		return { color: 'bg-green-500', status: '있음' };
 	}
 
 	// 출시 여부 상태를 체크하는 함수
@@ -210,7 +229,7 @@
 		</div>
 		<button
 			class="ml-auto inline-flex items-center rounded-lg bg-orange-300 px-5 py-2 text-center text-sm font-medium text-white hover:bg-orange-500"
-			onclick={() => WindowService.openModal('admin-add-game')}
+			onclick={() => WindowService.openModal('admin-add-character')}
 		>
 			<i class="ri-add-line mr-2 text-lg"></i>
 			캐릭터 개별 추가
@@ -293,30 +312,28 @@
 						<td class="px-6 py-4 text-right">
 							<button
 								aria-label="편집"
-								id="tooltip-default"
 								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
+								onclick={() => WindowService.openModal('admin-add-character', item)}
 							>
 								<i class="ri-edit-box-line text-xl"></i>
 								편집
 							</button>
 							<a
 								aria-label="캐릭터 페이지 이동"
-								id="tooltip-default"
 								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
-                href="/content/{item.game?.slug}/{item.id}"
+								href="/content/{item.game?.slug}/{item.id}"
 							>
-							<i class="ri-external-link-line"></i>
+								<i class="ri-external-link-line"></i>
 								캐릭터 페이지 이동
 							</a>
-              <!--
 							<button
-								aria-label="변수 설정"
-								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
+								aria-label="삭제"
+								class="rounded-lg px-3 py-2 font-medium text-red-400 hover:bg-red-100 hover:text-red-600"
+								onclick={() => handleDelete(item)}
 							>
-								<i class="ri-code-box-line text-xl"></i>
-								변수 설정
+								<i class="ri-delete-bin-line text-xl"></i>
+								삭제
 							</button>
-              -->
 						</td>
 					</tr>
 				{/each}

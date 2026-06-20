@@ -3,4 +3,5 @@ export type ModalType =
 	| 'admin-add-kanban'
 	| 'admin-add-game'
 	| 'admin-add-event'
-	| 'admin-add-item';
+	| 'admin-add-item'
+	| 'admin-add-character';

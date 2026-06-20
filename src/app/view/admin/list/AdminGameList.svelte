@@ -17,6 +17,18 @@
 		await getGameList();
 	});
 
+	// generic admin/[slug] 라우트라 invalidateAll()로는 목록이 갱신되지 않는다.
+	// 게임 추가/수정 모달이 닫히면 다시 불러온다.
+	const modalStore = WindowService.modal;
+	let gameModalWasOpen = false;
+	$effect(() => {
+		const open = $modalStore === 'admin-add-game';
+		if (gameModalWasOpen && !open) {
+			getGameList();
+		}
+		gameModalWasOpen = open;
+	});
+
 	// 파일 선택 → 아이콘 업로드.
 	function onPickIcon(game: any, e: Event) {
 		const input = e.currentTarget as HTMLInputElement;
@@ -199,6 +211,15 @@
 							</div>
 						</td>
 						<td class="px-6 py-4 text-right">
+							<button
+								type="button"
+								aria-label="게임 수정"
+								onclick={() => WindowService.openModal('admin-add-game', game)}
+								class="rounded-lg px-3 py-2 font-medium text-orange-400 hover:bg-orange-100 hover:text-orange-600"
+							>
+								<i class="ri-edit-box-line text-xl"></i>
+								수정
+							</button>
 							<button
 								type="button"
 								aria-label="아이콘 변경"

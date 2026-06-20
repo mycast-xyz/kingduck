@@ -1,7 +1,9 @@
 <script lang="ts">
 	import client from '../../../service/api/client';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { WindowService } from '../../../service/WindowService';
+	import { toastStore } from '../../../service/ToastService';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
@@ -35,6 +37,18 @@
 	onMount(async () => {
 		await getGameList();
 		await loadData();
+	});
+
+	// generic admin/[slug] 라우트라 invalidateAll()로는 목록이 갱신되지 않는다.
+	// 이벤트 추가/수정 모달이 닫히면 다시 불러온다.
+	const modalStore = WindowService.modal;
+	let eventModalWasOpen = false;
+	$effect(() => {
+		const open = $modalStore === 'admin-add-event';
+		if (eventModalWasOpen && !open) {
+			loadData();
+		}
+		eventModalWasOpen = open;
 	});
 
 	async function loadData() {
@@ -112,6 +126,7 @@
 	}
 
 	function updateUrl() {
+		if (!browser) return;
 		const url = new URL(window.location.href);
 		if (selectedGame) url.searchParams.set('gameId', selectedGame);
 		else url.searchParams.delete('gameId');
@@ -213,11 +228,16 @@
 		if (!confirm('정말로 이 이벤트를 삭제하시겠습니까?')) return;
 
 		try {
-			await client.delete(`/api/v0/admin/event/${eventId}`);
-			await loadData();
+			const response = await client.delete(`/api/v0/admin/event/${eventId}`);
+			if (response.data.resultCode === 200) {
+				toastStore.success('이벤트가 삭제되었습니다.');
+				await loadData();
+			} else {
+				toastStore.error(response.data.resultMsg || '삭제에 실패했습니다.');
+			}
 		} catch (error) {
 			console.error('이벤트 삭제 중 오류 발생:', error);
-			alert('이벤트 삭제에 실패했습니다.');
+			toastStore.error('이벤트 삭제에 실패했습니다.');
 		}
 	}
 

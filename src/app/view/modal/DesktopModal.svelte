@@ -3,6 +3,8 @@
 	import { WindowService, ModalView } from '../../service/WindowService';
 	import DesktopModal from '../../view-framework/modal/DesktopModal.svelte';
 	import AddKanban from './kanban/AddKanban.svelte';
+	import AdminGameModal from '../admin/game/AdminGameModal.svelte';
+	import AdminCharacterModal from '../admin/character/AdminCharacterModal.svelte';
 	import AdminEventModal from '../admin/event/AdminEventModal.svelte';
 	import AdminItemModal from '../admin/item/AdminItemModal.svelte';
 
@@ -18,6 +20,16 @@
 			case 'admin-add-kanban':
 				ModalComponent = AddKanban;
 				ModalTitle = '칸반보드 추가';
+				ModalSize = 'large';
+				break;
+			case 'admin-add-game':
+				ModalComponent = AdminGameModal;
+				ModalTitle = '게임 추가/수정';
+				ModalSize = 'large';
+				break;
+			case 'admin-add-character':
+				ModalComponent = AdminCharacterModal;
+				ModalTitle = '캐릭터 추가/수정';
 				ModalSize = 'large';
 				break;
 			case 'admin-add-event':
