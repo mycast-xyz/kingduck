@@ -187,6 +187,13 @@
 						<i class="ri-question-answer-line mr-2 text-sm"></i>
 						FAQ
 					</a>
+					<a
+						href="/admin/team"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-team-line mr-2 text-sm"></i>
+						팀 추천
+					</a>
 				</div>
 			</div>
 			<!-- 크롤러/파서 관리 -->

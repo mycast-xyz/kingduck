@@ -133,3 +133,24 @@ export interface FaqType {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface TeamSlotType {
+	main: string | number;
+	backups: (string | number)[];
+}
+
+export interface TeamType {
+	id: number;
+	gameId: number;
+	characterId: number;
+	name: string;
+	description?: string;
+	slots: TeamSlotType[];
+	tags?: string[];
+	sortOrder?: number;
+	published: boolean;
+	createdAt: string;
+	updatedAt: string;
+	game?: { id: number; name: string; slug: string };
+	character?: { id: number; name: string; originalId?: string };
+}

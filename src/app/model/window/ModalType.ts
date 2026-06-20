@@ -7,4 +7,5 @@ export type ModalType =
 	| 'admin-add-character'
 	| 'admin-add-redeem'
 	| 'admin-add-notice'
-	| 'admin-add-faq';
+	| 'admin-add-faq'
+	| 'admin-add-team';
