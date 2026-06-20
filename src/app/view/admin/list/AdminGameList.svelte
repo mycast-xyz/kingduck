@@ -86,6 +86,62 @@
 
 	// 검색어 상태
 	let searchQuery = $state('');
+
+	// sortOrder 편집 중인 임시값 (slug → string)
+	let editingSortOrder = $state<Record<string, string>>({});
+
+	// active·sortOrder PUT 공통 헬퍼
+	async function updateGame(slug: string, patch: { active?: boolean; sortOrder?: number }) {
+		try {
+			const res = await client.put(`/api/v0/admin/game/${slug}`, patch);
+			if (res.data.resultCode === 200) {
+				// 로컬 상태 갱신
+				gameList = gameList.map((g: any) =>
+					g.slug === slug ? { ...g, ...patch } : g
+				);
+				toastStore.success('저장되었습니다.');
+			} else {
+				toastStore.error(res.data.resultMsg || '저장에 실패했습니다.');
+				// 실패 시 서버 상태로 복원
+				await getGameList();
+			}
+		} catch (err) {
+			console.error('게임 업데이트 오류:', err);
+			toastStore.error('저장에 실패했습니다.');
+			await getGameList();
+		}
+	}
+
+	function onActiveToggle(game: any) {
+		updateGame(game.slug, { active: !game.active });
+	}
+
+	function onSortOrderBlur(game: any) {
+		const raw = editingSortOrder[game.slug];
+		if (raw === undefined) return; // 편집 안 했으면 무시
+		const value = Number(raw);
+		if (!Number.isFinite(value)) {
+			toastStore.error('숫자를 입력해주세요.');
+			// 입력값 원복
+			editingSortOrder = { ...editingSortOrder, [game.slug]: String(game.sortOrder ?? 0) };
+			return;
+		}
+		// 기존값과 동일하면 무시
+		if (value === (game.sortOrder ?? 0)) {
+			delete editingSortOrder[game.slug];
+			editingSortOrder = { ...editingSortOrder };
+			return;
+		}
+		updateGame(game.slug, { sortOrder: value });
+		delete editingSortOrder[game.slug];
+		editingSortOrder = { ...editingSortOrder };
+	}
+
+	function onSortOrderKeydown(game: any, e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			(e.currentTarget as HTMLInputElement).blur();
+		}
+	}
 </script>
 
 <div class="mx-auto pb-4">
@@ -119,6 +175,7 @@
 					<th scope="col" class="px-6 py-3">총 캐릭터 수</th>
 					<th scope="col" class="px-6 py-3">총 아이템 수</th>
 					<th scope="col" class="px-6 py-3">총 타입 수</th>
+					<th scope="col" class="px-6 py-3">노출 순서</th>
 					<th scope="col" class="px-6 py-3">상태</th>
 					<th scope="col" class="px-6 py-3">
 						<span class="sr-only">편집</span>
@@ -127,7 +184,7 @@
 			</thead>
 			<tbody>
 				{#each gameList as game}
-					<tr class="border-b bg-white hover:bg-gray-50">
+					<tr class="border-b bg-white hover:bg-gray-50 {game.active === false ? 'opacity-50' : ''}">
 						<td class="px-6 py-4 font-medium text-gray-900">
 							<div class="flex items-center">
 								<!-- 클릭/호버로 아이콘 업로드 -->
@@ -204,10 +261,42 @@
 								</a>
 							</div>
 						</td>
+						<!-- 노출 순서 -->
 						<td class="px-6 py-4">
-							<div class="flex items-center">
-								<div class="mr-2 h-2.5 w-2.5 rounded-full bg-green-500"></div>
-								활성화
+							<input
+								type="number"
+								class="w-20 rounded border border-gray-300 px-2 py-1 text-center text-sm focus:border-blue-500 focus:outline-none"
+								value={editingSortOrder[game.slug] ?? (game.sortOrder ?? 0)}
+								oninput={(e) => {
+									editingSortOrder = {
+										...editingSortOrder,
+										[game.slug]: (e.currentTarget as HTMLInputElement).value
+									};
+								}}
+								onblur={() => onSortOrderBlur(game)}
+								onkeydown={(e) => onSortOrderKeydown(game, e)}
+							/>
+						</td>
+						<!-- 공개 상태 토글 -->
+						<td class="px-6 py-4">
+							<div class="flex items-center gap-2">
+								<button
+									type="button"
+									role="switch"
+									aria-checked={game.active !== false}
+									aria-label="{game.name} 노출 {game.active !== false ? '켜짐' : '꺼짐'}"
+									onclick={() => onActiveToggle(game)}
+									class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 {game.active !== false ? 'bg-orange-500' : 'bg-gray-300'}"
+								>
+									<span
+										class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 {game.active !== false ? 'translate-x-5' : 'translate-x-0'}"
+									></span>
+								</button>
+								{#if game.active === false}
+									<span class="rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-500">숨김</span>
+								{:else}
+									<span class="text-xs text-green-600">공개</span>
+								{/if}
 							</div>
 						</td>
 						<td class="px-6 py-4 text-right">
