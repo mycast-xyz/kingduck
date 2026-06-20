@@ -4,4 +4,5 @@ export type ModalType =
 	| 'admin-add-game'
 	| 'admin-add-event'
 	| 'admin-add-item'
-	| 'admin-add-character';
+	| 'admin-add-character'
+	| 'admin-add-redeem';

@@ -7,6 +7,7 @@
 	import AdminCharacterModal from '../admin/character/AdminCharacterModal.svelte';
 	import AdminEventModal from '../admin/event/AdminEventModal.svelte';
 	import AdminItemModal from '../admin/item/AdminItemModal.svelte';
+	import AdminRedeemGroupModal from '../admin/redeem/AdminRedeemGroupModal.svelte';
 
 	// props에서 데이터 가져오기
 	//const { data } = $props<{ data: any }>();
@@ -40,6 +41,11 @@
 			case 'admin-add-item':
 				ModalComponent = AdminItemModal;
 				ModalTitle = '아이템 추가/수정';
+				ModalSize = 'large';
+				break;
+			case 'admin-add-redeem':
+				ModalComponent = AdminRedeemGroupModal;
+				ModalTitle = '쿠폰 그룹 추가/수정';
 				ModalSize = 'large';
 				break;
 			default:

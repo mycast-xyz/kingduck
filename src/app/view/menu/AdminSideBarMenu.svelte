@@ -141,6 +141,13 @@
 						<i class="ri-circle-line mr-2 text-sm"></i>
 						타입
 					</a>
+					<a
+						href="/admin/redeem"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-coupon-line mr-2 text-sm"></i>
+						쿠폰
+					</a>
 				</div>
 			</div>
 			<!-- 크롤러/파서 관리 -->
