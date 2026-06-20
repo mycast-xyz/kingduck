@@ -13,6 +13,7 @@
 		events: number;
 		users: number;
 		pendingEvents: number;
+		expiringRedeem: number;
 	}
 
 	interface AuditLog {
@@ -64,6 +65,13 @@
 				icon: 'ri-time-line',
 				color: 'text-red-600',
 				bg: 'bg-red-50'
+			},
+			{
+				label: '만료 임박 쿠폰',
+				value: summaryData.expiringRedeem,
+				icon: 'ri-coupon-3-line',
+				color: 'text-amber-600',
+				bg: 'bg-amber-50'
 			}
 		];
 	});

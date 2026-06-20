@@ -12,7 +12,7 @@
 	};
 
 	let isTokenValid = checkToken();
-	const userInfo = writable({});
+	const userInfo = writable<Record<string, any>>({});
 
 	// 토큰 정보 추출
 	if (checkToken()) {
@@ -53,8 +53,10 @@
 			>
 				<img src="/assets/logo/profile.png" alt="프로필" class="h-8 w-8 rounded-full" />
 				<div class="hidden text-left md:block">
-					<p class="text-sm font-medium text-gray-900">관리자</p>
-					<p class="text-xs text-gray-600">admin@kingduck.com</p>
+					<p class="text-sm font-medium text-gray-900">
+						{$userInfo.email || $userInfo.name || '관리자'}
+					</p>
+					<p class="text-xs text-gray-600">{$userInfo.role || ''}</p>
 				</div>
 			</button>
 			{#if $userNavActive}
@@ -70,8 +72,10 @@
 							alt="프로필 이미지"
 						/>
 						<div>
-							<p class="font-medium text-gray-900">관리자</p>
-							<p class="text-sm text-gray-500">admin@kingduck.com</p>
+							<p class="font-medium text-gray-900">
+								{$userInfo.email || $userInfo.name || '관리자'}
+							</p>
+							<p class="text-sm text-gray-500">{$userInfo.role || ''}</p>
 						</div>
 					</div>
 					<div class="py-2">

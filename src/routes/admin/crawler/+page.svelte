@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import client from '../../../app/service/api/client';
 	import { AdminSideMenuService } from '../../../app/service/AdminSiedMenuService';
 	import AdminHeadMenu from '../../../app/view/menu/AdminHeadMenu.svelte';
 	import AdminCrawlerStatus from '../../../app/view/admin/crawler/AdminCrawlerStatus.svelte';
@@ -7,6 +9,17 @@
 	import AdminDataGaps from '../../../app/view/admin/crawler/AdminDataGaps.svelte';
 
 	const { data } = $props<{ data: any }>();
+
+	// 검토 대기(이벤트) 실제 카운트 — 배지 표시용
+	let pendingCount = $state(0);
+	onMount(async () => {
+		try {
+			const r = await client.get('/api/v0/admin/event/pending', { params: { limit: 1 } });
+			if (r.data.resultCode === 200) pendingCount = r.data.data.total ?? 0;
+		} catch {
+			/* 무시 */
+		}
+	});
 
 	// 사이드바 토글 상태
 	// 사이드바 토글 상태
@@ -56,7 +69,11 @@
 			>
 				<i class="ri-eye-line mr-2"></i>
 				검토 대기
-				<span class="ml-2 rounded-full bg-orange-500 px-2 py-0.5 text-xs text-white">3</span>
+				{#if pendingCount > 0}
+					<span class="ml-2 rounded-full bg-orange-500 px-2 py-0.5 text-xs text-white"
+						>{pendingCount}</span
+					>
+				{/if}
 			</button>
 			<button
 				class="whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition-colors {activeTab ===
