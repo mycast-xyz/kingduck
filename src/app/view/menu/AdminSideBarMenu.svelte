@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { AdminSideMenuService } from '../../service/AdminSiedMenuService';
 
 	// 사이드바 토글 상태
@@ -34,6 +35,15 @@
 
 	// 사이드바 너비 상태 감시
 	let sidebarWidth = $derived($isSidebarCollapsed.collapsed ? 'w-64' : 'w-20');
+
+	// 사이드바 검색창 입력 상태
+	let searchQ = $state('');
+
+	function handleSidebarSearch(e: KeyboardEvent) {
+		if (e.key === 'Enter' && searchQ.trim().length > 0) {
+			goto(`/admin/search?q=${encodeURIComponent(searchQ.trim())}`);
+		}
+	}
 </script>
 
 <!-- 사이드바 -->
@@ -59,6 +69,21 @@
 				>
 					<i class="text-lg {$isSidebarCollapsed.icon}"></i>
 				</button>-->
+			</div>
+		</div>
+
+		<!-- 검색 입력창 (확장 상태에서만 표시) -->
+		<div class="collapsed-hidden mb-4">
+			<div class="relative">
+				<i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400"
+				></i>
+				<input
+					type="text"
+					bind:value={searchQ}
+					onkeydown={handleSidebarSearch}
+					class="w-full rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm focus:border-orange-400 focus:outline-none"
+					placeholder="검색..."
+				/>
 			</div>
 		</div>
 
