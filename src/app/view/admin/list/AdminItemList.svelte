@@ -157,6 +157,10 @@
 	function getGameName(gameId: number) {
 		return gameList.find((g) => g.id === gameId)?.name || '-';
 	}
+
+	function getGameSlug(gameId: number): string | undefined {
+		return gameList.find((g) => g.id === gameId)?.slug;
+	}
 </script>
 
 <div class="mx-auto pb-4">
@@ -306,7 +310,7 @@
 							</div>
 						</td>
 
-						<!-- 수정 / 삭제 -->
+						<!-- 수정 / 아이템 페이지 / 삭제 -->
 						<td class="px-6 py-4 text-right">
 							<button
 								aria-label="수정"
@@ -316,6 +320,16 @@
 								<i class="ri-edit-box-line text-xl"></i>
 								수정
 							</button>
+							{#if getGameSlug(item.gameId)}
+								<a
+									aria-label="아이템 페이지"
+									class="rounded-lg px-3 py-2 font-medium text-blue-400 hover:bg-blue-100 hover:text-blue-600"
+									href="/item/{getGameSlug(item.gameId)}"
+								>
+									<i class="ri-external-link-line text-xl"></i>
+									아이템 페이지
+								</a>
+							{/if}
 							<button
 								aria-label="삭제"
 								class="rounded-lg px-3 py-2 font-medium text-red-400 hover:bg-red-100 hover:text-red-600"
