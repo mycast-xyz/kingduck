@@ -5,4 +5,6 @@ export type ModalType =
 	| 'admin-add-event'
 	| 'admin-add-item'
 	| 'admin-add-character'
-	| 'admin-add-redeem';
+	| 'admin-add-redeem'
+	| 'admin-add-notice'
+	| 'admin-add-faq';

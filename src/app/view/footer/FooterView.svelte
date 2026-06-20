@@ -33,6 +33,10 @@
 				>
 				<span class="mx-2 text-gray-300">|</span>
 				<a href="/terms" class="hover:text-gray-900 hover:underline dark:hover:text-white">이용약관</a>
+				<span class="mx-2 text-gray-300">|</span>
+				<a href="/notice" class="hover:text-gray-900 hover:underline dark:hover:text-white">공지사항</a>
+				<span class="mx-2 text-gray-300">|</span>
+				<a href="/faq" class="hover:text-gray-900 hover:underline dark:hover:text-white">FAQ</a>
 			</p>
 		</span>
 		<span class="ml-auto mt-4 flex justify-center">

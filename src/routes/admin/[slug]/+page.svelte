@@ -9,6 +9,8 @@
 	import AdminElementList from '../../../app/view/admin/list/AdminElementList.svelte';
 	import AdminItemList from '../../../app/view/admin/list/AdminItemList.svelte';
 	import AdminStats from '../../../app/view/admin/AdminStats.svelte';
+	import AdminNoticeList from '../../../app/view/admin/notice/AdminNoticeList.svelte';
+	import AdminFaqList from '../../../app/view/admin/faq/AdminFaqList.svelte';
 
 	// 모달 관리
 	import DesktopModal from '../../../app/view/modal/DesktopModal.svelte';
@@ -57,6 +59,18 @@
 				ContentComponent = AdminStats;
 				ContentTitle = '통계 분석';
 				ContentInfoText = '방문자 추이, 검색 분석, 컨텐츠 완성도를 한눈에 확인합니다.';
+				break;
+
+			case 'notice':
+				ContentComponent = AdminNoticeList;
+				ContentTitle = '공지사항 관리';
+				ContentInfoText = '사이트 공지사항을 추가·수정·삭제합니다.';
+				break;
+
+			case 'faq':
+				ContentComponent = AdminFaqList;
+				ContentTitle = 'FAQ 관리';
+				ContentInfoText = '자주 묻는 질문(FAQ)을 추가·수정·삭제합니다.';
 				break;
 
 			default:

@@ -8,6 +8,8 @@
 	import AdminEventModal from '../admin/event/AdminEventModal.svelte';
 	import AdminItemModal from '../admin/item/AdminItemModal.svelte';
 	import AdminRedeemGroupModal from '../admin/redeem/AdminRedeemGroupModal.svelte';
+	import AdminNoticeModal from '../admin/notice/AdminNoticeModal.svelte';
+	import AdminFaqModal from '../admin/faq/AdminFaqModal.svelte';
 
 	// props에서 데이터 가져오기
 	//const { data } = $props<{ data: any }>();
@@ -46,6 +48,16 @@
 			case 'admin-add-redeem':
 				ModalComponent = AdminRedeemGroupModal;
 				ModalTitle = '쿠폰 그룹 추가/수정';
+				ModalSize = 'large';
+				break;
+			case 'admin-add-notice':
+				ModalComponent = AdminNoticeModal;
+				ModalTitle = '공지사항 추가/수정';
+				ModalSize = 'large';
+				break;
+			case 'admin-add-faq':
+				ModalComponent = AdminFaqModal;
+				ModalTitle = 'FAQ 추가/수정';
 				ModalSize = 'large';
 				break;
 			default:

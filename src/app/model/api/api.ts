@@ -109,3 +109,27 @@ export interface CrawlerRunRequest {
 	gameSlug: string;
 	crawlerType: string;
 }
+
+export interface NoticeType {
+	id: number;
+	title: string;
+	content: string;
+	category?: string;
+	pinned: boolean;
+	published: boolean;
+	startAt?: string;
+	endAt?: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface FaqType {
+	id: number;
+	category?: string;
+	question: string;
+	answer: string;
+	sortOrder: number;
+	published: boolean;
+	createdAt: string;
+	updatedAt: string;
+}

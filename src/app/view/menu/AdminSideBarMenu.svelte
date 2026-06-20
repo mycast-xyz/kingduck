@@ -148,6 +148,20 @@
 						<i class="ri-coupon-line mr-2 text-sm"></i>
 						쿠폰
 					</a>
+					<a
+						href="/admin/notice"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-notification-3-line mr-2 text-sm"></i>
+						공지사항
+					</a>
+					<a
+						href="/admin/faq"
+						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
+					>
+						<i class="ri-question-answer-line mr-2 text-sm"></i>
+						FAQ
+					</a>
 				</div>
 			</div>
 			<!-- 크롤러/파서 관리 -->
