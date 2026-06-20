@@ -27,6 +27,8 @@
 	import NteProfileView from '../../info/NteProfileView.svelte';
 	import BlueArchiveProfileView from '../../info/BlueArchiveProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
+	import AdUnit from '../../ad/AdUnit.svelte';
+	import { adSlots } from '../../ad/adSlots';
 
 	// 페이지 데이터 가져오기
 	const { data, gameInit } = $props<{ data: any; gameInit?: any }>();
@@ -161,6 +163,7 @@
 		<!-- 스크롤 처리 -->
 		<div id="info-content" class="flex h-full w-[inherit] flex-col overflow-y-auto pr-[20px]">
 			<div class="w-full px-5 pt-5">
+				<AdUnit slot={adSlots.content} />
 				{#if gameInit?.layout}
 					{#each gameInit.layout as section, index}
 						<!-- Section Wrapper for Navigation -->

@@ -5,6 +5,8 @@
 	import { WindowService } from '../../../service/WindowService';
 	import MobileModal from '../../modal/MobileModal.svelte';
 	import MobileGameNav from '../../menu/MobileGameNav.svelte';
+	import AdUnit from '../../ad/AdUnit.svelte';
+	import { adSlots } from '../../ad/adSlots';
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
@@ -40,6 +42,8 @@
 
 	<article id="list-componet" class=" my-0 mr-0 mt-2 flex h-full overflow-hidden">
 		<div class="list h-full w-full overflow-y-auto px-2">
+			<AdUnit slot={adSlots.list} />
+
 			<ListCardView {data} list={$characterList} />
 		</div>
 	</article>

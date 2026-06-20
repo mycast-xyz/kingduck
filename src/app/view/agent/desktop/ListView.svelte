@@ -7,6 +7,8 @@
 	import FooterView from '../../footer/FooterView.svelte';
 	import ListCardView from '../../list/ListCardView.svelte';
 	import DesktopListMenu from '../../menu/DesktopListMenu.svelte';
+	import AdUnit from '../../ad/AdUnit.svelte';
+	import { adSlots } from '../../ad/adSlots';
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
@@ -19,6 +21,8 @@
 	>
 		<DesktopListMenu {data} />
 		<div class="list h-auto w-[calc(100%-320px)] w-[inherit] overflow-y-auto pr-2 pt-16">
+			<AdUnit slot={adSlots.list} />
+
 			<ListCardView {data} list={$characterList} />
 
 			<FooterView />

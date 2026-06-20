@@ -31,6 +31,8 @@
 	import NteProfileView from '../../info/NteProfileView.svelte';
 	import BlueArchiveProfileView from '../../info/BlueArchiveProfileView.svelte';
 	import FooterView from '../../footer/FooterView.svelte';
+	import AdUnit from '../../ad/AdUnit.svelte';
+	import { adSlots } from '../../ad/adSlots';
 
 	// 페이지 데이터 및 모달 초기화
 	const { data, gameInit } = $props<{ data: any; gameInit?: any }>();
@@ -169,6 +171,7 @@
 			<swiper-slide>
 				<div id="info-content" class="mb-16 mt-14 h-full w-full overflow-y-auto">
 					<div class="w-full px-4 pb-16 pt-4">
+						<AdUnit slot={adSlots.content} />
 						{#if gameInit?.layout}
 							{#each gameInit.layout as section}
 								{#if section.component === 'MainItemView'}
