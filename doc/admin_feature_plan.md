@@ -110,7 +110,7 @@
   - 사용자가 자주 검색하는 키워드
   - 검색 결과 없는 쿼리
 - **시스템 모니터링** (신규 추가) o
-  - [상세 명세서: admin_system_monitoring.md](./admin_system_monitoring.md)
+  - [상세 명세서: admin_system_monitoring.md](./archive/admin_system_monitoring.md)
   - 서버 리소스(CPU, MEM, Disk) 및 프로세스 상태 모니터링
 
 ### 8. 공지사항/FAQ 관리

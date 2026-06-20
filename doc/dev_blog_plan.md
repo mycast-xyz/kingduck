@@ -76,7 +76,7 @@
 **시즌 3 — 운영/어드민**
 8. 어드민 패널 설계 (`routes/admin`) + 인증
 9. **크롤러로 게임 데이터 수집** (`admin/crawler`) — 가장 인기 끌 소재
-10. 시스템 모니터링 / 대시보드 (`admin/monitor`, `doc/admin_system_monitoring.md`)
+10. 시스템 모니터링 / 대시보드 (`admin/monitor`, `doc/archive/admin_system_monitoring.md`)
 
 **시즌 4 — 마무리**
 11. 배포 (static adapter → 호스팅) + 서버 분리 운영
