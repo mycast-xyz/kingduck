@@ -79,11 +79,11 @@
 				<span class="collapsed-hidden">프로젝트 관리</span>
 			</a>
 			<a
-				href="/admin/analytics"
+				href="/admin/event"
 				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-all duration-300 hover:bg-gray-200 hover:text-gray-500"
 			>
 				<i class="ri-calendar-schedule-line"></i>
-				<span class="collapsed-hidden">캘린더</span>
+				<span class="collapsed-hidden">이벤트/캘린더</span>
 			</a>
 			<a
 				href="/admin/user"
@@ -186,21 +186,14 @@
 						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
 					>
 						<i class="ri-circle-line mr-2 text-sm"></i>
-						나무위키 테스트
-					</a>
-					<a
-						href="/admin/layouts/collapsed"
-						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
-					>
-						<i class="ri-circle-line mr-2 text-sm"></i>
-						prydwen 테스트
+						캐릭터 입력
 					</a>
 					<a
 						href="/admin/game"
 						class="block rounded-lg px-4 py-3 pl-6 hover:bg-gray-200 hover:text-gray-500"
 					>
 						<i class="ri-circle-line mr-2 text-sm"></i>
-						hakush 테스트
+						게임 입력
 					</a>
 				</div>
 			</div>

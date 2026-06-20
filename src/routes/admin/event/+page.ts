@@ -1,4 +1,3 @@
-import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { getApiBaseUrl } from '../../../app/service/api/client';
 

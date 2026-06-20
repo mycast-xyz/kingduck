@@ -90,10 +90,6 @@
 		{/each}
 	</div>
 
-	/* ... existing imports ... */ import AdminSystemSummary from
-	'./monitor/AdminSystemSummary.svelte'; import AdminResourceChart from
-	'./monitor/AdminResourceChart.svelte'; /* ... existing script ... */ /* ... existing markup ... */
-
 	<!-- 중간 섹션: 방문자 추이 & 컨텐츠 완성도 -->
 	<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 		<div class="lg:col-span-2">

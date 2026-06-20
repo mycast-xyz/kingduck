@@ -16,29 +16,3 @@
 	<!-- 상단 통계 카드 -->
 	<AdminDashBoard />
 </main>
-
-<style lang="scss">
-	#sidebar {
-		&.hover {
-			.collapsed-hidden {
-				display: block;
-			}
-		}
-		&.active {
-			.collapsed-hidden {
-				display: block;
-			}
-		}
-
-		.collapsed-hidden {
-			display: none;
-		}
-	}
-	.dropdownMenu {
-		&.active {
-			.dropdownMenuContnet {
-				display: block;
-			}
-		}
-	}
-</style>

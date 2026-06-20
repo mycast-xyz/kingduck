@@ -86,7 +86,7 @@
 						<div class="mt-2 border-t border-gray-200">
 							<a href="/add-account" class="flex items-center px-4 py-2 hover:bg-gray-100">
 								<i class="ri-instance-line mr-3"></i>
-								<span>어드민 페이지 이동</span>
+								<span>계정 추가/연동</span>
 							</a>
 							<button
 								onclick={logout}

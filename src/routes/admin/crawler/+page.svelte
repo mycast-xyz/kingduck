@@ -18,7 +18,7 @@
 	let activeTab = $state<'status' | 'logs' | 'pending' | 'gaps'>('status');
 </script>
 
-<main class="ml-64 min-h-screen flex-1 bg-gray-100 p-8">
+<main class="{mainMargin} min-h-screen flex-1 bg-gray-100 p-8">
 	<AdminHeadMenu
 		title="크롤러/파서 관리"
 		infoText="게임별 크롤러 상태를 모니터링하고, 수집된 데이터를 검토합니다."

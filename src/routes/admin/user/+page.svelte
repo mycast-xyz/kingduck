@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { AdminSideMenuService } from '../../../app/service/AdminSiedMenuService';
 	import { adminUserService, type User } from '../../../app/service/AdminUserService';
 	import AdminHeadMenu from '../../../app/view/menu/AdminHeadMenu.svelte';
+
+	// 사이드바 토글 상태
+	let sidebarStore = AdminSideMenuService.SidebarCollapsed;
+	let isSidebarCollapsed = $derived($sidebarStore);
+	let mainMargin = $derived(isSidebarCollapsed.collapsed ? 'ml-64' : 'ml-20');
 
 	let keyword = '';
 	let role = '';
@@ -52,7 +58,7 @@
 	}
 </script>
 
-<div class="ml-64 min-h-screen flex-1 bg-gray-100 p-8">
+<div class="{mainMargin} min-h-screen flex-1 bg-gray-100 p-8">
 	<AdminHeadMenu title="사용자 관리" infoText="플랫폼 사용자를 조회하고 상태를 관리합니다." />
 
 	<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">

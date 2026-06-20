@@ -8,6 +8,7 @@
 	import AdminCharacterList from '../../../app/view/admin/list/AdminCharacterList.svelte';
 	import AdminElementList from '../../../app/view/admin/list/AdminElementList.svelte';
 	import AdminItemList from '../../../app/view/admin/list/AdminItemList.svelte';
+	import AdminStats from '../../../app/view/admin/AdminStats.svelte';
 
 	// 모달 관리
 	import DesktopModal from '../../../app/view/modal/DesktopModal.svelte';
@@ -50,6 +51,12 @@
 				ContentComponent = AdminItemList;
 				ContentTitle = '아이템 관리';
 				ContentInfoText = '게임별 아이템 정보를 추가/수정합니다.';
+				break;
+
+			case 'stats':
+				ContentComponent = AdminStats;
+				ContentTitle = '통계 분석';
+				ContentInfoText = '방문자 추이, 검색 분석, 컨텐츠 완성도를 한눈에 확인합니다.';
 				break;
 
 			default:
