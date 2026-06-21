@@ -118,7 +118,7 @@ const railGames = $derived(favoriteGames.length ? favoriteGames : gameList.slice
 |------|------|----------|
 | **P1 ✅ 완료** | 레일 축소(즐겨찾기/기본3 + 트리거) + `GameFlyoutPanel` 그리드 + click 토글. **바깥클릭/ESC 닫기·aria도 함께 처리됨.** | 레일 길이 상한 생김. 트리거 클릭 시 전체 게임 패널 노출, 게임 이동·별 토글 동작. `pnpm run check` 0 신규 에러. — 충족(시각 검증 완료). |
 | **P2 ✅ 완료** | UX 다듬기: 플라이아웃 슬라이드(fly) 애니메이션, 플라이아웃 열림 시 레일 tooltip 억제. (바깥클릭/ESC/aria는 P1에서 완료.) | 키보드/마우스 모두 자연스러움. — 충족. |
-| **P3 (opt)** | 후속: 카테고리 그룹, 패널 내 검색, 관리자 정렬·노출 제어(crashed 세션 menuscout D항목), mobile 그룹/검색 | 게임 수 더 늘어도 탐색 용이. |
+| **P3 (진행 중)** | 패널 내 **검색** ✅(자동 포커스·이름 필터·결과없음). 남음: 카테고리 그룹, 관리자 정렬·노출 제어(menuscout D항목, 백엔드), mobile 그룹/검색 | 게임 수 더 늘어도 탐색 용이. |
 
 ---
 

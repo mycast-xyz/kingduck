@@ -13,6 +13,19 @@
 	}>();
 
 	const favorites = FavoriteService.favorites;
+
+	// 패널 내 검색: 게임 수가 늘어도 이름으로 바로 찾는다.
+	let query = $state('');
+	const filtered = $derived(
+		query.trim()
+			? games.filter((g: GameItem) => g.name.toLowerCase().includes(query.trim().toLowerCase()))
+			: games
+	);
+
+	// 패널이 열리면 검색창에 포커스(바로 타이핑 가능).
+	function autofocus(node: HTMLInputElement) {
+		node.focus();
+	}
 </script>
 
 <div
@@ -20,13 +33,24 @@
 	role="menu"
 	aria-label="전체 게임"
 >
-	<div
-		class="border-b border-gray-100 px-4 py-3 text-sm font-bold text-gray-700 dark:border-gray-700 dark:text-white"
-	>
-		전체 게임
+	<div class="border-b border-gray-100 px-3 py-2 dark:border-gray-700">
+		<div class="mb-2 px-1 text-sm font-bold text-gray-700 dark:text-white">전체 게임</div>
+		<div class="relative">
+			<i
+				class="ri-search-line pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
+			></i>
+			<input
+				type="text"
+				bind:value={query}
+				placeholder="게임 검색"
+				aria-label="게임 검색"
+				class="w-full rounded-md border border-gray-200 bg-gray-50 py-1.5 pl-7 pr-2 text-sm text-gray-700 focus:border-orange-400 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+				use:autofocus
+			/>
+		</div>
 	</div>
 	<div class="grid grid-cols-3 gap-1 p-2">
-		{#each games as game (game.slug)}
+		{#each filtered as game (game.slug)}
 			<div class="group relative">
 				<a
 					data-sveltekit-preload-data="false"
@@ -61,5 +85,8 @@
 				</button>
 			</div>
 		{/each}
+		{#if filtered.length === 0}
+			<div class="col-span-3 py-6 text-center text-sm text-gray-500">검색 결과가 없습니다.</div>
+		{/if}
 	</div>
 </div>
