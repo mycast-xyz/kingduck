@@ -4,8 +4,13 @@
 	import ListFilterMenu from './filter/ListFilterMenu.svelte';
 	import { CharacterListService } from '../../service/character/CharacterListService';
 	import { hasItemTabs } from '../../model/game/itemTabs';
+	import { FavoriteService } from '../../service/FavoriteService';
 
 	import { page } from '$app/stores';
+
+	// 현재 게임 즐겨찾기 토글용
+	const favorites = FavoriteService.favorites;
+	const slug = $derived($page.params.slug ?? '');
 
 	// props에서 데이터 가져오기
 	const { data } = $props<{ data: any }>();
@@ -39,9 +44,24 @@
 					></div>
 				{/if}
 			</div>
-			<h3 class="pb-3 pt-2 text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
-				{data?.info?.name || '게임 정보'}
-			</h3>
+			<div class="flex items-center justify-between pb-3 pt-2">
+				<h3 class="text-2xl font-bold tracking-tight text-gray-700 dark:text-white">
+					{data?.info?.name || '게임 정보'}
+				</h3>
+				<!-- 현재 게임 즐겨찾기 토글 -->
+				<button
+					type="button"
+					aria-label={$favorites.includes(slug) ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+					class="flex h-9 w-9 items-center justify-center rounded-full text-xl hover:bg-gray-100 dark:hover:bg-gray-800"
+					onclick={() => FavoriteService.toggle(slug)}
+				>
+					<i
+						class={$favorites.includes(slug)
+							? 'ri-star-fill text-yellow-400'
+							: 'ri-star-line text-gray-400'}
+					></i>
+				</button>
+			</div>
 		</div>
 		<div class="flex w-full items-center">
 			<div

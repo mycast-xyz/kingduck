@@ -2,6 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { authTokenService } from '../../../service/auth/AuthTokenService';
 	import { userNavActive } from '../../../../app/service/MainMenuService';
+	import { FavoriteService } from '../../../service/FavoriteService';
 	import type { PageData } from '../../../../routes/$types';
 	import ThemeToggle from '../../common/ThemeToggle.svelte';
 
@@ -40,8 +41,15 @@
 	// tooltip 표시 상태를 위한 상태 변수
 	let showTooltip = $state<string | null>(null);
 
+	type GameItem = { slug: string; iconUrl: string; name: string };
+
 	// data.info가 배열인지 확인하고 안전하게 처리
-	const gameList = $derived(Array.isArray(data?.info) ? data.info : []);
+	const gameList = $derived<GameItem[]>(Array.isArray(data?.info) ? data.info : []);
+
+	// 즐겨찾기: 상단 고정 게임. 게임 수가 늘어 메뉴가 길어질 때 자주 보는 게임을 위로 올린다.
+	const favorites = FavoriteService.favorites;
+	const favoriteGames = $derived(gameList.filter((g) => $favorites.includes(g.slug)));
+	const otherGames = $derived(gameList.filter((g) => !$favorites.includes(g.slug)));
 </script>
 
 <header
@@ -91,40 +99,18 @@
 					</div>
 				{/if}
 			</div>
-			{#each gameList as gameItem}
-				<div class="relative">
-					<a
-						data-sveltekit-preload-data="false"
-						id="menu-item"
-						class:active={data.params === gameItem.slug}
-						class="mt-2 flex h-12 w-full items-center rounded px-3"
-						href="/list/{gameItem.slug}"
-						onmouseenter={() => (showTooltip = gameItem.slug)}
-						onmouseleave={() => (showTooltip = null)}
-					>
-						<img
-							class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200 dark:outline-gray-600"
-							src={data.url + '/' + gameItem.iconUrl}
-							alt="HonkaiStarRail"
-						/>
-					</a>
+			<!-- 즐겨찾기 고정 게임 (상단) -->
+			{#if favoriteGames.length}
+				{#each favoriteGames as gameItem (gameItem.slug)}
+					{@render gameIcon(gameItem)}
+				{/each}
+				<!-- 즐겨찾기 / 일반 구분선 -->
+				<div class="my-1 w-8 border-t border-gray-300 dark:border-gray-600"></div>
+			{/if}
 
-					{#if showTooltip === gameItem.slug}
-						<div
-							class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300 dark:bg-orange-600"
-							role="tooltip"
-						>
-							<p class="block whitespace-nowrap text-sm font-medium">
-								{gameItem.name}
-							</p>
-							<div class="tooltip-arrow" data-popper-arrow>
-								<div
-									class="absolute -left-1 top-3 h-4 w-4 rotate-45 bg-orange-400 dark:bg-orange-600"
-								></div>
-							</div>
-						</div>
-					{/if}
-				</div>
+			<!-- 나머지 게임 -->
+			{#each otherGames as gameItem (gameItem.slug)}
+				{@render gameIcon(gameItem)}
 			{/each}
 		</div>
 		<!-- 반복 area 
@@ -213,6 +199,60 @@
 		</a>
 	{/if}
 </header>
+
+{#snippet gameIcon(gameItem: GameItem)}
+	<div class="group relative">
+		<a
+			data-sveltekit-preload-data="false"
+			id="menu-item"
+			class:active={data.params === gameItem.slug}
+			class="mt-2 flex h-12 w-full items-center rounded px-3"
+			href="/list/{gameItem.slug}"
+			onmouseenter={() => (showTooltip = gameItem.slug)}
+			onmouseleave={() => (showTooltip = null)}
+		>
+			<img
+				class="outline-3 h-10 w-10 rounded-full fill-current outline outline-offset-0 outline-gray-200 dark:outline-gray-600"
+				src={data.url + '/' + gameItem.iconUrl}
+				alt={gameItem.name}
+			/>
+		</a>
+
+		<!-- 즐겨찾기 토글 (호버 시 노출). 아이콘 클릭(네비게이션)과 분리 -->
+		<button
+			type="button"
+			aria-label={$favorites.includes(gameItem.slug) ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+			class="absolute right-0 top-1 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs opacity-0 shadow transition-opacity duration-150 group-hover:opacity-100 dark:bg-gray-800"
+			onclick={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				FavoriteService.toggle(gameItem.slug);
+			}}
+		>
+			<i
+				class={$favorites.includes(gameItem.slug)
+					? 'ri-star-fill text-yellow-400'
+					: 'ri-star-line text-gray-400'}
+			></i>
+		</button>
+
+		{#if showTooltip === gameItem.slug}
+			<div
+				class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300 dark:bg-orange-600"
+				role="tooltip"
+			>
+				<p class="block whitespace-nowrap text-sm font-medium">
+					{gameItem.name}
+				</p>
+				<div class="tooltip-arrow" data-popper-arrow>
+					<div
+						class="absolute -left-1 top-3 h-4 w-4 rotate-45 bg-orange-400 dark:bg-orange-600"
+					></div>
+				</div>
+			</div>
+		{/if}
+	</div>
+{/snippet}
 
 <style lang="scss">
 	header {
