@@ -236,3 +236,43 @@ Event:     { gameId, name, type: GACHA|EVENT|MAINTENANCE, startTime, endTime, me
 - prydwen — https://www.prydwen.gg/nikke/characters
 - nikke.gg(동적) — https://nikke.gg/characters/
 - 공식(KR) — https://nikke-kr.com/
+
+---
+
+## 부록 — NTE Parity 스파이크 결과 (2026-06-21)
+
+> 목적: "이환을 스타레일/원신처럼 풍부하게 보이게" 위한 데이터 가용성 조사.
+> 결론: **everness.info GraphQL에 현재 안 긁는 캐릭터 데이터가 다수 존재** → 백엔드 스크레이퍼 확장 + 프론트 레이아웃 추가로 상당한 parity 가능.
+
+### A. 소스 확인
+- everness.info = **Next.js + Apollo GraphQL**. 엔드포인트 **`POST https://everness.info/api/graphql`** (introspection 열림).
+- 캐릭터 = **`Esper`** 타입. `espers(filter:{})` = 19개(우리 DB와 일치). `esper(id)` 단건 조회.
+
+### B. 현재 우리가 긁는 metadata (상세 기준)
+`skills`(=abilities), `awaken`, `resonance`, `faction`, `birthday`, `abilityName`, `description`,
+`element`/`elementKo`/`elementIconUrl`, `path`/`pathIconUrl`, `arcsTypeId`, `originalId`, 이미지(avatar/card).
+→ 프론트 노출: 정보·스킬·각성·공명 4섹션(2026-06-21 추가됨).
+
+### C. Esper에 있으나 **아직 안 긁는** 필드 (parity 후보)
+| everness 필드 | 내용 | 프론트 매핑(재사용 컴포넌트) | 검증 |
+|------|------|------|------|
+| `stats[]{name,values[]}` + `hp/atk/def` | 기초 스탯(레벨 스케일 배열) | **StatsView** (starrail 재사용) | ✅ 5스탯, 레벨별 values 확인 |
+| `fashion[]{name,...}` (+ `wardrobe` 쿼리) | **코스튬/패션** | **CostumeView** (starrail 재사용) | ✅ Sakiri 2벌(Pumpkin Magic…) |
+| `voices`(EsperVoices) + `voiceKorean/JP/EN/CN` | 음성/성우 | **VoiceView** (starrail 재사용) | ✅ voiceKorean="김나율" |
+| `breakthrough[]` | 돌파(승급) 자료 | 신규 소형 뷰 또는 기존 재사용 | ✅ 6엔트리 |
+| `preferrable_gifts[]` (+ `gift_reward[]`) | 선호 선물(NTE 고유 시스템) | 신규 소형 뷰 | ✅ 8엔트리 |
+| `introduction`, `profile_detail[]` | 캐릭터 소개·프로필 상세 | NteProfileView 보강 | ✅ 텍스트 존재 |
+| `char_tags[]`, `weapon_type_id`, `equip_slots` | 태그·무기·장비슬롯 | 선택 | — |
+
+### D. 작업 분해
+**백엔드(kingduck-server, 별도 저장소)** — NteCharacterScraper GraphQL 쿼리에 위 필드 추가, metadata에 매핑:
+- `stats`, `fashion`(→costumes), `voices`, `breakthrough`, `preferrable_gifts`, `introduction`, `profile_detail`.
+- 주의: introduction은 영어로 반환되는 듯(로케일 파라미터 확인 필요). voiceKorean은 한국어. 로케일별 필드 매핑 점검.
+
+**프론트(이 저장소)** — 백엔드가 채우면 NteInit 레이아웃에 섹션 추가:
+- `StatsView`(stats) / `CostumeView`(costumes) / `VoiceView`(voiceLines) — 기존 컴포넌트.
+- StatsView·VoiceView는 게임별 ViewModel 분기가 있으면 **NteStatsViewModel/NteVoiceViewModel** 추가 필요(데이터 shape 확인 후).
+- breakthrough·gifts는 소형 신규 뷰 검토.
+
+### E. 도달 가능 수준
+정보·스킬·각성·공명(현재) → **+스탯·코스튬·음성·돌파·선물** = 8~9섹션. starrail의 광추·유물·행적은 NTE에 **없는 시스템**이라 제외(불가·부적절). 그 외 영역은 대부분 채울 수 있음.
