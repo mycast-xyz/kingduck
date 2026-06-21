@@ -42,7 +42,7 @@
 | **reverse1999 코스튬 dataKey** | `costume`→`skins` + CostumeView image/desc 관용화 | ✅ **수정 완료** |
 | **bluearchive `stats`** (7키) / **nikke `stats`** (5키) | flat dict, StatsView fallback 일반화로 노출 | ✅ **완료** (재크롤 0) |
 | **wuwa `CharacterVoice`** | **54캐릭 중 실데이터 0** (전부 "No Description Available" 플레이스홀더) | ❌ 데이터 부재 → 보류 |
-| **endfield `bestGifts`** | shape `{iconId, nameI18nId, descI18nId, favorablePoint}` — **이름이 i18n ID(미해석)·아이콘도 ID** | ⚠️ 백엔드 i18n 해석+아이콘 필요(NTE 돌파와 동급) |
+| **endfield `bestGifts`** | nameI18nId→i18nMap 해석 + iconId→endfieldtools itemicon 다운로드 → NteMaterialView 노출 | ✅ **완료** (26/29 캐릭, 백엔드 재크롤) |
 | **nikke `lore`** | 단일 **문자열**(스토리 단락) | △ ProfileView 설명 보강감(StoryView 부적합) |
 | **reverse1999 `lore`** | **dict**(cv/age/birthday/fragrance…) = 프로필 필드 | △ ProfileView 보강감 |
 
