@@ -10,7 +10,8 @@ export type GameSlug =
 	| 'zzz'
 	| 'nte'
 	| 'bluearchive'
-	| 'GirlsFrontline2Exilium';
+	| 'GirlsFrontline2Exilium'
+	| 'browndust2';
 
 export interface GameInitConfig {
 	// 게임 slug. 'Calendar'는 게임이 아닌 캘린더 전용 특수 설정.

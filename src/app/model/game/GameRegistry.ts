@@ -9,6 +9,7 @@ import { EndfieldInit } from './EndfieldInit';
 import { ZzzInit } from './ZzzInit';
 import { NteInit } from './NteInit';
 import { BlueArchiveInit } from './BlueArchiveInit';
+import { BrownDust2Init } from './BrownDust2Init';
 
 /**
  * 게임 레지스트리 — slug → GameInitConfig 팩토리의 단일 진실원.
@@ -27,15 +28,15 @@ const GAME_INIT_FACTORIES: Record<string, () => GameInitConfig> = {
 	// GirlsFrontline2/nikke의 Init은 아직 GameInitConfig를 완전히 만족하지 않는다(content.info의
 	// option/main 형태 불일치, 데이터 0건의 비활성 게임). 정식 타이핑은 redesign-plan E3 과제.
 	// 그때까지 레지스트리 도입을 막지 않도록 이 둘만 명시적으로 단언한다.
-	GirlsFrontline2Exilium: () =>
-		new GirlsFrontline2Init().setInit() as unknown as GameInitConfig,
+	GirlsFrontline2Exilium: () => new GirlsFrontline2Init().setInit() as unknown as GameInitConfig,
 	nikke: () => new nikkeInit().setInit() as unknown as GameInitConfig,
 	reverse1999: () => new Reverse1999Init().setInit(),
 	wutheringwaves: () => new WutheringWavesInit().setInit(),
 	endfield: () => new EndfieldInit().setInit(),
 	zzz: () => new ZzzInit().setInit(),
 	nte: () => new NteInit().setInit(),
-	bluearchive: () => new BlueArchiveInit().setInit()
+	bluearchive: () => new BlueArchiveInit().setInit(),
+	browndust2: () => new BrownDust2Init().setInit()
 };
 
 /**

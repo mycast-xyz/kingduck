@@ -7,7 +7,8 @@ export const GAME_CONFIG: Record<string, { color: string; icon?: string }> = {
 	reverse1999: { color: 'bg-[#AA4628]' },
 	genshin: { color: 'bg-[#141E64]' },
 	nte: { color: 'bg-[#5B8DEF]' },
-	bluearchive: { color: 'bg-[#128AFA]' }
+	bluearchive: { color: 'bg-[#128AFA]' },
+	browndust2: { color: 'bg-[#C04B4B]' }
 };
 
 export const CALENDAR_CONFIG = {
