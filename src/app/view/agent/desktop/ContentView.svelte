@@ -15,6 +15,7 @@
 	import BuildRecommendationView from '../../info/BuildRecommendationView.svelte';
 	import StatsView from '../../info/StatsView.svelte';
 	import CostumeView from '../../info/CostumeView.svelte';
+	import NteMaterialView from '../../info/NteMaterialView.svelte';
 	import CalculatorView from '../../info/CalculatorView.svelte';
 	import TeamRecommendationView from '../../info/TeamRecommendationView.svelte';
 	import ProfileView from '../../info/ProfileView.svelte';
@@ -251,6 +252,13 @@
 									{currentUrl}
 									{isMobile}
 									{gameId}
+									initData={getInitData(section)}
+									{...section.props}
+								/>
+							{:else if section.component === 'NteMaterialView'}
+								<NteMaterialView
+									listData={meta[section.dataKey] || []}
+									{currentUrl}
 									initData={getInitData(section)}
 									{...section.props}
 								/>

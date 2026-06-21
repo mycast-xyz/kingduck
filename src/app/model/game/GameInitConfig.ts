@@ -122,6 +122,7 @@ export interface ComponentLayout {
 		| 'BuildRecommendationView'
 		| 'StatsView'
 		| 'CostumeView'
+		| 'NteMaterialView'
 		| 'CalculatorView'
 		| 'TeamRecommendationView'
 		| 'ProfileView'
