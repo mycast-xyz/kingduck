@@ -5,6 +5,7 @@
 	import { FavoriteService } from '../../../service/FavoriteService';
 	import type { PageData } from '../../../../routes/$types';
 	import ThemeToggle from '../../common/ThemeToggle.svelte';
+	import GameFlyoutPanel from './GameFlyoutPanel.svelte';
 
 	const { data } = $props<{ data: PageData }>();
 
@@ -49,7 +50,30 @@
 	// 즐겨찾기: 상단 고정 게임. 게임 수가 늘어 메뉴가 길어질 때 자주 보는 게임을 위로 올린다.
 	const favorites = FavoriteService.favorites;
 	const favoriteGames = $derived(gameList.filter((g) => $favorites.includes(g.slug)));
-	const otherGames = $derived(gameList.filter((g) => !$favorites.includes(g.slug)));
+	// 레일에 보이는 게임 = 즐겨찾기. 없으면 기본 3개 노출(레일 세로 길이에 상한을 둔다).
+	const railGames = $derived(favoriteGames.length ? favoriteGames : gameList.slice(0, 3));
+
+	// 전체 게임 플라이아웃(우측 가로 그리드). 클릭 토글 + 바깥클릭/ESC 닫기.
+	let flyoutOpen = $state(false);
+	let flyoutContainer = $state<HTMLElement | null>(null);
+	const toggleFlyout = () => (flyoutOpen = !flyoutOpen);
+	const closeFlyout = () => (flyoutOpen = false);
+
+	$effect(() => {
+		if (!flyoutOpen) return;
+		const onClick = (e: MouseEvent) => {
+			if (flyoutContainer && !flyoutContainer.contains(e.target as Node)) closeFlyout();
+		};
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') closeFlyout();
+		};
+		window.addEventListener('click', onClick);
+		window.addEventListener('keydown', onKey);
+		return () => {
+			window.removeEventListener('click', onClick);
+			window.removeEventListener('keydown', onKey);
+		};
+	});
 </script>
 
 <header
@@ -99,19 +123,37 @@
 					</div>
 				{/if}
 			</div>
-			<!-- 즐겨찾기 고정 게임 (상단) -->
-			{#if favoriteGames.length}
-				{#each favoriteGames as gameItem (gameItem.slug)}
-					{@render gameIcon(gameItem)}
-				{/each}
-				<!-- 즐겨찾기 / 일반 구분선 -->
-				<div class="my-1 w-8 border-t border-gray-300 dark:border-gray-600"></div>
-			{/if}
-
-			<!-- 나머지 게임 -->
-			{#each otherGames as gameItem (gameItem.slug)}
+			<!-- 레일: 즐겨찾기(없으면 기본 3개) -->
+			{#each railGames as gameItem (gameItem.slug)}
 				{@render gameIcon(gameItem)}
 			{/each}
+
+			<!-- 전체 게임 트리거 + 플라이아웃 -->
+			<div bind:this={flyoutContainer} class="relative w-full">
+				<button
+					type="button"
+					aria-label="전체 게임"
+					aria-haspopup="menu"
+					aria-expanded={flyoutOpen}
+					class="mt-2 flex h-12 w-full items-center justify-center rounded text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 {flyoutOpen
+						? 'bg-gray-100 dark:bg-gray-800'
+						: ''}"
+					onclick={toggleFlyout}
+				>
+					<i class="ri-apps-2-line text-2xl"></i>
+				</button>
+
+				{#if flyoutOpen}
+					<div class="absolute left-full top-0 z-50 ml-2">
+						<GameFlyoutPanel
+							games={gameList}
+							url={data.url}
+							activeSlug={data.params}
+							onClose={closeFlyout}
+						/>
+					</div>
+				{/if}
+			</div>
 		</div>
 		<!-- 반복 area 
 		<div class="mt-2 flex w-full flex-col items-center border-t border-gray-300">
