@@ -10,8 +10,16 @@
 		title?: string;
 	}>();
 
-	// listData: Array of costume objects { id, name, description, image }
-	let costumes = $derived(Array.isArray(listData) ? listData : Object.values(listData || {}));
+	// listData: 코스튬/스킨 배열. 게임별 필드명이 달라 관용 처리:
+	//  - 이미지: image(nikke/nte/starrail) | imageUrl(reverse1999 skins)
+	//  - 설명:   desc | metadata.acquire(reverse1999 = 획득처)
+	let costumes = $derived(
+		(Array.isArray(listData) ? listData : Object.values(listData || {})).map((c: any) => ({
+			...c,
+			image: c.image || c.imageUrl || '',
+			desc: c.desc || c.metadata?.acquire || ''
+		}))
+	);
 </script>
 
 <Layer title={title || initData?.name || '코스튬'}>
