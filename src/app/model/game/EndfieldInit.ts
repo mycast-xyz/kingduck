@@ -216,6 +216,8 @@ export class EndfieldInit {
 					props: { title: '추천 세팅' }
 				},
 				{ component: 'CalculatorView', dataKey: 'talentNodeMap', props: { title: '성장 계산기' } }, // XP/Ascension Calc
+				// NteMaterialView = 범용 {name,icon,amount} 그리드(게임 무관). 선호 선물 노출.
+				{ component: 'NteMaterialView', dataKey: 'bestGifts', props: { title: '선호 선물' } },
 				{ component: 'EndfieldProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } }
 			]
 		};
