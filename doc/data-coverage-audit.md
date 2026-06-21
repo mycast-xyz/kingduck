@@ -40,15 +40,19 @@
 | 항목 | 검증 | 상태 |
 |------|------|------|
 | **reverse1999 코스튬 dataKey** | `costume`→`skins` + CostumeView image/desc 관용화 | ✅ **수정 완료** |
-| **bluearchive `stats`** (7키) / **nikke `stats`** (5키) | flat dict, StatsView fallback 일반화로 노출 | ✅ **완료** (재크롤 0) |
+| **bluearchive `stats`** (7키) / **nikke `stats`** (5키) | ❌ **오판** — 두 게임의 *ProfileView가 이미 stats를 내부 렌더*. 별도 StatsView 섹션은 **중복**이라 revert(27ee1ca). | 이미 노출 중(추가 불요) |
 | **wuwa `CharacterVoice`** | **54캐릭 중 실데이터 0** (전부 "No Description Available" 플레이스홀더) | ❌ 데이터 부재 → 보류 |
 | **endfield `bestGifts`** | nameI18nId→i18nMap 해석 + iconId→endfieldtools itemicon 다운로드 → NteMaterialView 노출 | ✅ **완료** (26/29 캐릭, 백엔드 재크롤) |
 | **nikke `lore`** | 단일 **문자열**(스토리 단락) | △ ProfileView 설명 보강감(StoryView 부적합) |
 | **reverse1999 `lore`** | **dict**(cv/age/birthday/fragrance…) = 프로필 필드 | △ ProfileView 보강감 |
 
-**교훈**: 본 감사의 "available" 목록은 `metadata` 키 존재 기준이라 **플레이스홀더/미해석 값을 포함**한다.
-실제 추가 전 항상 **값 실측**(전 캐릭 표본) 선행. 진짜 즉효 프론트 win은 위 ✅ 둘이었고, 나머지는
-백엔드 해석(endfield) 또는 데이터 자체 부재(wuwa)였다.
+**교훈 1**: 본 감사의 "available" 목록은 `metadata` 키 존재 기준이라 **플레이스홀더/미해석 값을 포함**한다.
+실제 추가 전 항상 **값 실측**(전 캐릭 표본) 선행.
+
+**교훈 2 (중요)**: 감사가 비교한 "노출 섹션"은 `layout[].dataKey`였지만, **`ProfileView:metadata` 섹션은
+metadata 전체를 받아 내부에서 stats·cv·lore 등을 자체 렌더**한다. 즉 layout에 `StatsView`가 없어도
+ProfileView가 이미 stats를 보여주고 있을 수 있다(bluearchive/nikke가 그 경우 — StatsView 추가가 중복이었음).
+→ 갭 판단 시 **각 ProfileView가 metadata에서 실제로 읽어 렌더하는 필드까지 확인**해야 한다.
 
 ## 권장 작업 (값싼 것부터)
 
