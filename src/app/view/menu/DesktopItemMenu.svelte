@@ -10,7 +10,7 @@
 		ItemListService.setSearchQuery(searchQuery);
 	});
 
-	const slug = $derived($page.params.slug);
+	const slug = $derived($page.params.slug ?? '');
 </script>
 
 <div class="list-menu flex h-full p-4 pr-2">

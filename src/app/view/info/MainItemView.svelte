@@ -34,7 +34,7 @@
 			rarityService = new CharacterRarityService(gameInit);
 
 			// gameId는 slug로 통일, URL 별칭은 resolve
-			const slug = gameInit.gameId || resolveGameSlug($page.params.gameEnName);
+			const slug = gameInit.gameId || resolveGameSlug($page.params.gameEnName ?? '');
 			if (slug === 'starrail' || slug === 'zzz' || slug === 'wutheringwaves') {
 				// zzz/wutheringwaves도 originalId 배열(W-엔진/무기)을 게임 슬러그로 조회 — 공용 로더 재사용.
 				loadHsrItems();
@@ -48,9 +48,7 @@
 	// 원신 돌파(레벨업) 재료 로드. ascension은 { 재료ID: 수량 } 객체 → ID 배열로 변환해 조회.
 	async function loadGenshinItems() {
 		try {
-			const ids = Array.isArray(itemData)
-				? itemData
-				: Object.keys(itemData || {});
+			const ids = Array.isArray(itemData) ? itemData : Object.keys(itemData || {});
 			if (ids.length > 0) {
 				const promises = ids.map(async (id: string | number) => {
 					try {
@@ -77,7 +75,7 @@
 					try {
 						const res = await hsrItemService.getItemList(
 							String(id),
-							gameInit?.gameId ?? resolveGameSlug($page.params.gameEnName)
+							gameInit?.gameId ?? resolveGameSlug($page.params.gameEnName ?? '')
 						);
 						return res.data;
 					} catch (err) {
@@ -115,8 +113,7 @@
 
 		return rawList.map((item: any) => {
 			// 이름 정규화
-			const name =
-				localizedName(item.name) || (typeof item.name === 'string' ? item.name : '');
+			const name = localizedName(item.name) || (typeof item.name === 'string' ? item.name : '');
 
 			// 이미지 정규화
 			let image = '';

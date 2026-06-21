@@ -100,7 +100,7 @@
 						>캐릭터</span
 					>
 				</a>
-				{#if hasItemTabs($page.params.slug)}
+				{#if hasItemTabs(slug)}
 					<a
 						id="menu-item"
 						class=" mt-2 flex h-12 w-full items-center rounded px-3 hover:bg-gray-300 dark:hover:bg-gray-800"

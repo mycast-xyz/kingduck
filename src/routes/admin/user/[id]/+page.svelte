@@ -15,7 +15,7 @@
 	let selectedRole = '';
 
 	onMount(() => {
-		userId = $page.params.id;
+		userId = $page.params.id ?? '';
 
 		const unsubscribeUser = adminUserService.currentUser.subscribe((value) => {
 			user = value;

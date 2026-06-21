@@ -4,20 +4,23 @@
 
 	// 모바일 게임별 서브 네비게이션 — 데스크톱 DesktopListMenu의 페이지 탭(캐릭터/아이템/티어/쿠폰/캘린더)을
 	// 모바일에서도 쓸 수 있게 가로 탭바로 제공. /list /item /tier-list /coupon /calendar 의 [slug] 라우트 공용.
-	const slug = $derived($page.params.slug);
+	const slug = $derived($page.params.slug ?? '');
 	const path = $derived($page.url.pathname);
 
-	const tabs = $derived(
-		[
-			{ label: '캐릭터', icon: 'ri-user-line', href: `/list/${slug}`, match: '/list/' },
-			...(hasItemTabs(slug)
-				? [{ label: '아이템', icon: 'ri-sword-line', href: `/item/${slug}`, match: '/item/' }]
-				: []),
-			{ label: '티어', icon: 'ri-vip-crown-2-line', href: `/tier-list/${slug}`, match: '/tier-list/' },
-			{ label: '쿠폰', icon: 'ri-coupon-line', href: `/coupon/${slug}`, match: '/coupon/' },
-			{ label: '캘린더', icon: 'ri-calendar-line', href: `/calendar/${slug}`, match: '/calendar/' }
-		]
-	);
+	const tabs = $derived([
+		{ label: '캐릭터', icon: 'ri-user-line', href: `/list/${slug}`, match: '/list/' },
+		...(hasItemTabs(slug)
+			? [{ label: '아이템', icon: 'ri-sword-line', href: `/item/${slug}`, match: '/item/' }]
+			: []),
+		{
+			label: '티어',
+			icon: 'ri-vip-crown-2-line',
+			href: `/tier-list/${slug}`,
+			match: '/tier-list/'
+		},
+		{ label: '쿠폰', icon: 'ri-coupon-line', href: `/coupon/${slug}`, match: '/coupon/' },
+		{ label: '캘린더', icon: 'ri-calendar-line', href: `/calendar/${slug}`, match: '/calendar/' }
+	]);
 </script>
 
 <nav
