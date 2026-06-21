@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
+	import { fly } from 'svelte/transition';
 	import { authTokenService } from '../../../service/auth/AuthTokenService';
 	import { userNavActive } from '../../../../app/service/MainMenuService';
 	import { FavoriteService } from '../../../service/FavoriteService';
@@ -111,7 +112,7 @@
 					/>
 				</a>
 
-				{#if showTooltip === 'calendar'}
+				{#if showTooltip === 'calendar' && !flyoutOpen}
 					<div
 						class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300 dark:bg-orange-600"
 						role="tooltip"
@@ -144,7 +145,10 @@
 				</button>
 
 				{#if flyoutOpen}
-					<div class="absolute left-full top-0 z-50 ml-2">
+					<div
+						class="absolute left-full top-0 z-50 ml-2"
+						transition:fly={{ x: -10, duration: 150 }}
+					>
 						<GameFlyoutPanel
 							games={gameList}
 							url={data.url}
@@ -278,7 +282,7 @@
 			></i>
 		</button>
 
-		{#if showTooltip === gameItem.slug}
+		{#if showTooltip === gameItem.slug && !flyoutOpen}
 			<div
 				class="tooltip absolute left-16 top-3 z-50 w-auto rounded-lg bg-orange-400 px-3 py-2 text-white shadow-sm transition-opacity duration-300 dark:bg-orange-600"
 				role="tooltip"
