@@ -83,9 +83,13 @@ export class NteInit {
 					view: false,
 					search: { text: true, attribute: {} }
 				},
-				// 카드: 속성/형질 아이콘은 API Element.iconUrl 사용. 등급 색상(5성 금 / 4성 보라).
+				// 카드: 속성/형질 아이콘은 API Element.iconUrl 사용. 모바일에서는 로컬 캐시 경로 폴백.
+				// 등급 색상(5성 금 / 4성 보라).
 				card: {
-					element: { display: 'iconUrl' },
+					element: {
+						display: 'iconUrl',
+						mobilePath: '/assets/image/{gameSlug}/elements/{elementName}.webp'
+					},
 					path: { display: true },
 					rarityColors: {
 						'5': {
@@ -114,12 +118,25 @@ export class NteInit {
 					element: true,
 					path: true
 				},
-				releaseDate: false,
-				info: {}
+				releaseDate: true,
+				info: {
+					skill: {
+						name: '캐릭터 스킬',
+						view: true,
+						level: false
+					}
+				}
 			},
+			// NteProfileView: 진영·이능력·형질·생일 등 기본 정보.
+			// SkillTreeView: everness.info GraphQL 스킬 데이터(백엔드 CharacterScraper 구현 후 채워짐).
 			layout: [
 				{ component: 'NteProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
-				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } }
+				{
+					component: 'SkillTreeView',
+					dataKey: 'skills',
+					initDataKey: 'skill',
+					props: { title: '캐릭터 스킬' }
+				}
 			],
 			coupon: {
 				name: '쿠폰'
