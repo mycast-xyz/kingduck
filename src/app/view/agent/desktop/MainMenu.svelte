@@ -173,17 +173,17 @@
 			{/each}
 		</div>-->
 	</div>
-	<!-- 테마 토글 -->
-	<div class="mb-4 mt-auto w-full px-2">
+	<!-- 테마 토글 (최하단, 사용자 버튼 바로 위에 고정) -->
+	<div class="mb-2 mt-auto w-full px-2">
 		<ThemeToggle />
 	</div>
 	<!-- 사용자 메뉴 -->
 	{#if isTokenValid}
-		<div class="relative mt-auto h-16 w-full">
+		<div class="relative h-16 w-full">
 			<button
 				type="button"
 				aria-label="사용자 메뉴"
-				class="mt-auto flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+				class="flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
 				onclick={toggleUserNav}
 			>
 				<i class="ri-user-line h-6 w-6 text-lg"></i>
@@ -235,7 +235,7 @@
 		<a
 			href="/login"
 			aria-label="로그인"
-			class="mt-auto flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-orange-500 hover:text-white dark:bg-gray-800 dark:hover:bg-orange-600 dark:hover:text-white"
+			class="flex h-16 w-full items-center justify-center bg-gray-200 hover:bg-orange-500 hover:text-white dark:bg-gray-800 dark:hover:bg-orange-600 dark:hover:text-white"
 		>
 			<i class="ri-user-line h-6 w-6 text-lg"></i>
 		</a>
