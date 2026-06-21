@@ -141,7 +141,8 @@ export class NteInit {
 				{ component: 'SkillTreeView', dataKey: 'awaken', props: { title: '각성' } },
 				{ component: 'SkillTreeView', dataKey: 'resonance', props: { title: '공명' } },
 				{ component: 'StatsView', dataKey: 'stats', props: { title: '기초 스탯' } },
-				{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } }
+				{ component: 'CostumeView', dataKey: 'costumes', props: { title: '코스튬' } },
+				{ component: 'VoiceView', dataKey: 'voiceLines', props: { title: '음성 대사' } }
 			],
 			coupon: {
 				name: '쿠폰'
