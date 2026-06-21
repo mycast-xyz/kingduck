@@ -9,7 +9,6 @@ import { EndfieldInit } from './EndfieldInit';
 import { ZzzInit } from './ZzzInit';
 import { NteInit } from './NteInit';
 import { BlueArchiveInit } from './BlueArchiveInit';
-import { BrownDust2Init } from './BrownDust2Init';
 
 /**
  * 게임 레지스트리 — slug → GameInitConfig 팩토리의 단일 진실원.
@@ -35,8 +34,7 @@ const GAME_INIT_FACTORIES: Record<string, () => GameInitConfig> = {
 	endfield: () => new EndfieldInit().setInit(),
 	zzz: () => new ZzzInit().setInit(),
 	nte: () => new NteInit().setInit(),
-	bluearchive: () => new BlueArchiveInit().setInit(),
-	browndust2: () => new BrownDust2Init().setInit()
+	bluearchive: () => new BlueArchiveInit().setInit()
 };
 
 /**

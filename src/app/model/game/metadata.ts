@@ -137,23 +137,6 @@ export interface BlueArchiveCharacterMeta extends BaseCharacterMeta {
 	skills?: BlueArchiveSkill[];
 }
 
-/** 브라운더스트2(BrownDust II, browndust2) — 네오위즈. 2D 턴제 전략 RPG. */
-export interface BrownDust2CharacterMetaType extends BaseCharacterMeta {
-	originalId?: string; // 외부 소스 ID
-	element?: string; // 'Fire' | 'Ice' | 'Thunder' | 'Light' | 'Dark' (스파이크 확정 필요)
-	jobClass?: string; // 'Warrior' | 'Archer' | 'Mage' | 'Priest' | 'Fighter'
-	isLimited?: boolean; // 한정 여부
-	costumes?: {
-		id: string;
-		name: string;
-		imageUrl: string;
-		type: 'default' | 'event' | 'gacha' | 'paid';
-	}[];
-	skills?: unknown; // 스킬 구조는 소스 스파이크 후 확정(Phase 1)
-	stats?: Record<string, number>; // 기본 스탯
-	story?: string; // 캐릭터 스토리 텍스트
-}
-
 export interface BaseItemMeta {
 	originalId?: string;
 	type?: string;
@@ -184,7 +167,6 @@ export type WwCharacter = CharacterType<WwCharacterMeta>;
 export type EndfieldCharacter = CharacterType<EndfieldCharacterMeta>;
 export type NteCharacter = CharacterType<NteCharacterMeta>;
 export type BlueArchiveCharacter = CharacterType<BlueArchiveCharacterMeta>;
-export type BrownDust2Character = CharacterType<BrownDust2CharacterMetaType>;
 
 export type HsrLightcone = ItemType<HsrLightconeMeta>;
 export type HsrRelicSet = ItemType<HsrRelicSetMeta>;
