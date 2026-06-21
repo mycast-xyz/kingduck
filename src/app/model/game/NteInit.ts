@@ -128,7 +128,8 @@ export class NteInit {
 				}
 			},
 			// NteProfileView: 진영·이능력·형질·생일 등 기본 정보.
-			// SkillTreeView: everness.info GraphQL 스킬 데이터(백엔드 CharacterScraper 구현 후 채워짐).
+			// SkillTreeView: everness.info 스킬/각성/공명 데이터. 모두 {name,type,description}
+			// 구조라 NteSkillTreeViewModel로 동일 렌더(각성·공명은 icon 없음 → 아이콘 자리 비움).
 			layout: [
 				{ component: 'NteProfileView', dataKey: 'metadata', props: { title: '캐릭터 정보' } },
 				{
@@ -136,7 +137,9 @@ export class NteInit {
 					dataKey: 'skills',
 					initDataKey: 'skill',
 					props: { title: '캐릭터 스킬' }
-				}
+				},
+				{ component: 'SkillTreeView', dataKey: 'awaken', props: { title: '각성' } },
+				{ component: 'SkillTreeView', dataKey: 'resonance', props: { title: '공명' } }
 			],
 			coupon: {
 				name: '쿠폰'
