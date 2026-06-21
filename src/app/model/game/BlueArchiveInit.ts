@@ -164,6 +164,7 @@ export class BlueArchiveInit {
 			},
 			layout: [
 				{ component: 'BlueArchiveProfileView', dataKey: 'metadata', props: { title: '학생 정보' } },
+				{ component: 'StatsView', dataKey: 'stats', props: { title: '기초 스탯' } },
 				{ component: 'SkillTreeView', dataKey: 'skills', props: { title: '스킬' } }
 			],
 			coupon: {

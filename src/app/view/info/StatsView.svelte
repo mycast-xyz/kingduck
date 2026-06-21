@@ -53,44 +53,43 @@
 		return null;
 	});
 
-	// 일반 데이터 처리 (공통 VM이 없을 경우)
+	// 일반 데이터 처리 (게임별 VM이 없을 경우).
+	// 배열이면 그대로([{name,value,...}]), flat dict({키:숫자})이면 한글 라벨로 전 항목 렌더.
+	// → 게임 전용 VM 없이도 nte(array)·nikke·bluearchive(dict) 등 임의 스탯을 표시.
+	const STAT_LABELS: Record<string, string> = {
+		hp: 'HP',
+		maxhp: 'HP',
+		hpmax: 'HP',
+		atk: '공격력',
+		attack: '공격력',
+		attackpower: '공격력',
+		atkmax: '공격력',
+		def: '방어력',
+		defense: '방어력',
+		defensepower: '방어력',
+		defmax: '방어력',
+		speed: '속도',
+		taunt: '도발',
+		healpower: '치유력',
+		dodgepoint: '회피',
+		accuracypoint: '명중',
+		criticalpoint: '치명',
+		criticalratio: '치명타 확률',
+		criticaldamage: '치명타 피해'
+	};
 
-	// 일반 데이터 처리 (HSR이 아닐 경우)
 	let genericStats = $derived.by(() => {
 		if (vm) return [];
-
 		if (Array.isArray(listData)) return listData;
-		if (!listData) return [];
+		if (!listData || typeof listData !== 'object') return [];
 
-		const order = ['HP', 'Attack', 'Defense', 'Speed', 'Taunt'];
-		const labels: Record<string, string> = {
-			HP: 'HP',
-			Attack: '공격력',
-			Defense: '방어력',
-			Speed: '속도',
-			Taunt: '도발'
-		};
-		const icons: Record<string, string> = {
-			HP: 'icon/hp.webp',
-			Attack: 'icon/attack.webp',
-			Defense: 'icon/defense.webp',
-			Speed: 'icon/speed.webp',
-			Taunt: 'icon/taunt.webp'
-		};
-
-		return order
-			.map((key) => {
-				if (listData[key] !== undefined) {
-					return {
-						key,
-						name: labels[key] || key,
-						value: Math.floor(listData[key]).toLocaleString(),
-						icon: icons[key]
-					};
-				}
-				return null;
-			})
-			.filter((item) => item !== null);
+		return Object.entries(listData as Record<string, unknown>)
+			.filter(([, v]) => typeof v === 'number')
+			.map(([key, v]) => ({
+				key,
+				name: STAT_LABELS[key.toLowerCase()] || key,
+				value: Math.floor(v as number).toLocaleString()
+			}));
 	});
 
 	// 최종 표시할 스탯 목록
