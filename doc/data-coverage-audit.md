@@ -33,6 +33,23 @@
 
 ---
 
+## 실측 검증 결과 (2026-06-21) — "키 존재 ≠ 사용 가능"
+
+각 후보를 실제 데이터로 검증한 결과, 키는 있어도 **값이 비었거나 미해석**인 경우가 많았다:
+
+| 항목 | 검증 | 상태 |
+|------|------|------|
+| **reverse1999 코스튬 dataKey** | `costume`→`skins` + CostumeView image/desc 관용화 | ✅ **수정 완료** |
+| **bluearchive `stats`** (7키) / **nikke `stats`** (5키) | flat dict, StatsView fallback 일반화로 노출 | ✅ **완료** (재크롤 0) |
+| **wuwa `CharacterVoice`** | **54캐릭 중 실데이터 0** (전부 "No Description Available" 플레이스홀더) | ❌ 데이터 부재 → 보류 |
+| **endfield `bestGifts`** | shape `{iconId, nameI18nId, descI18nId, favorablePoint}` — **이름이 i18n ID(미해석)·아이콘도 ID** | ⚠️ 백엔드 i18n 해석+아이콘 필요(NTE 돌파와 동급) |
+| **nikke `lore`** | 단일 **문자열**(스토리 단락) | △ ProfileView 설명 보강감(StoryView 부적합) |
+| **reverse1999 `lore`** | **dict**(cv/age/birthday/fragrance…) = 프로필 필드 | △ ProfileView 보강감 |
+
+**교훈**: 본 감사의 "available" 목록은 `metadata` 키 존재 기준이라 **플레이스홀더/미해석 값을 포함**한다.
+실제 추가 전 항상 **값 실측**(전 캐릭 표본) 선행. 진짜 즉효 프론트 win은 위 ✅ 둘이었고, 나머지는
+백엔드 해석(endfield) 또는 데이터 자체 부재(wuwa)였다.
+
 ## 권장 작업 (값싼 것부터)
 
 ### A. 즉시(프론트만, 데이터 이미 존재)
